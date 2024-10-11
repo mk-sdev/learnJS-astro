@@ -1,0 +1,37 @@
+---
+---
+
+<div style="text-align: center; margin: 20px 0; width: 100%;">
+  <span
+    class="alert"
+    
+    style="padding: 15px; 
+           background-color: #007BFF; /* Kolor tła przycisku */
+           border-radius: 5px; 
+           text-decoration: none; 
+           display: block; 
+           width: 100%; 
+           font-size: 18px; /* Rozmiar czcionki */
+           border: none; /* Usunięcie obramowania */
+           cursor: pointer;"
+  >
+    <strong>Want to test yourself? Download a mobile app</strong>
+    <span style="display: inline-block; margin-left: 10px;">
+       <!-- Ikona telefonu -->
+    </span>
+  </span>
+</div>
+
+<script>
+  // Find all buttons with the `alert` class on the page.
+  const buttons = document.querySelectorAll('span.alert');
+
+  // Handle clicks on each button.
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      alert('Button was clicked!');
+    });
+  });
+</script>
+
+

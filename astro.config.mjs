@@ -1,13 +1,8 @@
+// @ts-check
 import { defineConfig } from 'astro/config'
-import { starlight } from '@astrojs/starlight'
+import starlight from '@astrojs/starlight'
 
-const sidebarItems = [
-  { label: 'comments', slug: 'fundamentals/comments' },
-  { label: 'errors', slug: 'fundamentals/errors' },
-  { label: 'components', slug: 'fundamentals/components' },
-  // Dodaj inne elementy według potrzeb
-]
-
+// https://astro.build/config
 export default defineConfig({
   integrations: [
     starlight({
@@ -18,12 +13,16 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Fundamentals',
-          items: sidebarItems, // Użycie tablicy do generowania elementów
+          items: [
+            // Each item here is one entry in the navigation menu.
+            { label: 'comments', slug: 'fundamentals/comments' },
+            { label: 'variables', slug: 'fundamentals/variables' },
+          ],
         },
-        {
-          label: 'Reference',
-          autogenerate: { directory: 'reference' },
-        },
+        // {
+        //   label: 'Reference',
+        //   autogenerate: { directory: 'reference' },
+        // },
       ],
     }),
   ],

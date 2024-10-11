@@ -1,0 +1,9 @@
+---
+const {src, description=''} = Astro.props
+import { Image } from 'astro:assets';
+---
+
+<Image src={src} alt={description} width={600} 
+style={{ width: '100%', height: 'auto', borderRadius:'15px'}}  />
+
+<div style=" width: 100%; text-align: center; margin: 0; opacity: .7">{description}</div>

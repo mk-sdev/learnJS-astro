@@ -1,0 +1,20 @@
+---
+import MobileButton from "./MobileButton.astro";
+
+// Layout.astro
+---
+
+
+  <header>
+    <h1>Moja Dokumentacja</h1>
+    <!-- Możesz dodać inne elementy nagłówka tutaj -->
+  </header>
+
+  <main>
+    <slot/> <!-- Renderowanie zawartości strony -->
+  </main>
+
+  <footer>
+    <MobileButton text="Read more" link="/next-page" /> <!-- Przycisk -->
+  </footer>
+
