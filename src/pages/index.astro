@@ -1,0 +1,30 @@
+---
+// Importuj potrzebne komponenty
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+const items = [1, 2, 3]
+---
+
+<StarlightPage frontmatter={{ title: 'My custom page', tableOfContents: false }}>
+
+    {items.map((e)=>(
+        <div>{e}</div>
+    ))}
+    <h1>Congrats on setting up a new Starlight project!</h1>
+    <CardGrid stagger>
+        <Card title="Update content" icon="pencil">
+            Edit `src/content/docs/index.mdx` to see this page change.
+        </Card>
+        <Card title="Add new content" icon="add-document">
+            Add Markdown or MDX files to `src/content/docs` to create new pages.
+        </Card>
+        <Card title="Configure your site" icon="setting">
+            Edit your `sidebar` and other config in `astro.config.mjs`.
+        </Card>
+        <Card title="Read the docs" icon="open-book">
+            Learn more in [the Starlight Docs](https://starlight.astro.build/).
+        </Card>
+    </CardGrid>
+
+</StarlightPage>
