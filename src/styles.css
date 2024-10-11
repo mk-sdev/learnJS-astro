@@ -1,0 +1,6 @@
+.custom-aside {
+  background-color: #f9f9f9; /* Zmieniamy tło */
+  border-left: 4px solid #007bff; /* Dodajemy kolorową linię po lewej stronie */
+  padding: 10px; /* Dodajemy padding */
+  margin: 20px 0; /* Marginesy na górze i dole */
+}

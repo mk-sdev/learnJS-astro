@@ -1,0 +1,47 @@
+---
+title: Example Reference
+description: A reference page in my new Starlight docs site.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import { Image } from 'astro:assets';
+import banana from '../../../assets/banana.png';
+import '../../../styles.css'; // Ścieżka do twojego pliku CSS
+
+## Further reading
+
+<Image src={banana} alt="Description of the image" width={600} 
+style={{ width: '100%', height: 'auto', borderRadius:'15px' }}  />
+
+<Aside className="custom-aside" type="tip">
+  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
+</Aside>
+
+Reference pages are ideal for outlining how things work in terse and clear terms.
+Less concerned with telling a story or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
+
+- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
+
+Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
+
+**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
+
+1. Pierwszy element
+2. Drugi element
+   - Podpunkt drugi.1
+   - Podpunkt drugi.2
+3. Trzeci element
+   1. Podpunkt trzeci.1
+   2. Podpunkt trzeci.2
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto; border-radius:15px">
+  <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+    src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+    title="YouTube video player" frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen></iframe>
+</div>
+
+```js
+console.log('This could come from a file or CMS!');
+```
