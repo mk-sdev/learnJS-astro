@@ -3,14 +3,25 @@
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-const items = [1, 2, 3]
+import {items} from '../../astro.config.mjs'
 ---
 
 <StarlightPage frontmatter={{ title: 'My custom page', tableOfContents: false }}>
 
-    {items.map((e)=>(
-        <div>{e}</div>
-    ))}
+{items.map((e) => (
+    <div style="margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
+        <div style="font-weight: bold; font-size: 18px; color: #333; margin-bottom: 5px;">
+            {e.label}
+        </div>
+        {e.items.map((el) => (
+            <a href={`${e.label.toLowerCase()}/${el.label.toLowerCase()}`} style="padding-left: 15px; color: #555;">
+                • {el.label} {/* Przykład wprowadzenia znaku punktu przed etykietą */}
+            </a>
+        ))}
+    </div>
+))}
+
+
     <h1>Congrats on setting up a new Starlight project!</h1>
     <CardGrid stagger>
         <Card title="Update content" icon="pencil">
