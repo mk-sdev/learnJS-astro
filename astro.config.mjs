@@ -7,8 +7,20 @@ export const items = [
     label: 'Fundamentals',
     items: [
       // Each item here is one entry in the navigation menu.
-      { label: 'comments', slug: 'fundamentals/comments', url: 'dwdw' },
-      { label: 'variables', slug: 'fundamentals/variables', url: 'dwdw' },
+      { label: 'comments', slug: 'fundamentals/comments', img: 'dwdw' },
+      { label: 'variables', slug: 'fundamentals/variables', img: 'dwdw' },
+      { label: 'variables', slug: 'fundamentals/variables', img: 'dwdw' },
+      { label: 'variables', slug: 'fundamentals/variables', img: 'dwdw' },
+      { label: 'variables', slug: 'fundamentals/variables', img: 'dwdw' },
+      { label: 'variables', slug: 'fundamentals/variables', img: 'dwdw' },
+    ],
+  },
+  {
+    label: 'Data types',
+    items: [
+      // Each item here is one entry in the navigation menu.
+      { label: 'strings', slug: 'data-types/strings', img: 'dwdw' },
+      // { label: 'arrays', slug: 'data-types/arrays', img: 'dwdw' },
     ],
   },
   // {

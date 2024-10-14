@@ -1,41 +1,93 @@
 ---
-// Importuj potrzebne komponenty
-import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro'
 
-import {items} from '../../astro.config.mjs'
+import { items } from '../../astro.config.mjs'
 ---
 
-<StarlightPage frontmatter={{ title: 'My custom page', tableOfContents: false }}>
-
-{items.map((e) => (
-    <div style="margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
-        <div style="font-weight: bold; font-size: 18px; color: #333; margin-bottom: 5px;">
-            {e.label}
-        </div>
-        {e.items.map((el) => (
-            <a href={`${e.label.toLowerCase()}/${el.label.toLowerCase()}`} style="padding-left: 15px; color: #555;">
-                • {el.label} {/* Przykład wprowadzenia znaku punktu przed etykietą */}
+<StarlightPage
+  frontmatter={{ title: 'My custom page', tableOfContents: false }}
+>
+  {
+    items.map(chapter => (
+      <div class="item-container">
+        <div class="item-header">{chapter.label}</div>
+        <div class="item-links">
+          {' '}
+          {chapter.items.map(lesson => (
+            <a href={`${lesson.slug}`} class="item-link">
+              • {lesson.label}
             </a>
-        ))}
-    </div>
-))}
-
-
-    <h1>Congrats on setting up a new Starlight project!</h1>
-    <CardGrid stagger>
-        <Card title="Update content" icon="pencil">
-            Edit `src/content/docs/index.mdx` to see this page change.
-        </Card>
-        <Card title="Add new content" icon="add-document">
-            Add Markdown or MDX files to `src/content/docs` to create new pages.
-        </Card>
-        <Card title="Configure your site" icon="setting">
-            Edit your `sidebar` and other config in `astro.config.mjs`.
-        </Card>
-        <Card title="Read the docs" icon="open-book">
-            Learn more in [the Starlight Docs](https://starlight.astro.build/).
-        </Card>
-    </CardGrid>
-
+          ))}
+        </div>
+      </div>
+    ))
+  }
 </StarlightPage>
+
+<style>
+  .item-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .item-header {
+    font-weight: bold;
+    font-size: 45px;
+    color: #f0f0f0;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+  }
+
+  .item-links {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .item-link {
+    font-size: 20px;
+    padding: 10px;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    transition:
+      color 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  .item-link:hover {
+    color: white;
+    background-color: #007bff;
+  }
+
+  @media (max-width: 1200px) {
+    .item-links {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .item-header {
+      font-size: 35px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .item-links {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 300px) {
+    .item-links {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  .item-link:hover {
+    color: white;
+    background-color: rgba(106, 90, 205, 0.1);
+  }
+</style>
