@@ -2,6 +2,7 @@
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro'
 
 import { items } from '../../astro.config.mjs'
+import '../styles.css'
 ---
 
 <StarlightPage
@@ -28,13 +29,13 @@ import { items } from '../../astro.config.mjs'
   .item-container {
     margin-bottom: 20px;
     padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
   }
 
   .item-header {
     font-weight: bold;
     font-size: 45px;
-    color: #f0f0f0;
+    color: var(--sl-color-white); /* Zmienne dla koloru */
     margin-bottom: 10px;
     text-transform: capitalize;
   }
@@ -48,7 +49,7 @@ import { items } from '../../astro.config.mjs'
   .item-link {
     font-size: 20px;
     padding: 10px;
-    color: black;
+    color: var(--sl-color-gray-3); /* Zmienne dla koloru */
     text-decoration: none;
     border-radius: 5px;
     text-align: center;
@@ -59,7 +60,7 @@ import { items } from '../../astro.config.mjs'
 
   .item-link:hover {
     color: white;
-    background-color: #007bff;
+    background-color: rgba(120, 20, 250, .1);
   }
 
   @media (max-width: 1200px) {
@@ -72,9 +73,7 @@ import { items } from '../../astro.config.mjs'
     .item-header {
       font-size: 35px;
     }
-  }
 
-  @media (max-width: 900px) {
     .item-links {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -84,10 +83,5 @@ import { items } from '../../astro.config.mjs'
     .item-links {
       grid-template-columns: repeat(1, 1fr);
     }
-  }
-
-  .item-link:hover {
-    color: white;
-    background-color: rgba(106, 90, 205, 0.1);
   }
 </style>
