@@ -2,6 +2,8 @@
 import { defineConfig } from 'astro/config'
 import starlight from '@astrojs/starlight'
 
+import tunnel from 'astro-tunnel';
+
 export const items = [
   {
     label: 'Fundamentals',
@@ -31,13 +33,11 @@ export const items = [
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [
-    starlight({
-      title: 'My Docs',
-      social: {
-        github: 'https://github.com/withastro/starlight',
-      },
-      sidebar: items,
-    }),
-  ],
+  integrations: [starlight({
+    title: 'My Docs',
+    social: {
+      github: 'https://github.com/withastro/starlight',
+    },
+    sidebar: items,
+  }), tunnel()],
 })

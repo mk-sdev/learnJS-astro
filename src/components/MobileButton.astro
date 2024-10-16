@@ -1,6 +1,6 @@
 <div style="text-align: center; margin: 20px 0; width: 100%;">
   <button
-    class="alert"
+    class="android"
     style="padding: 15px; 
            background-color: #007BFF; /* Kolor tła przycisku */
            color: #f0f0f0;
@@ -21,20 +21,20 @@
 </div>
 
 <script>
-  // Znajdź wszystkie przyciski z klasą 'alert' na stronie.
-  const buttons = document.querySelectorAll('button.alert')
+  // Znajdź wszystkie przyciski z klasą 'android' na stronie.
+  const buttons = document.querySelectorAll('button.android')
 
   // Obsłuż kliknięcia każdego z przycisków.
   buttons.forEach(button => {
     button.addEventListener('click', () => {
       // Spróbuj otworzyć aplikację przez deep link
-      window.location = 'yourapp://open'
+      // window.location = 'quizapp://open'
 
       // Jeśli aplikacja nie jest zainstalowana, przekieruj do sklepu Google Play po 2 sekundach
       setTimeout(() => {
         window.location =
           'https://play.google.com/store/apps/details?id=com.example.yourapp'
-      }, 1000)
+      }, 0)
     })
   })
 </script>
