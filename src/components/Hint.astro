@@ -1,4 +1,57 @@
+---
+// Wyciągamy id z props.
+const { id } = Astro.props
+---
 
-<span style={{color: 'red'}}>
-    <slot/>
+<span id={id} style={{ color: 'red', cursor: 'pointer' }}>
+  <slot />
 </span>
+
+<!-- Tooltip -->
+<div id="tooltip" class="tooltip" style="display: none;">
+  This is the tooltip content for ID: {id}
+</div>
+
+<style>
+  /* Stylizacja tooltippa */
+  .tooltip {
+    position: absolute; /* Pozycjonowanie */
+    background-color: #333; /* Tło */
+    color: #fff; /* Kolor tekstu */
+    padding: 10px; /* Wewnętrzny margines */
+    border-radius: 5px; /* Zaokrąglenie */
+    z-index: 1000; /* Warstwa */
+    white-space: nowrap; /* Brak zawijania tekstu */
+    transform: translateY(-100%); /* Przesunięcie w górę */
+    pointer-events: none; /* Ignorowanie zdarzeń kliknięcia */
+    transition: opacity 0.3s; /* Efekt przejścia */
+    opacity: 0; /* Domyślnie niewidoczny */
+  }
+
+  .tooltip.visible {
+    opacity: 1; /* Widoczny */
+  }
+</style>
+
+<script define:vars={{ id }}>
+  // Znajdź element span z unikalnym id na stronie.
+  const button = document.querySelector(`#${id}`)
+  const tooltip = document.querySelector('#tooltip')
+
+  // Sprawdź, czy element istnieje przed dodaniem obsługi zdarzenia.
+  if (button) {
+    // Obsługa najechania myszką
+    button.addEventListener('mouseenter', event => {
+      tooltip.style.display = 'block' // Ustawienie widoczności tooltippa
+      tooltip.classList.add('visible') // Dodanie klasy widoczności
+      tooltip.style.left = `${event.pageX}px` // Ustawienie pozycji w poziomie
+      tooltip.style.top = `${event.pageY - tooltip.offsetHeight}px` // Ustawienie pozycji w pionie
+    })
+
+    // Obsługa opuszczenia myszką
+    button.addEventListener('mouseleave', () => {
+      tooltip.classList.remove('visible') // Usunięcie klasy widoczności
+      tooltip.style.display = 'none' // Ukrycie tooltippa
+    })
+  }
+</script>
