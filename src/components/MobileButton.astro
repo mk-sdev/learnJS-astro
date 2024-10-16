@@ -1,12 +1,9 @@
----
----
-
 <div style="text-align: center; margin: 20px 0; width: 100%;">
-  <span
+  <button
     class="alert"
-    
     style="padding: 15px; 
            background-color: #007BFF; /* Kolor tła przycisku */
+           color: #f0f0f0;
            border-radius: 5px; 
            text-decoration: none; 
            display: block; 
@@ -18,21 +15,26 @@
   >
     <strong>Want to test yourself? Download a mobile app</strong>
     <span style="display: inline-block; margin-left: 10px;">
-       <!-- Ikona telefonu -->
+      <!-- Ikona telefonu -->
     </span>
-  </span>
+  </button>
 </div>
 
 <script>
-  // Find all buttons with the `alert` class on the page.
-  const buttons = document.querySelectorAll('span.alert');
+  // Znajdź wszystkie przyciski z klasą 'alert' na stronie.
+  const buttons = document.querySelectorAll('button.alert')
 
-  // Handle clicks on each button.
-  buttons.forEach((button) => {
+  // Obsłuż kliknięcia każdego z przycisków.
+  buttons.forEach(button => {
     button.addEventListener('click', () => {
-      alert('Button was clicked!');
-    });
-  });
+      // Spróbuj otworzyć aplikację przez deep link
+      window.location = 'yourapp://open'
+
+      // Jeśli aplikacja nie jest zainstalowana, przekieruj do sklepu Google Play po 2 sekundach
+      setTimeout(() => {
+        window.location =
+          'https://play.google.com/store/apps/details?id=com.example.yourapp'
+      }, 1000)
+    })
+  })
 </script>
-
-
