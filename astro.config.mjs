@@ -35,6 +35,7 @@ export const items = [
 export default defineConfig({
   integrations: [
     starlight({
+      favicon: './src/assets/favicon.png',
       title: '',
       logo: {
         light: './src/assets/JS-light.png',
