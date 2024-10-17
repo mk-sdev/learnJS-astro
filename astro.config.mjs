@@ -33,11 +33,15 @@ export const items = [
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [starlight({
-    title: 'My Docs',
-    social: {
-      github: 'https://github.com/withastro/starlight',
-    },
-    sidebar: items,
-  }), tunnel()],
+  integrations: [
+    starlight({
+      title: '',
+      logo: {
+        light: './src/assets/JS-light.png',
+        dark: './src/assets/JS-dark.png',
+      },
+      sidebar: items,
+    }),
+    tunnel(),
+  ],
 })
