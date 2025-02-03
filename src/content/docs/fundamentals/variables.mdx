@@ -5,53 +5,135 @@ layout: ../../../components/_Layout.astro
 ---
 
 import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
-import YT from '../../../components/YT.astro'
-import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
 
-# Raz
-## Further reading
+In programming, variables are 'containers' that store values. These values can be numbers, texts, arrays, objects, or other data types. Variables provide a way to label and reference data in a program, making it easier for developers to manipulate and work with information.  
 
+The word *"variable"* comes from the combination of *"vary"* and the suffix *"-able"*, meaning *"able to change"*. So, a variable is something that can hold different values and can change over time.
 
-<Img src={banana} />
+## Why use variables
 
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
-</Aside>
+Using variables becomes particularly advantageous when you need to update a value in multiple places within your code. Let’s say you want to print a sum of numbers, when one of them is 20:
 
-### trzy
-#### cztery
-##### 5
-
-Reference pages are <Hint id={'dupa'}>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a <Hint id={'pupa'}>sss</Hint> or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
-
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
-
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
-
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
-
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
-
-<YT id={'dQw4w9WgXcQ'}/>
-
-<hr/>
-
-
-<hr/>
-
-
-<hr/>
-
-
-```js
-console.log('This coulCMS!');
+```javascript
+console.log(20+1)
+console.log(20+2)
+console.log(20+3)
+// more console.logs
+console.log(20+50)
 ```
+
+But then you decide you want to change 20 to 10. You could do it manually one by one, but this is arduous. A better idea is to store your number in a variable and then change it in just one place.
+
+```javascript
+let nr = 1;
+console.log(nr+1);
+console.log(nr+2);
+console.log(nr+3);
+// more console.logs
+console.log(nr+50);
+```
+
+Another use case for variables is to avoid so called <b>magic numbers</b>. They are values with unexplained meaning. Consider a program that utilizes the number of months in a year, the number of hours on a clock, and the age of a 12-year-old person. As it is easy to imagine, without using variables, the number 12 would be repeated throughout the code. You could use comments to indicate what each instance of twelve represents, but the issue with comments is that we may forget to include them. Therefore, a better idea is to create variables: <code>monthsInYear</code>, <code>hoursOnClock</code>, and <code>age</code>, to avoid later mistakes. 
+
+```javascript
+// Before:
+console.log("John's age:", 12);
+console.log('Approximate number of hours in a year: ', 2 * 12 * 30 * 12);
+
+// After:
+let johnsAge = 12;
+let hoursOnClock = 12;
+let daysInMonth = 30;
+let monthsInYear = 12;
+console.log("John's age:", johnsAge);
+console.log('Approximate number of hours in a year: ', 2 * hoursOnClock * daysInMonth * monthsInYear);
+```
+The examples above are not so complex, but imagine a program consisting of many files, each containing numerous lines of code. It would be a nightmare to edit hard-coded data in every file and try to understand what it actually represents.
+
+## Naming conventions
+
+To ensure that a variable name is correct, it must meet all of the following conditions:
+
+- The variable name must not be a reserved keyword. Keywords are specific words in a programming language that have predefined meanings and cannot be used for other purposes. You can check all of the reserved keywords [here](https://www.w3schools.in/javascript/keywords/).
+
+```javascript
+// Bad variable names:
+let if = 1;
+let for = 2;
+let true = 3;
+```
+
+- The variable name must not contain certain special characters like space, period, comma, or hyphen.
+
+```javascript
+// Bad variable names:
+let my@variable = 1;
+let my variable = 2;
+let my-variable = 3;
+
+// Good examples:
+let my_variable;
+let $myVariable;
+```
+
+- The variable name should not start with a digit (0-9). It's a standard rule in most programming languages.
+
+```javascript
+// Bad:
+let 1variable = 1;
+
+// Good:
+let variable1 = 2;
+let v4r148l3 = 3;
+```
+
+In addition, there are other rules for naming variables, which are not strictly necessary for the program to function but are good practice to maintain code cleanliness. Here are the most important ones:
+
+#### Descriptive and meaningful
+
+Aim for clarity and avoid ambiguous names.
+
+```javascript
+let dewuiydhsj = {}; // Not meaningful at all
+let itemsInTheShoppingCartThatTheUserCurrentlyHasSelected = {}; // Descriptive but too long
+let itsInCUsSel = {}; // Good length but poorly descriptive
+let itemsInCart = {}; // Perfect balance
+```
+
+#### Avoid single-letter names
+
+This follows from the previous point. Except for loop counters or very short programs, avoid single-letter variable names. Use names that convey meaning.
+
+#### Camel case
+
+In JavaScript, there is an unwritten convention to use camel case for most variable names. For multi-word names, start with a lowercase letter and capitalize the first letter of each subsequent concatenated word.
+
+```javascript
+let userName = "John Locke";
+```
+
+#### Consistency
+
+Maintain a consistent naming style throughout your codebase.
+
+```javascript
+// Consistent:
+let firstName = "John";
+let lastName = "Locke";
+let age = 30;
+
+// Inconsistent:
+let firstName = "John";
+let last_name = "Locke";
+let Age = 30;
+```
+
+<Aside type="caution">
+JavaScript is case-sensitive.
+
+```javascript
+// These are two different variables:
+let name = 'John';
+let Name = 'John';
+```
+</Aside>
