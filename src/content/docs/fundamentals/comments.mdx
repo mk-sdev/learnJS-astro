@@ -4,54 +4,97 @@ description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
-import YT from '../../../components/YT.astro'
+import { Aside } from '@astrojs/starlight/components'
+import comments from '../../../assets/comments.png'
 import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
 
-# Raz
-## Further reading
-
-
-<Img src={banana} />
-
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
-</Aside>
-
-### trzy
-#### cztery
-##### 5
-
-Reference pages are <Hint id={'dupa'}>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a <Hint id={'pupa'}>sss</Hint> or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
-
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
-
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
-
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
-
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
-
-<YT id={'dQw4w9WgXcQ'}/>
-
-<hr/>
-
-
-<hr/>
-
-
-<hr/>
-
+Now that you know how to run code, it’s time to learn how to comment it. <br></br>Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:<br></br><br></br> <b>1. Single-line comments</b>: Use <code>//</code> to add comments on a single line.
 
 ```js
-console.log('This coulCMS!');
+// console.log('Hello World')
 ```
+
+<b>2. Multi-line comments</b>: Enclose multi-line comments between <code>
+  /\*
+</code> and <code>*/</code>
+
+```js
+/* 
+console.log('Hello World')
+
+   // you can nest single-line comments inside multi-line comments.  
+*/
+
+/* multi-line comments, despite their name, can occupy just a single line.*/
+/*** you can use more than one asterisk **/
+```
+
+#### Why use comments?
+
+<ul>
+  <li>
+    <u>Documentation</u>: comments provide information about the purpose and
+    functionality of your code, making it easier for others (or yourself) to
+    understand it.
+  </li>
+  <li>
+    <u>Debugging</u>: comments can be utilized to temporarily disable lines of
+    code for debugging purposes without deleting them.
+  </li>
+</ul>
+
+#### Best practices
+
+<ul>
+  <li>
+    <u>Be Clear and Concise</u>: Write comments that are easy to understand.
+    Avoid unnecessary comments that simply restate the code.
+  </li>
+  <li>
+    <u>Regularly update comments</u>: Keep your comments up to date. If you
+    change the code, make sure to update any relevant comments.
+  </li>
+  <li>
+    <u>Avoid Over-Commenting</u>: While comments are helpful, code should
+    ideally be self-explanatory. Avoid overusing comments for simple and obvious
+    code.
+  </li>
+</ul>
+
+<hr />
+
+There are some comment conventions popular among programmers:
+
+<b>TODO</b> and <b>FIXME</b> comments are informal markers in code that help
+developers track unfinished tasks (TODO) or known issues that need fixing
+(FIXME), ensuring better project organization and communication within a team.
+
+```js
+// TODO: Add validation for user input
+// FIXME: Handle edge cases for negative numbers"
+```
+
+##### JSDoc
+
+JSDoc is a popular format for commenting code in many languages, which allows for the generation of documentation for source code. Using JSDoc helps maintain code clarity, document functions, parameters, return values, and other code elements. With JSDoc, documentation generation tools can automatically create detailed and readable documents.
+
+```js
+/**
+ * Returns the sum of two numbers.
+ *
+ * @param {number} a - The first number.
+ * @param {number} b - the second number.
+ * @returns {number} - The sum of a and b.
+ */
+ function add(a, b) { 
+   return a + b;
+ }
+```
+Now that you've grasped the basics of commenting, you'll find it beneficial for enhancing the readability and maintainability of your code
+
+<Aside type="tip">
+You can enhance your comments when you install VS Code extension called 'Better Comments'
+
+<Img src={comments}/>
+
+</Aside>

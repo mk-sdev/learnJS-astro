@@ -1,0 +1,267 @@
+---
+title: 'Conditionals'
+description: ''
+layout: ../../../components/_Layout.astro
+---
+
+import { Aside } from '@astrojs/starlight/components'
+
+# Conditional Statements in JavaScript
+
+Sometimes you may want a piece of code to be executed only if some condition is satisfied. In JavaScript, there are three ways to achieve it.
+
+## `If` instruction
+
+The `if` statement in JavaScript is the most common conditional statement that allows you to execute a block of code if a specified condition evaluates to true. The basic syntax is as follows:
+
+```javascript
+if (condition) {
+  // code to be executed if the condition is truthy
+}
+```
+
+Here, `condition` is an expression that is evaluated. If the result of this expression is true, the code inside the curly braces is executed. If the condition is false, the code block is skipped. If the body of an `if` statement contains only one instruction, you can omit the curly brackets.
+
+```javascript
+if (condition) console.log('this is printed if the condition is truthy')
+
+console.log("this is outside the 'if' statement so it always prints")
+```
+
+Optionally, you can include an `else` statement to specify a block of code to be executed if the condition is false:
+
+```javascript
+if (condition) {
+  // code to be executed if the condition is truthy
+} else {
+  // code to be executed if the condition is falsy
+}
+```
+
+You can also chain multiple conditions using `else if`:
+
+```javascript
+if (condition1) {
+  // code to be executed if condition1 is true
+} else if (condition2) {
+  // code to be executed if condition2 is true
+} else {
+  // code to be executed if none of the conditions are true
+}
+```
+
+<code>Else if</code> is not the same as multiple <code>if</code> statements one
+after another. When one of the conditions in an <code>else if</code> statement
+is fulfilled, the rest won't be evaluated. In contrast, with multiple if
+statements, each condition is checked independently, regardless of whether
+previous conditions were true or false. This means that with multiple <code>
+  if
+</code> statements, more than one block can be executed if their conditions are
+met.
+
+```javascript
+let num = 15
+
+if (num > 20) {
+  console.log('Number is greater than 20')
+} else if (num > 10) {
+  console.log('Number is greater than 10 but less than or equal to 20')
+} else if (num > 5) {
+  console.log('Number is greater than 5 but less than or equal to 10')
+} else {
+  console.log('Number is 5 or less')
+}
+
+// Output: Number is greater than 10 but less than or equal to 20
+```
+
+```js
+let num = 15
+
+if (num > 20) {
+  console.log('Number is greater than 20')
+}
+if (num > 10) {
+  console.log('Number is greater than 10 but less than or equal to 20')
+}
+if (num > 5) {
+  console.log('Number is greater than 5 but less than or equal to 10')
+}
+if (num <= 5) {
+  console.log('Number is 5 or less')
+}
+//Output:
+//Number is greater than 10 but less than or equal to 20
+//Number is greater than 5 but less than or equal to 10
+```
+
+<Aside type="tip">
+ You can nest `if` statements, but it is not advisable as it decreases the readability of the code. Use the 'early return' technique instead.
+
+```javascript
+// Bad
+if (isLogged) {
+  if (isAuthorized) {
+    if (isAdmin) {
+      console.log('User has admin access')
+    } else {
+      console.log('User is authorized but does not have admin access')
+    }
+  } else {
+    console.log('User is logged in but not authorized')
+  }
+} else {
+  console.log('User is not logged in')
+}
+
+// Good
+if (!isLogged) {
+  console.log('User is not logged in')
+  return
+}
+
+if (!isAuthorized) {
+  console.log('User is logged in but not authorized')
+  return
+}
+
+if (!isAdmin) {
+  console.log('User is authorized but does not have admin access')
+  return
+}
+
+console.log('User has admin access')
+```
+</Aside>
+
+## The Ternary Operator
+
+The ternary operator is another way to write conditional statements. It's often referred to as the "conditional operator" or "ternary conditional operator." The syntax of the ternary operator is:
+
+```javascript
+condition ? expression_if_true : expression_if_false
+```
+Here's a breakdown of how it works:
+
+<ul>
+   <li>The condition is evaluated.</li>
+   <li>If the condition is truthy, the expression before the colon <code>(:)</code> is executed.</li>
+   <li>If the condition is falsy, the expression after the colon is executed.</li>
+</ul>
+
+**Examples:**
+
+```javascript
+false ? console.log('Hello World') : console.log('Goodbye World') // Goodbye World
+
+let isSunny = true
+let weather = isSunny ? 'It is sunny!' : 'It is not sunny.'
+console.log(weather) // It is sunny!
+```
+
+The ternary operator is a concise way to write simple conditional statements, and it's often leveraged when the conditions are straightforward. However, for more complex conditions, the traditional <code>if-else</code> statement might be more readable.
+
+```js
+//poorly readable
+let age = 25
+let category = age < 13 ? 'child' : age < 20 ? 'teen' : age < 65 ? 'adult' : 'senior'
+```
+
+<Aside type="note">
+
+In the React library, the ternary operator is often used to conditionally render components, along with the `&&` operator.
+
+```javascript
+let condition = true
+condition && console.log('Hello') // Hello
+```
+</Aside>
+
+## Switch
+
+The <code>switch</code> statement provides a way to handle multiple conditions in a more organized and readable manner compared to a series of <code>if-else</code> statements. It's particularly profitable when a single expression's value needs to be tested against multiple cases.<br></br>Here's the basic syntax of the switch statement:
+
+```javascript
+switch (expression) {
+  case value1:
+    // code to be executed if expression === value1
+    break
+  case value2:
+    // code to be executed if expression === value2
+    break
+    // additional cases if needed
+  default:
+  // code to be executed if none of the cases match
+}
+```
+
+Here's an explanation:
+
+<ul>
+<li>'expression' is evaluated once.</li>
+<li>The value of the expression is then compared with the values of each case.</li>
+<li>If a match is found, the code block associated with that case is executed.</li>
+<li>The <code>break</code> statement is adopted to exit the switch block. If omitted, execution will continue to the next case regardless of whether it matches.</li>
+<li>The <code>default</code> case is optional and is executed if none of the case values match the expression.</li>
+</ul>
+
+
+```javascript
+let day = 'Monday'
+
+switch (day) {
+  case 'Saturday':
+    console.log('Weekend begins')
+    break
+  case 'Sunday':
+    console.log('Weekend ends')
+    break
+  default:
+    console.log("It's a regular day")
+}
+
+// Output: It's a regular day
+```
+In this example, if day is 'Saturday', it will log \"Weekend begins\". If day is 'Sunday', it will log \"Weekend ends\" Otherwise, it will log \"It's a regular day\"
+
+Without `break` statements:
+
+```javascript
+let day = 'Sunday'
+
+switch (day) {
+  case 'Saturday':
+    console.log('Weekend begins')
+  case 'Sunday':
+    console.log('Weekend ends')
+  default:
+    console.log("It's a regular day")
+}
+
+// Output:
+// Weekend ends
+// It's a regular day
+```
+Using comparison operators directly in case statements within a switch block won't work as expected because case statements are compared with switch expression. Comparison operators return boolean values (true or false), which don't match the value used as the switch expression.
+
+```js
+let a = 10
+switch (a) {
+     case (a >= 10):
+    console.log('a is greater or equal than 10')
+    break
+  case (a < 10):
+    console.log('a is less than 10')
+}
+
+//is the same as:
+switch (a) {
+  case (true):
+    console.log('a is greater or equal than 10')
+    break
+  case (false):
+    console.log('a is less than 10')
+}
+```
+
+Since neither `true` nor `false` is equal to `10`, none of the case blocks are executed. You could fix that by using `true` as a switch expression.
