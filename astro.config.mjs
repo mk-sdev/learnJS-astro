@@ -6,6 +6,21 @@ import tunnel from 'astro-tunnel'
 
 export const items = [
   {
+    label: 'About JavaScript',
+    items: [
+      {
+        label: 'general information',
+        slug: 'about-javascript/general-information',
+        img: 'dwdw',
+      },
+      {
+        label: 'historical background',
+        slug: 'about-javascript/historical-background',
+        img: 'dwdw',
+      },
+    ],
+  },
+  {
     label: 'Fundamentals',
     items: [
       { label: 'first steps', slug: 'fundamentals/first-steps', img: 'dwdw' },
@@ -28,7 +43,6 @@ export const items = [
     items: [
       { label: 'introduction', slug: 'data-types/introduction', img: 'dwdw' },
       { label: 'numbers', slug: 'data-types/numbers', img: 'dwdw' },
-      { label: 'strings', slug: 'data-types/strings', img: 'dwdw' },
       {
         label: 'objects fundamentals',
         slug: 'data-types/objects-fundamentals',
