@@ -1,57 +1,294 @@
 ---
-title: 'Comments'
+title: 'Functions #1'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
 import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
-import YT from '../../../components/YT.astro'
-import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
 
-# Raz
-## Further reading
+## What are functions and why we need them?
 
+Functions in programming are blocks of code designed to perform a specific task. They are essential building blocks in most programming languages. The use of functions is very advantageous. They make the code look neat, improving its readability, and simplify the process of editing it later on—you need to update the code in one place instead of many.
 
-<Img src={banana} />
+Take a look at the code below:
 
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
-</Aside>
+```javascript
+// Code without using functions, leading to redundancy
 
-### trzy
-#### cztery
-##### 5
+// Displaying user details for User 1
+let userName1 = 'Alice'
+let userAge1 = 25
+let userOccupation1 = 'Engineer'
+console.log('User 1: Name is ' + userName1)
+console.log('User 1: Age is ' + userAge1)
+console.log('User 1: Occupation is ' + userOccupation1)
 
-Reference pages are <Hint id={'dupa'}>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a <Hint id={'pupa'}>sss</Hint> or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
+// Displaying user details for User 2
+let userName2 = 'Bob'
+let userAge2 = 30
+let userOccupation2 = 'Designer'
+console.log('User 2: Name is ' + userName2)
+console.log('User 2: Age is ' + userAge2)
+console.log('User 2: Occupation is ' + userOccupation2)
 
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
+// Displaying user details for User 3
+let userName3 = 'Charlie'
+let userAge3 = 28
+let userOccupation3 = 'Teacher'
+console.log('User 3: Name is ' + userName3)
+console.log('User 3: Age is ' + userAge3)
+console.log('User 3: Occupation is ' + userOccupation3)
+```
 
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
+This works fine but contains many repetitive lines. Moreover, imagine you need to make changes. They would have to be applied in many places, but with functions, it can be done just once. Let's make some improvements to it.
 
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
+```javascript
+// Code using a function to avoid redundancy
+function displayUserDetails(name, age, occupation) {
+  console.log('User: Name is ' + name)
+  console.log('User: Age is ' + age)
+  console.log('User: Occupation is ' + occupation)
+}
 
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
+displayUserDetails('Alice', 25, 'Engineer')
+displayUserDetails('Bob', 30, 'Designer')
+displayUserDetails('Charlie', 28, 'Teacher')
+```
 
-<YT id={'dQw4w9WgXcQ'}/>
+Always try to make a function do only one thing. This is called **"Single Responsibility Principle"**. If your function is too long, consider splitting it into smaller ones. This approach improves code readability, maintenance, and testing by isolating distinct responsibilities into separate components. This makes the code more modular, flexible, and easier to modify.
 
-<hr/>
+Here's the code that doesn't follow this rule:
 
+```javascript
+function processUser(user) {
+  // Validating user data
+  if (!user.name || !user.email) {
+    throw new Error('Invalid user data')
+  }
 
-<hr/>
+  // Saving user to the database (simulation)
+  console.log('User saved to database:', user)
 
+  // Sending welcome email
+  console.log(`Welcome email sent to ${user.email}`)
+}
 
-<hr/>
+const user = { name: 'John', email: 'john@example.com' }
+processUser(user)
+```
 
+And here's the code that follows the Single Responsibility Principle:
+
+```javascript
+// Function to save user to the database
+function saveUserToDatabase(user) {
+  console.log('User saved to database:', user);
+}
+
+// Function to send welcome email
+function sendWelcomeEmail(user) {
+  console.log(`Welcome email sent to ${user.email}`);
+}
+
+// Main function calling other responsibilities
+function processUser(user) {
+  validateUser(user);
+  saveUserToDatabase(user);
+  sendWelcomeEmail(user);
+}
+
+const user = { name: 'John', email: 'john@example.com' };
+processUser(user);
+```
+
+## Structure of a function
+
+In JavaScript, there are a few ways to create a function. The most common of them is function declaration. It looks like this:
+
+```javascript
+function add(a, b) {
+   return a + b
+} 
+
+// Once we define a function, we can call it
+const sum = add(2, 3)
+console.log(sum) // 5
+```
+
+Function declarations start with the <code>function</code> keyword, followed by a name. You can give it any name you want as long as the it complies with the rules learned in the lesson about variables and their names. After the name, there are parentheses, and inside them, you can place as many parameters as you want, including none. Parameters are placeholders for values that a function can receive when it is called. They act like variables inside the function, allowing it to work with different inputs dynamically. This is the head of the function. 
+
+Then, you specify the body of the function using curly brackets. This is where all its logic is performed. Inside the body, there is a <code>return</code> keyword, which specifies the value that the function will return when it is called. The return is optional, so if a function doesn't return anything, you don't have to include it.
+
+### Parameters
+
+Remember to always put parameters in the correct order. The order of arguments in a function call must match the order of parameters defined in the function. If they are out of order, the function may not behave as expected because each parameter will receive the wrong value.
+
+```javascript
+function greet(name, age) {
+   console.log('Hello, my name is ', name, ' and I am ', age, ' years old')
+}
+
+greet(30, 'Alice')
+// Output: Hello, my name is 30 and I am Alice years old
+```
+
+You can provide a function with too many or too few parameters, but it is not advisable to do so.
 
 ```js
-console.log('This coulCMS!');
+function fn(a, b) {
+     console.log(a)
+     console.log(b)
+}
+
+fn('Bob', 'Nick') // Bob, Nick
+fn('Kate', 'Alice', 'Josh') // Kate, Alice
+fn('Mario') // Mario, undefined
 ```
+
+#### Default values
+
+You can specify default arguments so that if no value is provided for a particular parameter, the function will use the default value instead. This can help prevent errors and make your functions more flexible.
+
+```javascript
+function showDetails(name = 'Guest', age = 25) {
+  console.log('Name: ', name, ', age: ', age)
+}
+
+showDetails('Bob', 12) // Name: Bob, age: 12
+showDetails('Kate') // Name: Kate, age: 25
+showDetails(undefined, 36) // Name: Guest, age: 36
+```
+### Arguments object
+
+Thanks to the <code>arguments</code> object, you don’t even have to specify any named arguments inside the parentheses. The <code>arguments</code> object is an array-like object (but not exactly an array) that holds all the arguments passed to a function, regardless of how many or how few you define. This allows you to access all the arguments within the function dynamically.
+
+```javascript
+function fun() {
+  console.log(arguments) // Get all the arguments as an array-like structure
+  console.log(arguments.length) // Get the number of arguments
+  console.log(arguments[0]) // Get the first argument
+}
+
+fun('Bob', 12)
+```
+
+### Rest parameter
+
+Rest parameters in JavaScript provide a more modern and flexible way to handle function arguments. Unlike the <code>arguments</code> object, rest parameters allow you to represent an indefinite number of arguments as an array. This is achieved by using the <code>...</code> syntax before the parameter name. This makes the code cleaner and more intuitive, especially when dealing with multiple arguments.
+
+```javascript
+function fun(...args) {
+  console.log(args) // Get all the arguments as an array
+  console.log(args.length) // Get the number of arguments
+  console.log(args[0]) // Get the first argument
+}
+
+fun('Bob', 12)
+```
+
+The rest parameter doesn't have to be the only argument of a function, but it always must be the last one.
+
+```javascript
+function exampleFunction(firstParam, ...restParams) {
+  console.log(firstParam) // 1
+  console.log(restParams) // [2, 3, 4]
+}
+
+exampleFunction(1, 2, 3, 4)
+```
+
+Rest parameters simplify the process of working with variable numbers of arguments and are preferred over the traditional <code>arguments</code> object due to their straightforward syntax and better integration with modern JavaScript features.
+
+<hr/>
+
+### Return
+
+The <code>return</code> statement is applied to exit a function and optionally pass a value back to the caller. When a function executes a <code>return</code> statement, the function stops running, and the value specified in the <code>return</code> statement is sent back to where the function was called. If no value is provided or a function doesn't have any <code>return</code>, such a function is called **void** and <code>undefined</code> is returned by default. This mechanism allows you to send results from functions and control the flow of execution.
+
+```javascript
+function add(a, b) {
+  return a + b
+  console.log('This will never be printed')
+}
+
+console.log(add(2, 3)) // 5
+
+function fun() {
+  console.log('This function does not have a return statement')
+}
+
+console.log(fun()) // undefined
+```
+
+<hr/>
+
+<Aside type="note">
+If you define two functions with the same name in the same scope, the second function definition will overwrite the first one. This means the first function is effectively ignored, and only the second function will be called when the function name is invoked.
+
+```js
+function greet() {
+   console.log("Hello from the first function!")
+}
+
+function greet() {
+   console.log("Hello from the second function!")
+}
+
+greet() // Output: "Hello from the second function!"
+```
+</Aside>
+
+## Scope
+
+Functions can have local variables that are not accessible from outside the function. On the other hand, functions have access to variables that are defined in their outer scope.
+
+```javascript
+let global = 'I am a global variable'
+
+function fun() {
+  let local = 'I am a local variable'
+  console.log(local) // 'I am a local variable'
+  console.log(global) // 'I am a global variable'
+}
+
+fun()
+console.log(local) // Uncaught ReferenceError: local is not defined
+```
+
+If a function has local variables or parameters that are named the same as global variables, they will be overshadowed.
+
+```javascript
+let a = 0
+let b = 5
+
+function fun(a) {
+     let b = 20
+     console.log(a) // 10
+     console.log(b) // 20
+}
+
+fun(10)
+console.log(a) // 0
+console.log(b) // 5
+```
+
+<hr/>
+
+<Aside type="note">
+A function may invoke itself. This is called <b>recursion</b>. You must be careful when using this mechanism, as it can lead to an infinite loop if the function lacks a proper base case to terminate the recursion.
+
+```js
+// A recursive function to calculate the factorial of a number
+function factorial(n) {
+   // Base case: stop recursion when n reaches 0
+   if (n === 0) {
+       return 1
+   }
+   // Recursive case: multiply n by the factorial of n - 1
+   return n * factorial(n - 1)
+}
+   
+// Example usage
+console.log(factorial(5)) // Output: 120 (5 * 4 * 3 * 2 * 1)
+```
+</Aside>
