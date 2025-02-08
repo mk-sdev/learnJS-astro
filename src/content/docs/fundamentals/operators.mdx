@@ -1,57 +1,340 @@
 ---
-title: 'Comments'
+title: 'Operators'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
 import YT from '../../../components/YT.astro'
-import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
+import { Aside } from '@astrojs/starlight/components';
 
-# Raz
-## Further reading
+Operators are symbols or keywords in programming that are adopted to perform operations on variables and values. They are fundamental building blocks in programming and are used to manipulate data and variables.
 
+## Mathematical operators
 
-<Img src={banana} />
+You can perform basic mathematical operations in JavaScript, but be cautious with very large or very small numbers, as they may lead to precision issues and unexpected results.
 
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
+```javascript
+console.log(3 + 4) //7
+console.log(3 - 2) //1
+console.log(3 * 3) //9
+console.log(3 / 2) //1.5
+
+// % - modulo, which is the remainder of division
+console.log(3 % 2) //1
+console.log(9 % 3) //0
+
+// ** - exponentiation
+console.log(3 ** 2) //9 - same as Math.pow(a, 2)
+console.log(4 ** 0.5) //2 - same as Math.sqrt(2)
+```
+
+The order of operations is the same as in mathematics.
+
+```javascript
+console.log(2 + 2 * 2) //6
+```
+
+## Comparison operators
+
+Comparison operators are utilized to compare the left side to the right side. They always return either true or false. Due to dynamically typed nature of JavaScript, comparison process is trickier than in statically typed languages.
+
+```javascript
+//== - compares both values without comparing their types
+console.log(10 == 10) //true
+console.log(10 == '10') //true
+
+//!= - checks if values are different without checking type
+console.log(10 != 20) //true
+console.log(10 != 10) //false
+console.log(10 != '10') //false
+
+//=== - compares both values and their types
+console.log(10 === 10) //true
+console.log(10 === '10') //false
+
+//!== - checks if values or types are different
+console.log(10 !== 10) //false
+console.log(10 !== '10') //true
+
+//< and > - less than and greater than
+console.log(10 < 20) //true
+console.log(10 > 20) //false
+console.log(10 > 10) //false
+console.log(10 > '5') //true
+
+//<= and >= - less than or equal to and greater than or equal to
+console.log(10 <= 10) //true
+console.log(10 >= 20) //false
+console.log(10 >= 'text') //false
+console.log(10 <= 'text') //false
+```
+
+When you use the <code>==</code> operator, JavaScript performs type coercion to convert the operands to the same type before making the comparison. In most cases you should use <code>===</code> operator to avoid unexpected behavior.
+
+I know this might seem illogical for you at first glance. If you still feel confused I encourage you to watch this video:
+
+<YT id={'XWNq7XJuwoo'} />
+
+## Logical operators
+
+### && (and)
+
+The <code>&&</code> operator evaluates from left to right and returns the first <b>falsy</b> value it encounters. If no falsy value is found, it returns the last value, whatever it is.
+
+```javascript
+let a = 2
+let b = 0
+console.log(a && b) // false because b === 0
+console.log(a && true) // true because all values are truthy
+console.log(a && 1 && 'hello') // 'hello' because all values are truthy
+```
+
+<Aside type="note">
+We'll talk more about falsy values in the Data structures chapter. For now you need to know that in JS such values as <code>false</code>, <code>0</code>, <code>""</code>, <code>null</code>, or <code>undefined</code> are considered as falsy. Any number other than <code>0</code> and any string that is not empty is considered as truthy.
 </Aside>
 
-### trzy
-#### cztery
-##### 5
+### || (or)
 
-Reference pages are <Hint id={'dupa'}>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a <Hint id={'pupa'}>sss</Hint> or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
+The <code>||</code> operator evaluates from left to right and returns the first <b>truthy</b> value it encounters. If no truthy value is found, it returns the last value, whatever it is.
 
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
+```javascript
+let a = 2
+let b = 0
+console.log(a || b) // 2 because a === 2 (truthy)
+console.log(b || false) // false because both values are falsy
+console.log(null || undefined || 'hello') // 'hello' because it's the first truthy value
+```
 
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
+### ?? (nullish coalescing)
 
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
+The <code>??</code> operator evaluates from left to right and returns the first value that is not null or undefined. If all values are null or undefined, it returns the last value.
 
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
+```javascript
+let a = null
+let b = undefined
+let c = 'hello'
+console.log(a ?? b) // undefined because both a and b are null or undefined
+console.log(a ?? c) // 'hello' because c is the first defined value
+console.log(a ?? b ?? 5) // 5 because both a and b are null or undefined
+```
 
-<YT id={'dQw4w9WgXcQ'}/>
+### ! (not)
 
-<hr/>
+It is used to negate a boolean value. If the value is true, applying <code>!</code> will make it false, and vice versa.
 
+```javascript
+let a = 2
+let b = 0
+console.log(!true) // false
+console.log(!false) // true
+console.log(a && b) // false because b === 0
+console.log(!(a && b)) // true
+```
 
-<hr/>
+<hr />
 
+You can use different types of operators in a single expression, but keep in mind their precedence. <code>!</code> has the highest precedence, followed by <code>&&</code>, then <code>||</code>, and finally <code>??</code>. If you want to use <code>??</code> with other operators, you'll need parentheses; otherwise, a SyntaxError will occur.
 
-<hr/>
+```javascript
+console.log(true || false && 0) // true; the same as console.log(true || (false && 0))
 
+console.log(true || false ?? 0)  //Uncaught SyntaxError: missing ) after argument list
+```
 
-```js
-console.log('This coulCMS!');
+## Assignment operators
+
+You've already encountered the <code>=</code> sign. This is the assignment operator, which assigns the value on its right to the variable on its left. In JavaScript, there are more assignment operators that allow you to perform various operations and assign the result to a variable in a concise manner
+
+```javascript
+{
+  let a = 5
+  a += 3 // equivalent to a = a + 3
+  console.log(a) // 8
+}
+
+{
+  let a = 5
+  a -= 3 // equivalent to a = a - 3
+  console.log(a) // 2
+}
+
+{
+  let a = 5
+  a *= 3 // equivalent to a = a * 3
+  console.log(a) // 15
+}
+
+{
+  let a = 12
+  a /= 3 // equivalent to a = a / 3
+  console.log(a) // 4
+}
+
+{
+  let a = 11
+  a %= 3 // equivalent to a = a % 3
+  console.log(a) // 2
+}
+```
+
+You can use multiple assignment operators in a single line in JavaScript. This allows you to chain assignments together, assigning the same value to multiple variables or updating multiple variables at once.
+
+```javascript
+let a, b, c
+a = b = c = 5 // All variables a, b, and c are assigned the value 5
+```
+
+```javascript
+let x = 5
+let y = 10
+let z = 15
+
+x += y -= z = 3
+// z is assigned 3,
+//y is updated to y - z (10 - 3 = 7),
+//x is updated to x + y (5 + 7 = 12)
+```
+
+Here, the assignments are evaluated from right to left, following the usual operator precedence and associativity rules. However, while it is syntactically valid, using multiple assignments in a single line can sometimes reduce code readability and should be done with care.
+
+### increment and decrement operators
+
+```javascript
+let x = 10
+x++
+console.log(x) //11 (post-increment)
+++x
+console.log(x) //12 (pre-increment)
+
+let y = 10
+y--
+console.log(y) //9 (post-decrement)
+--y
+console.log(y) //8 (pre-decrement)
+```
+
+From the above code, one might get the impression that <code>x++</code> is equivalent to <code>++x</code>, just as <code>y--</code> is equivalent to <code>--y</code>, but this is not true. The difference lies in when the increment or decrement operation takes effect relative to the expression evaluation:
+
+{' '}
+<code>x++</code> : The current value of <code>x</code> is used in the
+expression, and then <code>x</code> is incremented by 1.{' '}
+
+<code>++x</code> : <code>x</code> is incremented by 1 first, and then the new
+value of <code>x</code> is adopted in the expression.{' '}
+
+The same goes with decrement operators.
+
+```javascript
+let x = 10
+if (--x < 10) {
+  console.log(x) //9
+}
+
+let y = 10
+if (y-- < 10) {
+  //won't meet the condition
+  console.log(y)
+}
+```
+
+The code above is equivalent to this:
+
+```javascript
+let x = 10
+x = x - 1
+if (x < 10) {
+  console.log(x) //9
+}
+
+let y = 10
+if (y < 10) {
+  //won't meet the condition
+  console.log(y)
+}
+y = y - 1
+```
+
+### &&= (Logical AND Assignment Operator)
+
+The logical AND assignment operator (<code>&&=</code>) performs a logical AND operation on the variable and assigns the result to that variable. This means it combines the logical AND (<code>&&</code>) with assignment (<code>=</code>), which results in the variable taking the value of the logical AND operation.
+
+```javascript
+let a = true
+let b = false
+a &&= b // Equivalent to a = a && b;
+console.log(a) // Output: false
+```
+
+In the above example:
+
+- <b>1</b>. Initially, <code>a</code> is true and <code>b</code> is false.
+- <b>2</b>. The operation <code>a &&= b</code> performs a logical AND operation between <code>a</code> and <code>b</code>, which results in false.
+- <b>3</b>. The result of the logical AND operation is then assigned back to <code>a</code>.
+- <b>4</b>. After the operation, <code>a</code> is false.
+
+The logical OR assignment operator (<code>||=</code>) performs a logical OR operation on the variable and assigns the result to that variable. This means it combines the logical OR (<code>||</code>) with assignment (<code>=</code>), which results in the variable taking the value of the logical OR operation.
+
+```javascript
+let a = false
+let b = true
+a ||= b // Equivalent to a = a || b;
+console.log(a) // Output: true
+```
+
+In the above example:
+
+1. Initially, <code>a</code> is false and <code>b</code> is true.
+2. The operation <code>a ||= b</code> performs a logical OR operation between <code>a</code> and <code>b</code>, which results in true.
+3. The result of the logical OR operation is then assigned back to <code>a</code>.
+4. After the operation, <code>a</code> is true.
+
+### ??= (Nullish Coalescing Assignment Operator)
+
+The nullish coalescing assignment operator (<code>??=</code>) assigns the right-hand value to the variable if the variable is null or undefined. This combines the nullish coalescing operator (<code>??</code>) with assignment (<code>=</code>), ensuring that a variable is only assigned a new value if it is currently null or undefined.
+
+```javascript
+let a = null
+let b = 'default'
+a ??= b // Equivalent to a = a ?? b;
+console.log(a) // Output: 'default'
+```
+
+In the above example:
+
+1. Initially, <code>a</code> is null and <code>b</code> is 'default'.
+2. The operation <code>a ??= b</code> performs a nullish coalescing operation between <code>a</code> and <code>b</code>, which results in 'default'.
+3. The result of the nullish coalescing operation is then assigned back to <code>a</code>.
+4. After the operation, <code>a</code> is 'default'.
+
+## Bitwise operators
+
+Bitwise operators perform operations on binary representations of numbers. These operators work directly at the bit level, manipulating the individual bits within the number's binary form. Unlike arithmetic operators, which deal with whole numbers, bitwise operators operate on each bit of a number, providing a low-level way to perform efficient computations. As JS is a high-level language, you won't need them so often.
+
+```javascript
+// AND (&)
+// Compares each bit of two numbers and returns 1 only if both bits are 1
+let a = 5 // 0101 in binary
+let b = 3 // 0011 in binary
+console.log(a & b) // 1 (0001 in binary)
+// Only the last bit is 1 in both numbers, resulting in 0001 (binary) which is 1.
+
+// OR (|)
+// Compares each bit of two numbers and returns 1 if at least one of the bits is 1
+a = 5 // 0101 in binary
+b = 3 // 0011 in binary
+console.log(a | b) // 7 (0111 in binary)
+// All bits except the last bit are 1 in at least one number, resulting in 0111 (binary) which is 7.
+
+// XOR (^)
+// Compares each bit of two numbers and returns 1 only if the bits are different
+a = 5 // 0101 in binary
+b = 3 // 0011 in binary
+console.log(a ^ b) // 6 (0110 in binary)
+// The first and third bits are different in the two numbers, resulting in 0110 (binary) which is 6.
+
+// NOT (~)
+// Inverts all the bits of the number (1 becomes 0 and 0 becomes 1)
+a = 5 // 0101 in binary
+console.log(~a) // -6
+// Inverting all bits of 0101 gives 1010 in binary, which is -6 in two's complement representation.
 ```
