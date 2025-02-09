@@ -1,57 +1,205 @@
 ---
-title: 'Comments'
+title: 'Loops'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
-import YT from '../../../components/YT.astro'
 import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
+import forLoop from '../../../assets/for-loop.png'
+import loopMeme from '../../../assets/loop-meme.png'
 
-# Raz
-## Further reading
+Suppose you need a piece of code to execute multiple times. You could copy and paste it repeatedly, but this approach is impractical and reduces code readability. This is where loops become handy. They enable you to execute the same block of code multiple times, facilitating automation and efficient management of repetitive tasks.
 
+## For loops
 
-<Img src={banana} />
+The <code>for</code> loop is utilized for iterating over a sequence, such as an array or the characters in a string. It provides a concise way to repeat a block of code multiple times.<p>Here's the basic syntax of the <code>for</code> loop:</p>
 
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
-</Aside>
-
-### trzy
-#### cztery
-##### 5
-
-Reference pages are <Hint id={'dupa'}>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a <Hint id={'pupa'}>sss</Hint> or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
-
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
-
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
-
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
-
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
-
-<YT id={'dQw4w9WgXcQ'}/>
-
-<hr/>
-
-
-<hr/>
-
-
-<hr/>
-
-
-```js
-console.log('This coulCMS!');
+```javascript
+for (initialization; condition; updation) {
+  // code to be executed in each iteration
+}
 ```
+
+- <u>Initialization</u>: It is executed before the loop starts. It is applied to
+  declare and initialize the loop variable.
+- <u>Condition</u>: It is evaluated before each iteration. If the condition is
+  true, the code inside the loop is executed; otherwise, the loop terminates.
+- <u>Updation</u>: It is executed at the end of each iteration. It is usually
+  used to update or increment the loop variable.
+
+<Img src={forLoop} description="A graph illustrating how for loops work"/>
+
+```javascript
+for (let i = 1; i <= 5; i++) {
+  console.log(i) // 1, 2, 3, 4, 5
+}
+```
+
+In this example:
+
+- <code>let i = 1</code> initializes the loop variable <code>i</code> to 1.
+- <code>i &le; 5</code> is the condition. The loop will continue as long as <code>
+    i
+  </code> is less than or equal to 5.
+- <code>i++</code> increments <code>i</code> by 1 after each iteration.
+
+If the loop body contains only one instruction, you can omit the curly brackets. The updation doesn't necessarily need to be incrementation, but in the vast majority of cases, it is.
+
+```javascript
+for (let i = 10; i > 5; i--) console.log(i) // 10, 9, 8, 7, 6
+
+for (let i = 0; i <= 20; i += 5) console.log(i) // 0, 5, 10, 15, 20
+```
+
+To create an infinite <code>for</code> loop, you can use the following syntax:
+
+```javascript
+for (;;) {
+  // infinite loop
+}
+```
+## `while` loops
+### Basic `while` loop
+
+The <code>while</code> loop is utilized to repeatedly execute a block of code as long as a specified condition is truthy. The basic syntax of the <code>while</code> loop is as follows:
+
+```javascript
+while (condition) {
+  // code to be executed
+}
+```
+
+For example:
+
+```javascript
+let i = 0;
+while (i < 5) {
+  console.log(i); // 0, 1, 2, 3, 4
+  i++;
+}
+```
+
+### `do-while` loop
+
+The <code>do-while</code> loop is similar to the <code>while</code> loop, but it guarantees that the code block will be executed at least once before checking the condition.
+
+<Img src={loopMeme} />
+
+The basic syntax of the <code>do-while</code> loop is as follows:
+
+```javascript
+do {
+  // code to be executed
+} while (condition);
+```
+
+For example:
+
+```javascript
+let i = 0;
+do {
+  console.log(i); // 0, 1, 2, 3, 4
+  i++;
+} while (i < 5);
+```
+
+In this example, the code inside the <code>do</code> block is executed first, then the condition <code>i < 5</code> is checked. As long as the condition is true, the loop continues to execute.
+
+To create an infinite <code>while</code> loop, you can use the following syntax:
+
+```javascript
+while (true) {
+   // infinite loop
+}
+
+do {
+   // infinite loop
+} while (true);
+```
+
+## `break` and `continue`
+
+The <code>break</code> and <code>continue</code> statements are applied to control the flow of loops. They allow you to terminate a loop or skip an iteration based on certain conditions.
+
+### `break`
+
+The <code>break</code> statement is used to exit a loop prematurely when a specific condition is met. It can be applied in loops such as <code>for</code>, <code>while</code>, and <code>do-while</code>.
+
+```javascript
+for (let i = 0; i < 10; i++) {
+   if (i === 5) break;
+   console.log(i); // 0, 1, 2, 3, 4
+}
+```
+
+In this example, the loop terminates when the value of <code>i</code> is 5. The <code>break</code> statement stops the loop and the remaining iterations are not executed.
+
+### `continue`
+
+The <code>continue</code> statement is used to skip the current iteration of the loop and continue with the next one. It can also be applied in loops such as <code>for</code>, <code>while</code>, and <code>do-while</code>.
+
+```javascript
+for (let i = 0; i < 10; i++) {
+   if (i % 2 === 0) continue;
+   console.log(i); // 1, 3, 5, 7, 9
+}
+```
+
+In the above code, the <code>continue</code> statement skips the current iteration when the value of <code>i</code> is even. The loop continues with the next iteration without executing the remaining code within the loop body for that iteration.
+When used in nested loops, <code>break</code> and <code>continue</code> work only on the loop that they are applied in. If you want to use these statements from the body of an inner loop to affect the behavior of an outer loop, you should use labels.
+
+## Labels
+
+Labels are utilized to name loops or blocks of code, allowing you to use <code>break</code> and <code>continue</code> statements more flexibly. A label is an identifier followed by a colon (<code>:</code>) that appears before a statement or a block of code.
+
+```javascript
+labelName: {
+  // code block
+}
+```
+
+### Labels with `break`
+
+You can use a label with the <code>break</code> statement to exit not only the current loop but also any outer loops or code blocks.
+
+```javascript
+outerLoop:
+for (let i = 0; i < 5; i++) {
+   for (let j = 0; j < 5; j++) {
+      if (i === 2 && j === 3) break outerLoop;
+      console.log('i =', i, 'j =', j);
+   }
+}
+```
+
+The <code>outerLoop</code> label is used with the <code>break</code> statement to exit both loops when <code>i</code> is 2 and <code>j</code> is 3.
+
+### Labels with `continue`
+
+You can also use a label with the <code>continue</code> statement to skip the current iteration of not only the current loop but also any outer loops.
+
+```javascript
+outerLoop:
+for (let i = 0; i < 5; i++) {
+   for (let j = 0; j < 5; j++) {
+      if (i === 2 && j === 3)
+          continue outerLoop;
+      console.log('i =', i, 'j =', j);
+   }
+}
+```
+
+The <code>outerLoop</code> label is used with the <code>continue</code> statement to skip the current iteration of the outer loop when <code>i</code> is 2 and <code>j</code> is 3.
+
+### Labels with blocks
+
+Labels can also be adopted in blocks of code to break out of the block.
+
+```javascript
+labelName: {
+  console.log('Inside the block');
+  break labelName;
+  console.log('This will not be executed');
+}
+```
+
