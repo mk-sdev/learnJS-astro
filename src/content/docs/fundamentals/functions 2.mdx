@@ -1,57 +1,193 @@
 ---
-title: 'Comments'
+title: 'Functions #2'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
 import YT from '../../../components/YT.astro'
-import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
 
-# Raz
-## Further reading
+## Function expression
 
+In JavaScript, there are a few ways to define a function. One of them was studied in the previous lesson. It was the most basic of them, called <b>function declaration</b>. Another type of function is the <b>function expression</b>. It is essentially a function assigned to a variable.
 
-<Img src={banana} />
+```javascript
+const functionExpression = function fun() {
+  console.log('Hello World')
+}
 
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
-</Aside>
-
-### trzy
-#### cztery
-##### 5
-
-Reference pages are <Hint id={'dupa'}>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a <Hint id={'pupa'}>sss</Hint> or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
-
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
-
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
-
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
-
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
-
-<YT id={'dQw4w9WgXcQ'}/>
-
-<hr/>
-
-
-<hr/>
-
-
-<hr/>
-
-
-```js
-console.log('This coulCMS!');
+functionExpression() // Hello World
 ```
+
+The difference between them lies in their treatment of hoisting. As you may remember from the lesson about declaration keywords, hoisting is a JavaScript behavior where variable and function declarations are moved to the top of their containing scope during the compilation phase.
+
+```javascript
+functionDeclaration() // 'I am function declaration'
+
+function functionDeclaration() {
+  console.log('I am function declaration')
+}
+
+functionExpression() // Uncaught ReferenceError: Cannot access 'functionExpression' before initialization
+
+const functionExpression = function fun() {
+  console.log('I am function expression')
+}
+```
+
+## Anonymous functions
+
+Anonymous functions are functions that don't have a name. They are often adopted as arguments to other functions but can also be assigned to a variable. Their purpose is to simplify the code.
+
+```javascript
+// Function expression with an anonymous function
+const functionExpression = function () {
+  console.log('I am a function expression')
+}
+
+functionExpression() 
+
+///
+
+function fun(arg) {
+  arg()
+}
+
+// Anonymous function as an argument.
+fun(function() { console.log('Hello World') })
+
+// This also works if you specify a name
+fun(function funName() { console.log('Hello World') })
+```
+
+## Arrow function
+
+An arrow function is a specific type of anonymous function. To define them, you don't even have to use the <code>function</code> keyword. Instead, a <b>fat arrow</b> (<code>=></code>) is utilized. There are some interesting syntax rules.
+
+```javascript
+// Function expression with an arrow function
+const fun1 = () => {
+  console.log('Hello World')
+}
+
+// If there's only one argument, we can omit the parentheses
+const fun2 = e => {
+  console.log('Hello ', e)
+}
+
+// If there are no arguments or more than one, we must include parentheses
+const fun3 = (e, f) => {
+  console.log('Hello ', e, ' and ', f)
+}
+
+// If an arrow function has only one instruction in its body, we don't need to use curly brackets
+const fun4 = e => console.log('Hello ', e)
+
+// If an arrow function has only one instruction in its body and it is a return statement, we don't need to type 'return'
+const fun5 = e => ++e
+
+// If a function returns an object, we need to wrap the object in parentheses; otherwise, there is confusion between the function body braces and the object braces
+const fun6 = () => { key1: 'value1', key2: 'value2' } // Incorrect
+
+const fun7 = () => ({ key1: 'value1', key2: 'value2' }) // Correct
+```
+
+Additionally, arrow functions have unique characteristics that set them apart from other functions in JavaScript and may require a deeper understanding of the language. As your JS skills grow, you can revisit this topic to explore all the details:
+
+- They do not have the <code>arguments</code> and new.target properties.
+- They cannot be used as constructors and should not use <code>yield</code>.
+- They do not have <code>this</code> and <code>super</code> binding. Therefore, using <code>call</code>, <code>apply</code>, and <code>bind</code> on them will not yield the expected results.
+
+## Closures
+
+Closure is a function that has "closed" (remembered) the scope of variables that were available at the time of its creation, even if the function executes outside of that scope. In practice, this means that a function can access variables declared in its outer scope, even after that outer scope has terminated. 
+
+It might sound enigmatic so here's a simple example that should clarify closures a bit.
+
+```javascript
+function outerFunction() {
+  let outerVariable = "I'm outside!"
+
+  function innerFunction() {
+    console.log(outerVariable) // Access to the variable for the outer function
+  }
+
+  return innerFunction
+}
+
+const closureFunc = outerFunction()
+closureFunc() // "I'm outside!"
+```
+
+In this example the <code>innerFunction</code> has access to the <code>outerVariable</code>, even though the <code>outerFunction</code> has already completed. This is possible because the inner function creates a closure and "remembers" the context in which it was created. But why would I even need this?
+
+### private variables
+
+Thanks to closures you can simulate private variables in JavaScript that only the inner function has access to.
+
+```javascript
+function counter() {
+  let count = 0
+  return function () {
+    count++
+    return count
+  }
+}
+
+const increment = counter()
+console.log(increment()) // 1
+console.log(increment()) // 2
+console.log(increment()) // 3
+```
+
+Here the <code>count</code> variable is only accessible to the inner function, making it "private".
+
+### predefined parameters
+
+Closure also allows you to create functions with predefined parameters.
+
+```javascript
+function createMultiplier(multiplier) {
+  return function (value) {
+    return value * multiplier
+  }
+}
+
+const double = createMultiplier(2)
+const triple = createMultiplier(3)
+
+console.log(double(5)) // 10
+console.log(triple(5)) // 15
+```
+
+<YT id={"6Ixyltr8_R0"}/>
+
+## IIFE
+
+An Immediately Invoked Function Expression (IIFE) is a function that executes immediately after its definition. It helps create a new scope and avoids polluting the global namespace.
+
+```javascript
+(function () {
+  let message = 'Hello, world!'
+  console.log(message) // Hello, world!
+})()
+```
+
+This syntax is sometimes called "goofy balls" because of the parentheses at the end. Alternatively, you can put them inside the other parentheses:
+
+```javascript
+(function () {
+  let message = 'Hello, world!'
+  console.log(message) // Hello, world!
+}())
+```
+
+In this example, the function runs immediately and prints the message. The variable <code>message</code> is scoped to the IIFE and not accessible outside of it.
+
+IIFEs can also accept parameters, allowing for immediate execution with dynamic values. Here, the IIFE takes a parameter <code>name</code> and prints a personalized greeting:
+
+```javascript
+(function(name) {
+  console.log('Hello, ' + name + '!');
+})('Alice'); // Outputs: Hello, Alice!
+```
+
