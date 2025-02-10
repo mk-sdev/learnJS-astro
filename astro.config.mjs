@@ -94,47 +94,39 @@ export const items = [
         label: 'timeouts and intervals',
         slug: 'asynchronicity/timeouts-and-intervals',
       },
-      {
-        label: 'promises',
-        slug: 'asynchronicity/promises',
-      },
-      {
-        label: 'async and await',
-        slug: 'asynchronicity/async-and-await',
-      },
-      {
-        label: 'event loop',
-        slug: 'asynchronicity/event-loop',
-      },
+      { label: 'promises', slug: 'asynchronicity/promises' },
+      { label: 'async and await', slug: 'asynchronicity/async-and-await' },
+      { label: 'event loop', slug: 'asynchronicity/event-loop' },
     ],
   },
   {
     label: 'TypeScript',
     items: [
-      {
-        label: 'introduction',
-        slug: 'typescript/introduction',
-      },
-      {
-        label: 'types',
-        slug: 'typescript/types',
-      },
+      { label: 'introduction', slug: 'typescript/introduction' },
+      { label: 'types', slug: 'typescript/types' },
       {
         label: 'type aliases vs interfaces',
         slug: 'typescript/type-aliases-vs-interfaces',
       },
+      { label: 'generics', slug: 'typescript/generics' },
+      { label: 'utility types', slug: 'typescript/utility-types' },
+      { label: 'tips and tricks', slug: 'typescript/tips-and-tricks' },
+    ],
+  },
+  {
+    label: 'Miscellaneous',
+    items: [
+      { label: 'error handling', slug: 'miscellaneous/error-handling' },
+      { label: 'execution context', slug: 'miscellaneous/execution-context' },
+      { label: 'strict mode', slug: 'miscellaneous/strict-mode' },
+      { label: 'spread and rest', slug: 'miscellaneous/spread-and-rest' },
+      { label: 'destructuring', slug: 'miscellaneous/destructuring' },
       {
-        label: 'generics',
-        slug: 'typescript/generics',
+        label: 'iterators and generators',
+        slug: 'miscellaneous/iterators-and-generators',
       },
-      {
-        label: 'utility types',
-        slug: 'typescript/utility-types',
-      },
-      {
-        label: 'tips and tricks',
-        slug: 'typescript/tips-and-tricks',
-      },
+      { label: 'built-in objects', slug: 'miscellaneous/built-in-objects' },
+      { label: 'copying objects', slug: 'miscellaneous/copying-objects' },
     ],
   },
   // {
