@@ -87,6 +87,56 @@ export const items = [
       },
     ],
   },
+  {
+    label: 'Asynchronicity',
+    items: [
+      {
+        label: 'timeouts and intervals',
+        slug: 'asynchronicity/timeouts-and-intervals',
+      },
+      {
+        label: 'promises',
+        slug: 'asynchronicity/promises',
+      },
+      {
+        label: 'async and await',
+        slug: 'asynchronicity/async-and-await',
+      },
+      {
+        label: 'event loop',
+        slug: 'asynchronicity/event-loop',
+      },
+    ],
+  },
+  {
+    label: 'TypeScript',
+    items: [
+      {
+        label: 'introduction',
+        slug: 'typescript/introduction',
+      },
+      {
+        label: 'types',
+        slug: 'typescript/types',
+      },
+      {
+        label: 'type aliases vs interfaces',
+        slug: 'typescript/type-aliases-vs-interfaces',
+      },
+      {
+        label: 'generics',
+        slug: 'typescript/generics',
+      },
+      {
+        label: 'utility types',
+        slug: 'typescript/utility-types',
+      },
+      {
+        label: 'tips and tricks',
+        slug: 'typescript/tips-and-tricks',
+      },
+    ],
+  },
   // {
   //   label: 'Reference',
   //   autogenerate: { directory: 'reference' },
