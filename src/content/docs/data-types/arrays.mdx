@@ -26,7 +26,8 @@ In JavaScript, indexing starts at 0.
 
 Arrays in JavaScript come with a variety of methods and properties to help manipulate and analyze data. Here are some key methods you can use:
 
-<b>length</b>: returns the number of elements in the array. It can also be applied to truncate or extend the array.
+### length
+Returns the number of elements in the array. It can also be applied to truncate or extend the array.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -36,7 +37,8 @@ console.log(arr); // [1, 2]
 // Returns: The number of elements in the array
 ```
 
-<b>[]</b>: Accesses the element at index `n` of the array `arr`. Negative indices are not supported, and accessing an index out of bounds returns `undefined`.
+### []
+Accesses the element at index `n` of the array `arr`. Negative indices are not supported, and accessing an index out of bounds returns `undefined`.
 
 ```javascript
 const arr = ['a', 'b', 'c', 'd'];
@@ -46,7 +48,8 @@ console.log(arr[4]); // undefined // Index out of bounds
 console.log(arr[-1]); // undefined // Negative indices are not supported
 ```
 
-<b>at()</b>: returns the element at the given index, allowing for negative indices to count from the end of the array. If the index is out of bounds, it returns <code>undefined</code>.
+### at()
+Returns the element at the given index, allowing for negative indices to count from the end of the array. If the index is out of bounds, it returns <code>undefined</code>.
 
 ```javascript
 const arr = [10, 20, 30, 40, 50];
@@ -56,7 +59,8 @@ console.log(arr.at(10)); // undefined // Index out of bounds
 console.log(arr.at(-10)); // undefined // Negative index out of bounds
 ```
 
-<b>push()</b>: adds one or more elements to the end of the array and returns the new length of the array.
+### push()
+Adds one or more elements to the end of the array and returns the new length of the array.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -65,7 +69,8 @@ console.log(arr); // [1, 2, 3, 4]
 console.log(arr.push(5)); // 5 // Returns: The new length of the array
 ```
 
-<b>pop()</b>: removes the last element from the array and returns that element.
+### pop()
+Removes the last element from the array and returns that element.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -74,7 +79,8 @@ console.log(arr); // [1, 2]
 console.log(last); // 3 // Returns: The removed element
 ```
 
-<b>shift()</b>: removes the first element from the array and returns that element.
+### shift()
+Removes the first element from the array and returns that element.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -83,7 +89,8 @@ console.log(arr); // [2, 3]
 console.log(first); // 1 // Returns: The removed element
 ```
 
-<b>unshift()</b>: adds one or more elements to the beginning of the array and returns the new length of the array.
+### unshift()
+Adds one or more elements to the beginning of the array and returns the new length of the array.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -92,7 +99,8 @@ console.log(arr); // [0, 1, 2, 3]
 console.log(arr.unshift(-1)); // 5 // Returns: The new length of the array
 ```
 
-<b>join()</b>: joins all elements of an array into a string and returns this string. The elements are separated by a specified separator.
+### join()
+Joins all elements of an array into a string and returns this string. The elements are separated by a specified separator.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -100,7 +108,8 @@ console.log(arr.join('-')); // '1-2-3'
 // Does not modify the original array
 ```
 
-<b>reverse()</b>: reverses the order of the elements in an array and returns the array.
+### reverse()
+Reverses the order of the elements in an array and returns the array.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -109,7 +118,8 @@ console.log(arr); // [3, 2, 1]
 // Modifies the original array
 ```
 
-<b>toReversed()</b>: creates a new array with the elements in reverse order, without modifying the original array.
+### toReversed()
+Creates a new array with the elements in reverse order, without modifying the original array.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -118,7 +128,8 @@ console.log(reversedArr); // [3, 2, 1]
 console.log(arr); // [1, 2, 3] // Original array remains unchanged
 ```
 
-<b>indexOf()</b>: returns the first index at which a given element can be found in the array, or <code>-1</code> if it is not present.
+### indexOf()
+Returns the first index at which a given element can be found in the array, or <code>-1</code> if it is not present.
 
 ```javascript
 const arr = [1, 2, 3, 2, 1];
@@ -127,7 +138,8 @@ console.log(arr.indexOf(4)); // -1
 // Returns: The first index of the found element or -1
 ```
 
-<b>lastIndexOf()</b>: returns the last index at which a given element can be found in the array, or <code>-1</code> if it is not present.
+### lastIndexOf()
+Returns the last index at which a given element can be found in the array, or <code>-1</code> if it is not present.
 
 ```javascript
 const arr = [1, 2, 3, 2, 1];
@@ -136,7 +148,38 @@ console.log(arr.lastIndexOf(4)); // -1
 // Returns: The last index of the found element or -1
 ```
 
-<b>includes()</b>: determines whether an array includes a certain value among its entries, returning <code>true</code> or <code>false</code>.
+### slice()
+Returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included).
+
+```javascript
+const arr = [1, 2, 3, 4, 5];
+const newArr = arr.slice(1, 3);
+console.log(newArr); // [2, 3] // Does not modify the original array
+console.log(arr); // [1, 2, 3, 4, 5] // Returns: The new array with the selected elements
+```
+
+### splice()
+Changes the contents of an array by removing or replacing existing elements and/or adding new elements in place. Returns an array containing the deleted elements.
+
+```javascript
+const arr = [1, 2, 3, 4, 5];
+const removed = arr.splice(2, 2, 6, 7);
+console.log(arr); // [1, 2, 6, 7, 5] // Modifies the original array
+console.log(removed); // [3, 4] // Returns: The array of removed elements
+```
+
+### toSpliced()
+Creates a new array with some elements removed or replaced and/or new elements inserted, without modifying the original array.
+
+```javascript
+const arr = [1, 2, 3, 4, 5];
+const splicedArr = arr.toSpliced(2, 2, 'a', 'b');
+console.log(splicedArr); // [1, 2, 'a', 'b', 5] // Does not modify the original array
+console.log(arr); // [1, 2, 3, 4, 5] // Original array remains unchanged
+```
+
+### includes()
+Determines whether an array includes a certain value among its entries, returning <code>true</code> or <code>false</code>.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -145,7 +188,8 @@ console.log(arr.includes(4)); // false
 // Returns: `true` if the value is found, otherwise `false`
 ```
 
-<b>filter()</b>: creates a new array with all elements that pass the test implemented by the provided function.
+### filter()
+Creates a new array with all elements that pass the test implemented by the provided function.
 
 ```javascript
 const arr = [1, 2, 3, 4, 5];
@@ -154,7 +198,8 @@ console.log(evenNumbers); // [2, 4] // Does not modify the original array
 // Returns: A new array with elements that pass the test
 ```
 
-<b>every()</b>: tests whether all elements in the array pass the test implemented by the provided function. Returns <code>true</code> if all elements pass the test, otherwise <code>false</code>.
+### every()
+Tests whether all elements in the array pass the test implemented by the provided function. Returns <code>true</code> if all elements pass the test, otherwise <code>false</code>.
 
 ```javascript
 const arr = [2, 4, 6];
@@ -162,7 +207,8 @@ const allEven = arr.every(x => x % 2 === 0);
 console.log(allEven); // true
 ```
 
-<b>some()</b>: tests whether at least one element in the array passes the test implemented by the provided function. Returns <code>true</code> if at least one element passes the test, otherwise <code>false</code>.
+### some()
+Tests whether at least one element in the array passes the test implemented by the provided function. Returns <code>true</code> if at least one element passes the test, otherwise <code>false</code>.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -172,7 +218,8 @@ const hasNegative = arr.some(x => x < 0);
 console.log(hasNegative); // false
 ```
 
-<b>find()</b>: returns the first element in the array that satisfies the provided testing function. Otherwise, it returns <code>undefined</code>.
+### find()
+Returns the first element in the array that satisfies the provided testing function. Otherwise, it returns <code>undefined</code>.
 
 ```javascript
 const arr = [1, 2, 3, 4, 5];
@@ -182,7 +229,8 @@ const noNegative = arr.find(x => x < 0);
 console.log(noNegative); // undefined
 ```
 
-<b>findIndex()</b>: returns the index of the first element that satisfies the provided testing function. Otherwise, it returns <code>-1</code>.
+### findIndex()
+Returns the index of the first element that satisfies the provided testing function. Otherwise, it returns <code>-1</code>.
 
 ```javascript
 const arr = [1, 2, 3, 4, 5];
@@ -192,7 +240,8 @@ const noNegativeIndex = arr.findIndex(x => x < 0);
 console.log(noNegativeIndex); // -1
 ```
 
-<b>with()</b>: creates a new array with a modified element at a specific index, without modifying the original array.
+### with()
+Creates a new array with a modified element at a specific index, without modifying the original array.
 
 ```javascript
 const arr = [1, 2, 3, 4, 5];
@@ -201,7 +250,8 @@ console.log(newArr); // [1, 2, 'a', 4, 5]
 console.log(arr); // [1, 2, 3, 4, 5] // Original array remains unchanged
 ```
 
-<b>reduce()</b>: executes a reducer function on each element of the array, resulting in a single output value. It takes two arguments: a callback function and an optional initial value. The callback function is invoked with four arguments: the accumulator and current value (both mandatory), as well as the current index and the array itself (both optional).
+### reduce()
+Executes a reducer function on each element of the array, resulting in a single output value. It takes two arguments: a callback function and an optional initial value. The callback function is invoked with four arguments: the accumulator and current value (both mandatory), as well as the current index and the array itself (both optional).
 
 ```javascript
 const arr = [1, 2, 3, 4];
@@ -221,7 +271,8 @@ const concat = arr.reduce((accumulator, currentValue) => {
 console.log(concat); // Output: '-1-2-3-4' // Concatenates all elements with a separator
 ```
 
-<b>flat()</b>: Flattens nested arrays into a single array. By default, it flattens arrays one level deep. You can specify a depth to flatten more deeply nested arrays. The method returns a new array, leaving the original array unchanged.
+### flat()
+Flattens nested arrays into a single array. By default, it flattens arrays one level deep. You can specify a depth to flatten more deeply nested arrays. The method returns a new array, leaving the original array unchanged.
 
 ```javascript
 const nestedArray = [1, [2, [3, [4, 5]]]];
@@ -239,7 +290,8 @@ const fullyFlattened = nestedArray.flat(Infinity);
 console.log(fullyFlattened); // Output: [1, 2, 3, 4, 5]
 ```
 
-<b>map()</b>: Creates a new array populated with the results of calling a provided function on every element in the calling array. The <code>map()</code> method iterates over each element of the array, applies the given function to each element, and returns a new array with the results. The original array is not modified.
+### map()
+Creates a new array populated with the results of calling a provided function on every element in the calling array. The <code>map()</code> method iterates over each element of the array, applies the given function to each element, and returns a new array with the results. The original array is not modified.
 
 ```javascript
 const numbers = [1, 2, 3, 4];
@@ -247,7 +299,8 @@ const doubled = numbers.map(num => num * 2);
 console.log(doubled); // Output: [2, 4, 6, 8] // Returns: New array
 ```
 
-<b>sort()</b>: sorts the elements of an array in place and returns the sorted array. The default sort order is lexicographic (according to string Unicode code points). When sorting strings, elements are compared based on their Unicode values. To sort numbers correctly, a comparison function should be provided to define the numeric sort order. It modifies the original array.
+### sort()
+Sorts the elements of an array in place and returns the sorted array. The default sort order is lexicographic (according to string Unicode code points). When sorting strings, elements are compared based on their Unicode values. To sort numbers correctly, a comparison function should be provided to define the numeric sort order. It modifies the original array.
 
 ```javascript
 // Sorting strings with mixed case
@@ -282,7 +335,8 @@ console.log(numArr) // Output: [21, 10, 3.14, 2, 1]
 
 The <code>sort()</code> method sorts elements as strings by default. For numeric arrays, use a comparison function to sort numbers correctly. Without a comparison function, numbers are sorted based on their string representations, which may not yield correct numerical order.
 
-<b>toSorted()</b>: creates a new array with the elements sorted according to the provided comparison function, without modifying the original array.
+### toSorted()
+Creates a new array with the elements sorted according to the provided comparison function, without modifying the original array.
 
 ```javascript
 const arr = [3, 1, 4, 1, 5];
@@ -313,14 +367,16 @@ console.log(result) // Output: 12
 
 The <code>Array</code> class in JavaScript also includes several static methods that can be called directly on the <code>Array</code> class itself rather than on an instance of the array. These methods are useful for creating and manipulating arrays in various ways. In contrary to string methods, some array methods modify the original array.
 
-<b>Array.isArray()</b>: determines whether the given value is an array. It returns <code>true</code> if it is an array, otherwise <code>false</code>.
+### Array.isArray()
+Determines whether the given value is an array. It returns <code>true</code> if it is an array, otherwise <code>false</code>.
 
 ```javascript
 console.log(Array.isArray([1, 2, 3])); // true
 console.log(Array.isArray('hello')); // false
 ```
 
-<b>Array.from()</b>: creates a new array instance from an array-like or iterable object. It can also map the values using a provided function.
+### Array.from()
+Creates a new array instance from an array-like or iterable object. It can also map the values using a provided function.
 
 ```javascript
 console.log(Array.from('hello')); // ['h', 'e', 'l', 'l', 'o']
@@ -328,7 +384,8 @@ console.log(Array.from([1, 2, 3], x => x * 2)); // [2, 4, 6]
 // Returns: A new array instance
 ```
 
-<b>Array.of()</b>: creates a new Array instance with a variable number of elements passed as arguments.
+### Array.of()
+Creates a new Array instance with a variable number of elements passed as arguments.
 
 ```javascript
 console.log(Array.of(1, 2, 3)); // [1, 2, 3]
