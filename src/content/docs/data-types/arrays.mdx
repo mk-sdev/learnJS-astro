@@ -1,57 +1,418 @@
 ---
-title: 'Comments'
+title: 'Arrays'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
-import YT from '../../../components/YT.astro'
-import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
+import { Aside } from "@astrojs/starlight/components"
 
-# Raz
-## Further reading
+Arrays are list-like objects utilized to store multiple values in a single variable, and can hold a mix of data types (e.g., numbers, strings, etc.). Arrays are, in fact, objects. They inherit from <code>Array.prototype</code>, which provides them with a set of methods and properties specific to arrays. This means that while arrays have additional functionality tailored for handling ordered collections, they still share the fundamental characteristics of objects, such as the ability to have properties and methods assigned to them. This dual nature allows arrays to utilize object properties while also providing specialized array methods for managing and manipulating list-like structures.
 
+```javascript
+let arr = ['apple', 'orange', 'banana']
 
-<Img src={banana} />
+let obj = { 0: 'apple', 1: 'orange', 2: 'banana' }
 
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
+console.log(arr[1] === obj[1]) //true
+```
+
+<Aside type="caution">
+
+In JavaScript, indexing starts at 0.
+
 </Aside>
 
-### trzy
-#### cztery
-##### 5
+## Methods
 
-Reference pages are <Hint>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a story or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
+Arrays in JavaScript come with a variety of methods and properties to help manipulate and analyze data. Here are some key methods you can use:
 
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
+<b>length</b>: returns the number of elements in the array. It can also be applied to truncate or extend the array.
 
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
-
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
-
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
-
-<YT id={'dQw4w9WgXcQ'}/>
-
-<hr/>
-
-
-<hr/>
-
-
-<hr/>
-
-
-```js
-console.log('This coulCMS!');
+```javascript
+const arr = [1, 2, 3];
+console.log(arr.length); // 3
+arr.length = 2;
+console.log(arr); // [1, 2]
+// Returns: The number of elements in the array
 ```
+
+<b>[]</b>: Accesses the element at index `n` of the array `arr`. Negative indices are not supported, and accessing an index out of bounds returns `undefined`.
+
+```javascript
+const arr = ['a', 'b', 'c', 'd'];
+console.log(arr[0]); // 'a' // Accesses the first element
+console.log(arr[2]); // 'c' // Accesses the third element
+console.log(arr[4]); // undefined // Index out of bounds
+console.log(arr[-1]); // undefined // Negative indices are not supported
+```
+
+<b>at()</b>: returns the element at the given index, allowing for negative indices to count from the end of the array. If the index is out of bounds, it returns <code>undefined</code>.
+
+```javascript
+const arr = [10, 20, 30, 40, 50];
+console.log(arr.at(1)); // 20 // Accesses the element at index 1
+console.log(arr.at(-1)); // 50 // Accesses the last element of the array
+console.log(arr.at(10)); // undefined // Index out of bounds
+console.log(arr.at(-10)); // undefined // Negative index out of bounds
+```
+
+<b>push()</b>: adds one or more elements to the end of the array and returns the new length of the array.
+
+```javascript
+const arr = [1, 2, 3];
+arr.push(4);
+console.log(arr); // [1, 2, 3, 4]
+console.log(arr.push(5)); // 5 // Returns: The new length of the array
+```
+
+<b>pop()</b>: removes the last element from the array and returns that element.
+
+```javascript
+const arr = [1, 2, 3];
+const last = arr.pop();
+console.log(arr); // [1, 2]
+console.log(last); // 3 // Returns: The removed element
+```
+
+<b>shift()</b>: removes the first element from the array and returns that element.
+
+```javascript
+const arr = [1, 2, 3];
+const first = arr.shift();
+console.log(arr); // [2, 3]
+console.log(first); // 1 // Returns: The removed element
+```
+
+<b>unshift()</b>: adds one or more elements to the beginning of the array and returns the new length of the array.
+
+```javascript
+const arr = [1, 2, 3];
+arr.unshift(0);
+console.log(arr); // [0, 1, 2, 3]
+console.log(arr.unshift(-1)); // 5 // Returns: The new length of the array
+```
+
+<b>join()</b>: joins all elements of an array into a string and returns this string. The elements are separated by a specified separator.
+
+```javascript
+const arr = [1, 2, 3];
+console.log(arr.join('-')); // '1-2-3' 
+// Does not modify the original array
+```
+
+<b>reverse()</b>: reverses the order of the elements in an array and returns the array.
+
+```javascript
+const arr = [1, 2, 3];
+arr.reverse();
+console.log(arr); // [3, 2, 1] 
+// Modifies the original array
+```
+
+<b>toReversed()</b>: creates a new array with the elements in reverse order, without modifying the original array.
+
+```javascript
+const arr = [1, 2, 3];
+const reversedArr = arr.toReversed();
+console.log(reversedArr); // [3, 2, 1]
+console.log(arr); // [1, 2, 3] // Original array remains unchanged
+```
+
+<b>indexOf()</b>: returns the first index at which a given element can be found in the array, or <code>-1</code> if it is not present.
+
+```javascript
+const arr = [1, 2, 3, 2, 1];
+console.log(arr.indexOf(2)); // 1
+console.log(arr.indexOf(4)); // -1
+// Returns: The first index of the found element or -1
+```
+
+<b>lastIndexOf()</b>: returns the last index at which a given element can be found in the array, or <code>-1</code> if it is not present.
+
+```javascript
+const arr = [1, 2, 3, 2, 1];
+console.log(arr.lastIndexOf(2)); // 3
+console.log(arr.lastIndexOf(4)); // -1
+// Returns: The last index of the found element or -1
+```
+
+<b>includes()</b>: determines whether an array includes a certain value among its entries, returning <code>true</code> or <code>false</code>.
+
+```javascript
+const arr = [1, 2, 3];
+console.log(arr.includes(2)); // true
+console.log(arr.includes(4)); // false
+// Returns: `true` if the value is found, otherwise `false`
+```
+
+<b>filter()</b>: creates a new array with all elements that pass the test implemented by the provided function.
+
+```javascript
+const arr = [1, 2, 3, 4, 5];
+const evenNumbers = arr.filter(x => x % 2 === 0);
+console.log(evenNumbers); // [2, 4] // Does not modify the original array
+// Returns: A new array with elements that pass the test
+```
+
+<b>every()</b>: tests whether all elements in the array pass the test implemented by the provided function. Returns <code>true</code> if all elements pass the test, otherwise <code>false</code>.
+
+```javascript
+const arr = [2, 4, 6];
+const allEven = arr.every(x => x % 2 === 0);
+console.log(allEven); // true
+```
+
+<b>some()</b>: tests whether at least one element in the array passes the test implemented by the provided function. Returns <code>true</code> if at least one element passes the test, otherwise <code>false</code>.
+
+```javascript
+const arr = [1, 2, 3];
+const hasEven = arr.some(x => x % 2 === 0);
+console.log(hasEven); // true
+const hasNegative = arr.some(x => x < 0);
+console.log(hasNegative); // false
+```
+
+<b>find()</b>: returns the first element in the array that satisfies the provided testing function. Otherwise, it returns <code>undefined</code>.
+
+```javascript
+const arr = [1, 2, 3, 4, 5];
+const firstEven = arr.find(x => x % 2 === 0);
+console.log(firstEven); // 2
+const noNegative = arr.find(x => x < 0);
+console.log(noNegative); // undefined
+```
+
+<b>findIndex()</b>: returns the index of the first element that satisfies the provided testing function. Otherwise, it returns <code>-1</code>.
+
+```javascript
+const arr = [1, 2, 3, 4, 5];
+const index = arr.findIndex(x => x > 3);
+console.log(index); // 3
+const noNegativeIndex = arr.findIndex(x => x < 0);
+console.log(noNegativeIndex); // -1
+```
+
+<b>with()</b>: creates a new array with a modified element at a specific index, without modifying the original array.
+
+```javascript
+const arr = [1, 2, 3, 4, 5];
+const newArr = arr.with(2, 'a');
+console.log(newArr); // [1, 2, 'a', 4, 5]
+console.log(arr); // [1, 2, 3, 4, 5] // Original array remains unchanged
+```
+
+<b>reduce()</b>: executes a reducer function on each element of the array, resulting in a single output value. It takes two arguments: a callback function and an optional initial value. The callback function is invoked with four arguments: the accumulator and current value (both mandatory), as well as the current index and the array itself (both optional).
+
+```javascript
+const arr = [1, 2, 3, 4];
+const sum = arr.reduce((accumulator, currentValue) => {
+  return accumulator + currentValue;
+}, 0);
+console.log(sum); // Output: 10 // The result of summing all elements
+
+const product = arr.reduce((accumulator, currentValue) => {
+  return accumulator * currentValue;
+}, 1);
+console.log(product); // Output: 24 // The result of multiplying all elements
+
+const concat = arr.reduce((accumulator, currentValue) => {
+  return accumulator + '-' + currentValue;
+}, '');
+console.log(concat); // Output: '-1-2-3-4' // Concatenates all elements with a separator
+```
+
+<b>flat()</b>: Flattens nested arrays into a single array. By default, it flattens arrays one level deep. You can specify a depth to flatten more deeply nested arrays. The method returns a new array, leaving the original array unchanged.
+
+```javascript
+const nestedArray = [1, [2, [3, [4, 5]]]];
+
+// Flattening one level
+const shallowFlattened = nestedArray.flat();
+console.log(shallowFlattened); // Output: [1, 2, [3, [4, 5]]]
+
+// Flattening two levels
+const deepFlattened = nestedArray.flat(2);
+console.log(deepFlattened); // Output: [1, 2, 3, [4, 5]]
+
+// Fully flattening (all levels)
+const fullyFlattened = nestedArray.flat(Infinity);
+console.log(fullyFlattened); // Output: [1, 2, 3, 4, 5]
+```
+
+<b>map()</b>: Creates a new array populated with the results of calling a provided function on every element in the calling array. The <code>map()</code> method iterates over each element of the array, applies the given function to each element, and returns a new array with the results. The original array is not modified.
+
+```javascript
+const numbers = [1, 2, 3, 4];
+const doubled = numbers.map(num => num * 2);
+console.log(doubled); // Output: [2, 4, 6, 8] // Returns: New array
+```
+
+<b>sort()</b>: sorts the elements of an array in place and returns the sorted array. The default sort order is lexicographic (according to string Unicode code points). When sorting strings, elements are compared based on their Unicode values. To sort numbers correctly, a comparison function should be provided to define the numeric sort order. It modifies the original array.
+
+```javascript
+// Sorting strings with mixed case
+const mixedCaseArr = ['apple', 'Banana', 'cherry']
+mixedCaseArr.sort()
+console.log(mixedCaseArr) // Output: ['Banana', 'apple', 'cherry']
+// Strings are sorted lexicographically, with uppercase letters sorted before lowercase letters.
+
+// Sorting strings in lexicographic order
+const strArr = ['apple', 'banana', 'cherry']
+strArr.sort()
+console.log(strArr) // Output: ['apple', 'banana', 'cherry']
+// Sorts strings in lexicographic order.
+
+// Sorting numbers as strings
+const arr = [10, 1, 21, 2, 3.14]
+arr.sort()
+console.log(arr) // Output: [1, 10, 2, 21, 3.14]
+// Numbers are sorted as strings.
+
+// Sorting numbers correctly (ascending order)
+const numArr = [10, 1, 21, 2, 3.14]
+numArr.sort((a, b) => a - b)
+console.log(numArr) // Output: [1, 2, 3.14, 10, 21]
+// Numbers are sorted correctly.
+
+// Sorting numbers in descending order
+numArr.sort((a, b) => b - a)
+console.log(numArr) // Output: [21, 10, 3.14, 2, 1]
+// Numbers are sorted in descending order.
+```
+
+The <code>sort()</code> method sorts elements as strings by default. For numeric arrays, use a comparison function to sort numbers correctly. Without a comparison function, numbers are sorted based on their string representations, which may not yield correct numerical order.
+
+<b>toSorted()</b>: creates a new array with the elements sorted according to the provided comparison function, without modifying the original array.
+
+```javascript
+const arr = [3, 1, 4, 1, 5];
+const sortedArr = arr.toSorted();
+console.log(sortedArr); // [1, 1, 3, 4, 5]
+console.log(arr); // [3, 1, 4, 1, 5] // Original array remains unchanged
+```
+
+<Aside type="tip">
+
+You can chain those methods instead of using them one by one.
+
+```javascript
+const numbers = [1, 2, 3, 4, 5]
+
+// Chaining example: Filter, then map, then reduce
+const result = numbers
+  .filter(num => num % 2 === 0) // Filter even numbers ([2, 4])
+  .map(num => num * 2) // Double the numbers ([4, 8])
+  .reduce((acc, num) => acc + num, 0) // Sum all the numbers (12)
+
+console.log(result) // Output: 12
+```
+
+</Aside>
+
+## Static methods
+
+The <code>Array</code> class in JavaScript also includes several static methods that can be called directly on the <code>Array</code> class itself rather than on an instance of the array. These methods are useful for creating and manipulating arrays in various ways. In contrary to string methods, some array methods modify the original array.
+
+<b>Array.isArray()</b>: determines whether the given value is an array. It returns <code>true</code> if it is an array, otherwise <code>false</code>.
+
+```javascript
+console.log(Array.isArray([1, 2, 3])); // true
+console.log(Array.isArray('hello')); // false
+```
+
+<b>Array.from()</b>: creates a new array instance from an array-like or iterable object. It can also map the values using a provided function.
+
+```javascript
+console.log(Array.from('hello')); // ['h', 'e', 'l', 'l', 'o']
+console.log(Array.from([1, 2, 3], x => x * 2)); // [2, 4, 6]
+// Returns: A new array instance
+```
+
+<b>Array.of()</b>: creates a new Array instance with a variable number of elements passed as arguments.
+
+```javascript
+console.log(Array.of(1, 2, 3)); // [1, 2, 3]
+console.log(Array.of('a', 'b')); // ['a', 'b']
+// Returns: A new array instance with the provided elements
+```
+
+There are of course many more static Array methods. Most of them are the same as their non-static equivalent. You can access them by typing:
+
+```javascript
+Array.prototype.<method name>.call(arrayName)
+```
+
+ For instance:
+
+```javascript
+const arr = [2, 1, 4]
+
+Array.prototype.push.call(arr, 3)
+Array.prototype.sort.call(arr)
+
+console.log(arr) 
+```
+
+If you don't know what <code>call()</code> is, you can visit the lesson about execution context.
+
+## Concatenating arrays
+
+To <b>concatenate</b> two arrays means to merge them together. Intuitively, we would use the <code>+</code> operator to do it. However, this method does not work as we might expect.
+
+```javascript
+const arr1 = [1, 2, 3]
+const arr2 = [4, 5, 6]
+
+console.log(arr1 + arr2) // '1,2,34,5,6'
+```
+
+To address this issue you can try one of the following techniques:
+
+### concat()
+
+The <code>concat()</code> method is used to merge two or more arrays. It does not modify the original arrays but returns a new array.
+
+```javascript
+const array1 = [1, 2, 3]
+const array2 = [4, 5, 6]
+
+const combinedArray = array1.concat(array2)
+console.log(combinedArray) // Output: [1, 2, 3, 4, 5, 6]
+```
+
+### spread operator
+
+The spread operator can be adopted to unpack elements from arrays and combine them into a new array.
+
+```javascript
+const array1 = [1, 2, 3]
+const array2 = [4, 5, 6]
+
+const combinedArray = [...array1, ...array2]
+console.log(combinedArray) // Output: [1, 2, 3, 4, 5, 6]
+```
+
+### push() with spread operator
+
+You can use the <code>push()</code> method with the spread operator to merge arrays in place. This modifies the first array by adding elements from the second array.
+
+```javascript
+const array1 = [1, 2, 3]
+const array2 = [4, 5, 6]
+
+array1.push(...array2)
+console.log(array1) // Output: [1, 2, 3, 4, 5, 6]
+```
+
+### Array.prototype.push.apply()
+
+You can use <code>apply()</code> with <code>push()</code> to merge arrays in a similar way to the spread operator but with older syntax.
+
+```javascript
+const array1 = [1, 2, 3]
+const array2 = [4, 5, 6]
+
+Array.prototype.push.apply(array1, array2)
+console.log(array1) // Output: [1, 2, 3, 4, 5, 6]
+```
+

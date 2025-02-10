@@ -43,6 +43,7 @@ export const items = [
     items: [
       { label: 'introduction', slug: 'data-types/introduction', img: 'dwdw' },
       { label: 'numbers', slug: 'data-types/numbers', img: 'dwdw' },
+      { label: 'strings', slug: 'data-types/strings', img: 'dwdw' },
       {
         label: 'objects fundamentals',
         slug: 'data-types/objects-fundamentals',

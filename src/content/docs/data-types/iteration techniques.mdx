@@ -1,57 +1,228 @@
 ---
-title: 'Comments'
+title: 'Iteration techniques'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
-import YT from '../../../components/YT.astro'
-import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
+import { Aside } from "@astrojs/starlight/components"
 
-# Raz
-## Further reading
+In the previous chapter, we discussed <code>for</code> and <code>while</code> loops. It turns out these are not the only one methods to perform iterations. Some data types offer special ways to iterate over them.
 
+## array.map()
 
-<Img src={banana} />
+The <code>map()</code> method is used to create a new array by applying a function to each element of an existing array. The basic syntax of the <code>map()</code> method is as follows:
 
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
+```javascript
+array.map(function(currentValue, index, arr) {
+  // code to be executed
+}, thisValue)
+```
+
+For example:
+
+```javascript
+const numbers = [10, 20, 30]
+
+const doubled = numbers.map((num, index, array) => {
+  console.log(index) // 0, 1, 2
+  console.log(array) // [10,20,30], [10,20,30], [10,20,30]
+  
+  return num * 2
+})
+
+console.log(doubled) // [20, 40, 60]
+```
+
+In this example, the <code>map()</code> method is utilized to double the values in the numbers array. A new array, <code>doubled</code>, is created, containing the results of applying the function to each element in the <code>numbers</code> array. 
+
+The <code>map()</code> method is specifically designed for arrays and cannot be adopted to iterate over other data types directly. However, you can convert other data types, such as strings, maps or sets, into arrays using <code>Array.from()</code> or the spread operator (...) and then apply the <code>map()</code> method.
+
+```javascript
+const set = new Set([1, 2, 3, 4, 5])
+const doubledSet = Array.from(set).map(num => num * 2)
+console.log(doubledSet) // [2, 4, 6, 8, 10]
+```
+
+<Aside type="note">
+
+<code>map()</code> is often applied in the React library to render lists of components.
+
+```javascript
+const fruits = ['apple', 'banana', 'orange']
+
+function FruitList() {
+  return (
+    <ul>
+      {fruits.map((fruit, index) => (
+        <li key={index}>{fruit}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
 </Aside>
 
-### trzy
-#### cztery
-##### 5
+### thisValue
 
-Reference pages are <Hint>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a story or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
+The <b>thisValue</b> argument is an optional parameter that allows you to specify what this should refer to when the callback function is executed. It also appears in other array methods like <code>filter()</code> or <code>reduce()</code>. By default it is <code>undefined</code> in strict mode or <code>window/global</code> in non-strict mode. If you want to use it, avoid using arrow functions, as they don't bind <code>this</code> correctly.
 
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
+```javascript
+const numbers = [1, 2, 3]
 
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
+const obj = {
+  multiplier: 10,
+};
 
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
-
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
-
-<YT id={'dQw4w9WgXcQ'}/>
-
-<hr/>
-
-
-<hr/>
-
-
-<hr/>
-
-
-```js
-console.log('This coulCMS!');
+numbers.map(function (num) {
+  console.log(num * this.multiplier) // 10, 20, 30
+}, obj)
 ```
+
+If you don't know what is going on with the <code>this</code>, visit the "Execution context" lesson from "Miscellaneous" chapter.
+
+## forEach()
+
+The <code>forEach()</code> method is primarily used to execute a provided function once for each element in an array. It can also be applied to the values of maps and sets. It is a more concise way to iterate over arrays compared to traditional for loops. Syntax:
+
+```javascript
+array.forEach(function(currentValue, index, arr) {
+  // code to be executed
+}, thisValue)
+```
+
+So the syntax is identical to the map() method. For instance, using <code>forEach</code> with an array:
+
+```javascript
+const arr = [1, 2, 3, 4, 5]
+arr.forEach(function(value) {
+  console.log(value) // 1, 2, 3, 4, 5
+})
+```
+
+In this example, the <code>forEach</code> method iterates over each element in the <code>arr</code> array and logs the value to the console.
+
+The <code>forEach</code> method does not return a new array, it simply executes the provided function for each element in the array.
+
+```javascript
+const arr = [1, 2, 3, 4, 5]
+arr.forEach(function(value, index, array) {
+  array[index] = value * 2
+})
+console.log(arr) // [2, 4, 6, 8, 10]
+```
+
+Unlike some other array methods, <code>forEach</code> does not allow for breaking out of the loop early. If you need to stop the iteration based on a condition, you should use a different loop, such as a traditional <code>for</code> loop or a <code>for-of</code> loop.
+
+## for-of Loop
+
+The <code>for-of</code> loop is used to iterate over iterable objects like arrays, strings, maps and sets. It allows you to loop through the values of an iterable without needing to access the keys.
+
+```javascript
+// Strings
+const str = 'abc'
+
+for (const key of str) {
+  console.log(key) // "a", "b", "c"
+}
+
+// Arrays
+const arr = ['a', 'b', 'c']
+
+for (const value of arr) {
+  console.log(value) // "a", "b", "c"
+}
+
+// Maps
+const map = new Map([
+  [0, 'a'],
+  [1, 'b'],
+])
+
+for (const entry of map) {
+  console.log(entry) // [0, "a"], [1, "b"]
+}
+
+// Sets
+const set = new Set(['a', 'b'])
+
+for (const key of set) {
+  console.log(key) // "a", "b"
+}
+```
+
+The <code>for-of</code> loop cannot be used to iterate over objects directly. However, with the help of <code>Object.keys()</code>, <code>Object.values()</code>, or <code>Object.entries()</code>, you can achieve similar results. These methods return, respectively, the keys, the values, and an array where the first element is the key and the second is the value.
+
+```javascript
+const obj = {
+  name: "Jack",
+  age: 30,
+  occupation: "Physician"
+}
+
+for (const key of Object.keys(obj)){
+  console.log("key: "+ key+ ", value: "+ obj[key])
+  // note that obj.key would return undefined
+}
+/* Output:
+  "key: name, value: Jack"
+  "key: age, value: 30"
+  "key: occupation, value: Physician"
+*/
+
+for (const value of Object.values(obj)){
+  console.log("value: "+ value)
+}
+/* Output:
+  "value: Jack"
+  "value: 30"
+  "value: Physician"
+*/
+
+for (const entry of Object.entries(obj)){
+  console.log(entry)
+}
+/* Output:
+  ["name","Jack"]
+  ["age",30]
+  ["occupation","Physician"]
+*/
+```
+
+## for-in Loop
+
+The <code>for-in</code> loop is used while going through the keys of objects, arrays or strings. Maps or sets are not compatible with it.
+
+```javascript
+// Strings
+const str = "abc"
+
+for(key in str){
+  console.log(key, str[key])
+}
+
+// Arrays
+const arr = ["a", "b", "c"]
+
+for(key in arr){
+  console.log(key, arr[key])
+}
+
+// Objects
+const obj = {0: "a", 1: "b", 2: "c"}
+
+for(key in obj){
+  console.log(key, obj[key])
+}
+
+/* Outputs of each loop:
+  "0" "a"
+  "1" "b"
+  "2" "c"
+*/
+```
+
+As you can see, <code>for-in</code> converts keys into strings.
+
+If you can, you should favor the <code>for-of</code> loop over <code>for-in</code> because the latter also iterates over inherited prototype properties, which can lead to unintended behavior.
+

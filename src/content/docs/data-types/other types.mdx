@@ -1,57 +1,159 @@
 ---
-title: 'Comments'
+title: 'Other data types'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
-import YT from '../../../components/YT.astro'
-import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
+JavaScript offers a variety of data types beyond the commonly used ones, introducing unique and specialized types that may not be encountered frequently.
 
-# Raz
-## Further reading
+## Symbol
 
+Symbol is a unique and immutable primitive data type introduced in ECMAScript 2015 (ES6). Symbols are primarily used to create unique identifiers for object properties. We don't know their value (JavaScript sets it for us) but we can give them a label to easily distinguish them.
 
-<Img src={banana} />
-
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
-</Aside>
-
-### trzy
-#### cztery
-##### 5
-
-Reference pages are <Hint>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a story or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
-
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
-
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
-
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
-
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
-
-<YT id={'dQw4w9WgXcQ'}/>
-
-<hr/>
-
-
-<hr/>
-
-
-<hr/>
-
-
-```js
-console.log('This coulCMS!');
+```javascript
+const sym1 = Symbol('description')
+const sym2 = Symbol('description')
+ console.log(sym1 === sym2) // false - symbol's value is always unique
+console.log(sym1) // Symbol(description)
 ```
+
+Symbols are usually used to create unique property keys for objects, allowing for the definition of hidden or private properties that won't clash with other properties.
+
+```javascript
+const id = Symbol('id')
+
+const user = {
+  name: 'Alice',
+  age: 25,
+  [id]: 12345, // Unique property key
+}
+
+console.log(user) // { name: 'Alice', age: 25, [Symbol(id)]: 12345 }
+console.log(user[id]) // 12345
+
+// Iterating over properties
+for (let key in user) {
+  console.log(key) // name, age (does not include Symbol properties)
+}
+
+console.log(Object.keys(user)) // ['name', 'age'] (does not include Symbol properties)
+```
+
+Symbol properties are not enumerable by default, which means they won’t show up during regular iteration methods like <code>for-in</code> or <code>Object.keys()</code>. To access them, you can use the <code>Object.getOwnPropertySymbols()</code> method, which retrieves an array of all Symbol properties defined on an object.
+
+```javascript
+const id = Symbol('id')
+
+const user = {
+  name: 'Alice',
+  age: 25,
+  [id]: 12345, // Unique property key
+}
+
+console.log(Object.getOwnPropertySymbols(user)) // [Symbol(id)]
+console.log(user[Object.getOwnPropertySymbols(user)[0]]) // 12345
+```
+
+## Map and WeakMap
+
+A map is a collection of keyed data items, similar to an object, but with some differences. The keys in a map can be of any data type, including objects, and they maintain the insertion order of the entries. Maps allow for the retrieval, addition, and removal of entries based on their keys.
+
+```javascript
+const map = new Map([
+  ['key1', 'value1'],
+  [2, 'value2'],
+  [{}, 'value3'],
+])
+
+console.log(map.get('key1')) // 'value1'
+console.log(map.get(2)) // 'value2'
+```
+
+Maps are useful when you need a collection of key-value pairs with flexible key types. They offer several built-in properties, such as:
+
+- <code>set(key, value)</code> - Adds or updates an element with a specified key and value.
+- <code>get(key)</code> - Retrieves the value associated with the specified key.
+- <code>has(key)</code> - Returns a boolean indicating whether a key exists in the map.
+- <code>delete(key)</code> - Removes the specified key and its associated value from the map.
+- <code>clear()</code> - Removes all key-value pairs from the Map.
+- <code>size</code> - A property that returns the number of key-value pairs in the Map.
+- <code>forEach(callbackFn, thisArg)</code> - Executes a provided function once for each key-value pair in the Map in insertion order.
+- <code>entries()</code> - Returns a new Iterator object containing an array of [key, value] for each element in the Map.
+- <code>keys()</code> - Returns a new Iterator object that contains the keys for each element in the Map.
+- <code>values()</code> - Returns a new Iterator object that contains the values for each element in the Map.
+
+WeakMap, on the other hand, is a special type of Map where the keys are weakly referenced, meaning that if there are no other references to the key object, it can be garbage collected.
+
+```javascript
+let obj = {}
+const weakMap = new WeakMap([[obj, 'some value']])
+
+console.log(weakMap.get(obj)) // some value
+
+obj = null // obj can now be garbage collected, and weakMap entry is removed automatically.
+```
+
+WeakMap differs from Map in several ways:
+
+- Its keys must be objects, while Map keys can be any data type.
+- It does not support iteration methods such as <code>.keys()</code>, <code>.values()</code>, or <code>.entries()</code>.
+- It does not have a <code>.size</code> property or <code>.clear()</code> method.
+
+## Set and WeakSet
+
+A Set is a collection of unique values, meaning that it can only contain distinct elements. Sets are particularly useful for storing lists of values without duplicates. Similar to Maps, Sets maintain the insertion order of the elements.
+
+```javascript
+const set = new Set([1, 2, 2, 'hello'])
+
+console.log(set.size) // 3
+
+// Iterating over Set
+for (const value of set) {
+  console.log(value) // 1, 2, 'hello'
+}
+```
+
+Sets are useful for ensuring that a collection contains unique items. They offer several properties, including:
+
+- <code>add(value)</code> - Adds a new element with the specified value to the Set.
+- <code>delete(value)</code> - Removes the specified value from the Set.
+- <code>has(value)</code> - Returns a boolean indicating whether the specified value exists in the Set.
+- <code>clear()</code> - Removes all elements from the Set.
+- size - A property that returns the number of unique values in the Set.
+- <code>forEach(callbackFn, thisArg)</code> - Executes a provided function once for each value in the Set, in the order they were inserted.
+- <code>entries()</code> - Returns a new Iterator object containing an array of <code>[value, value]</code> for each element in the Set, similar to how Map objects work.
+- <code>values()</code> - Returns a new Iterator object containing the values for each element in the Set, identical to the behavior of the <code>keys()</code> method.
+- <code>keys()</code> - An alias for the <code>values()</code> method, provided for consistency with Map objects (although a Set doesn't store key-value pairs).
+
+You can use a Set to remove duplicate values from an array. Since a Set only allows unique values, converting an array to a Set will automatically filter out any duplicates.
+
+```javascript
+const arrayWithDuplicates = [1, 2, 3, 1, 2, 4, 5];
+const uniqueArray = [...new Set(arrayWithDuplicates)];
+
+console.log(uniqueArray); // [1, 2, 3, 4, 5]
+```
+
+WeakSet is similar to Set, but it only accepts objects as its entries and holds weak references to them. This means that if there are no other references to the object, it can be garbage collected, allowing for better memory management.
+
+```javascript
+const weakSet = new WeakSet();
+
+let obj1 = {};
+let obj2 = {};
+
+weakSet.add(obj1);
+weakSet.add(obj2);
+
+console.log(weakSet.has(obj1)); // true
+
+obj1 = null; // obj1 can now be garbage collected, and weakSet entry is removed automatically.
+```
+
+WeakSet differs from Set in the following ways:
+
+- It only accepts objects as values, whereas Set can contain any type of value.
+- It does not support iteration methods like <code>.values()</code>, <code>.keys()</code>, or <code>.entries()</code>.
+- It does not have a <code>.size</code> property or <code>.clear()</code> method.
+

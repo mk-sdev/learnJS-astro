@@ -1,57 +1,301 @@
 ---
-title: 'Comments'
+title: 'Type conversion'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
-import YT from '../../../components/YT.astro'
-import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
+import thanks from "../../../assets/thanks.png"
+import Img from "../../../components/Img.astro"
 
-# Raz
-## Further reading
+## Converting to string
 
+There are many ways to turn non-string type into a string. The simplest is to use <code>String</code> constructor.
 
-<Img src={banana} />
+### String
 
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
-</Aside>
+```javascript
+// Number to string
+let number = 2024;
+console.log(String(number)); // '2024'
 
-### trzy
-#### cztery
-##### 5
+// Boolean to string
+let isActive = true;
+console.log(String(isActive)); // 'true'
 
-Reference pages are <Hint>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a story or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
+// Array to string
+let colors = ['red', 'green', 'blue'];
+console.log(String(colors)); // 'red,green,blue'
 
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
+// Object to string
+let user = { id: 1, name: 'John Doe' };
+console.log(String(user)); // '[object Object]'
 
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
+// Null to string
+let nothing = null;
+console.log(String(nothing)); // 'null'
 
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
+// Undefined to string
+let missing;
+console.log(String(missing)); // 'undefined'
 
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
-
-<YT id={'dQw4w9WgXcQ'}/>
-
-<hr/>
-
-
-<hr/>
-
-
-<hr/>
-
-
-```js
-console.log('This coulCMS!');
+// Function to string
+let greet = function() { return 'Hello, World!'; };
+console.log(String(greet)); // 'function() { return 'Hello, World!'; }'
 ```
+
+### .toString()
+
+```javascript
+// Number to string
+let num = 2024;
+console.log(num.toString()); // '2024'
+
+// Boolean to string
+let isActive = false;
+console.log(isActive.toString()); // 'false'
+
+// Array to string
+let fruits = ['apple', 'banana', 'cherry'];
+console.log(fruits.toString()); // 'apple,banana,cherry'
+
+// Object to string
+let car = { make: 'Toyota', model: 'Corolla' };
+console.log(car.toString()); // '[object Object]'
+
+// Function to string
+let add = function(a, b) { return a + b; };
+console.log(add.toString()); // 'function(a, b) { return a + b; }'
+
+// Symbol to string
+let id = Symbol('id');
+console.log(id.toString()); // 'Symbol(id)'
+
+// Date to string
+let today = new Date();
+console.log(today.toString()); // e.g., 'Sun Jul 28 2024 16:43:21 GMT+0200 (Central European Summer Time)'
+
+// BigInt to string
+let bigNumber = 987654321987654321987654321n;
+console.log(bigNumber.toString()); // '987654321987654321987654321'
+```
+
+### `+ ""`
+
+```javascript
+// Number to string
+let number = 2024;
+console.log(number + ""); // '2024'
+
+// Boolean to string
+let isActive = true;
+console.log(isActive + ""); // 'true'
+
+// Array to string
+let fruits = ['apple', 'banana', 'cherry'];
+console.log(fruits + ""); // 'apple,banana,cherry'
+
+// Object to string
+let car = { make: 'Toyota', model: 'Corolla' };
+console.log(car + ""); // '[object Object]'
+
+// Null to string
+let nullValue = null;
+console.log(nullValue + ""); // 'null'
+
+// Undefined to string
+let undefinedValue = undefined;
+console.log(undefinedValue + ""); // 'undefined'
+
+// Function to string
+let add = function(a, b) { return a + b; };
+console.log(add + ""); // 'function(a, b) { return a + b; }'
+
+// Symbol to string
+let id = Symbol('id');
+try {
+    console.log(id + ""); // Throws a TypeError
+} catch (e) {
+    console.error(e); // TypeError: Cannot convert a Symbol value to a string
+}
+
+// Date to string
+let today = new Date();
+console.log(today + ""); // e.g., 'Sun Jul 28 2024 16:43:21 GMT+0200 (Central European Summer Time)'
+
+// BigInt to string
+let bigNumber = 987654321987654321987654321n;
+console.log(bigNumber + ""); // '987654321987654321987654321'
+```
+
+### JSON.stringify()
+
+We can utilize the JSON object to convert values to a string format using <code>JSON.stringify()</code>, but be aware that it cannot handle functions, symbols, BigInt values, Map and Set objects, and undefined within objects or arrays, which will either return <code>undefined</code> or cause errors. If you want to stringify an object which contains some methods, they would be omitted from the resulting string.
+
+```javascript
+// Array to string
+let fruits = ['apple', 'banana', 'cherry']
+console.log(JSON.stringify(fruits)) // '["apple","banana","cherry"]'
+
+// Object to string
+let car = { make: 'Toyota', model: 'Corolla' }
+console.log(JSON.stringify(car)) // '{"make":"Toyota","model":"Corolla"}'
+
+// Null to string
+let nullValue = null
+console.log(JSON.stringify(nullValue)) // 'null'
+
+// Undefined to string
+let undefinedValue
+console.log(JSON.stringify(undefinedValue)) // 'undefined' (outside objects or arrays)
+
+let objWithUndefined = { key: undefined }
+console.log(JSON.stringify(objWithUndefined)) // '{}'
+
+// Function to string
+function add(a, b) {
+  return a + b
+}
+console.log(JSON.stringify(add)) // 'undefined'
+
+// Symbol to string
+let id = Symbol('id')
+console.log(JSON.stringify(id)) // 'undefined'
+
+// Date to string
+let today = new Date()
+console.log(JSON.stringify(today)) // e.g., '"2024-07-28T14:43:21.000Z"'
+
+// BigInt to string
+let bigNumber = 987654321987654321987654321n
+console.log(JSON.stringify(bigNumber)) // 'undefined'
+
+// Object with method
+let objWithMethod = {
+  name: 'John',
+  greet() {
+    return 'Hello!'
+  },
+}
+console.log(JSON.stringify(objWithMethod)) // '{"name":"John"}
+```
+
+Those are only some methods, there are many more of them.
+
+```javascript
+console.log(`${123}`) // "123"
+console.log(`${true}`) // "true"
+console.log(`${null}`) // "null"
+console.log(`${undefined}`) // "undefined"
+
+console.log('Number: '.concat(123)) // "Number: 123"
+console.log('Boolean: '.concat(true)) // "Boolean: true"
+
+console.log([1, 2, 3].join()) // "1,2,3"
+console.log([1, 2, 3].join('-')) // "1-2-3"
+
+console.log(String.raw`The number is ${123}`) // "The number is 123"
+```
+
+## Converting to number
+
+### Number()
+
+```javascript
+console.log(Number('42')) // 42
+console.log(Number('3.14')) // 3.14
+console.log(Number(true)) // 1
+console.log(Number(false)) // 0
+console.log(Number(null)) // 0
+console.log(Number(undefined)) // NaN
+console.log(Number('')) // 0
+console.log(Number('Hello')) // NaN
+```
+
+### +
+
+This one is very popular due to its simplicity.
+
+```javascript
+console.log(+'42') // 42
+console.log(+'3.14') // 3.14
+console.log(+true) // 1
+console.log(+false) // 0
+console.log(+null) // 0
+console.log(+undefined) // NaN
+console.log(+'') // 0
+console.log(+'Hello') // NaN
+```
+
+### Math
+
+```javascript
+console.log(Math.floor('42.5')) // 42
+console.log(Math.ceil('3.14')) // 4
+console.log(Math.round('3.6')) // 4  
+```
+
+### parseInt(), parseFloat()
+
+```javascript
+console.log(parseInt('42', 10)) // 42 (base 10)
+console.log(parseInt('3.14', 10)) // 3 (integer part only)
+console.log(parseInt('42px', 10)) // 42 (parses numeric prefix)
+console.log(parseInt('0xF', 16)) // 15 (hexadecimal)
+console.log(parseInt('10', 2)) // 2 (binary)
+
+console.log(parseFloat('42.5')) // 42.5
+console.log(parseFloat('3.14abc')) // 3.14 (stops at non-numeric characters)
+console.log(parseFloat('abc42.5')) // NaN (starts with invalid characters)
+```
+
+## Converting to Boolean
+
+### Boolean
+
+```javascript
+let value = 0
+let boolValue = Boolean(value) // false
+```
+
+Not to confuse with <code>new Boolean()</code> which sometimes leads to unwanted behavior.
+
+```javascript
+const bool = new Boolean(false)
+
+// 'bool' variable has false value but as it was defined via constructor it is a complex type - therefore it cannot be falsy
+if (bool) {
+  console.log('bool is truthy') // 'bool is truthy'
+}
+```
+
+### !!
+
+```javascript
+let value = 'Hello'
+let boolValue = !!value // true
+```
+
+## Type coercion
+
+As JavaScript is a dynamically typed language, there are some quirks regarding type <b>coercion</b> (automatic conversion) that have led to many memes. One of the most famous is the "banana" meme.
+
+```javascript
+console.log(('b' + 'a' + + 'a' + 'a').toLowerCase()); // 'banana'
+```
+
+There exists even a whole GiHub repository called wtfjs where many of JS weird features are described and explained. <a href='https://github.com/denysdovhan/wtfjs'>Link</a> 
+
+Here are most notable of them:
+
+```javascript
+[1, 2, 3] + [4, 5, 6] // '1,2,34,5,6'
+"1" + 2 //"12"
+2 + "1" //"21"
+2 + 2 + "3" + 3  //"433"
+[]  + []  //""
+true + true + true //3
+{} + {}  //"[object Object][object Object]"
+```
+
+<Img src={thanks} />
+

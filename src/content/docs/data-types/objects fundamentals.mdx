@@ -1,57 +1,176 @@
 ---
-title: 'Comments'
+title: 'Objects fundamentals'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
-import YT from '../../../components/YT.astro'
-import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
+import { Aside } from "@astrojs/starlight/components"
 
-# Raz
-## Further reading
+## What are objects and how to create them?
 
+In programming, not everything can be represented as a simple variable. For instance, we can use a number to store someone's age or a string to store their name. But how do we represent something more complex, like a person or an animal? To handle this, we operate on complex types, particularly objects. Objects allow us to group together multiple pieces of information, such as different primitive data types (like numbers and strings) or even other objects, into a single, organized structure. This way, we can describe more complex entities in a clear and comprehensive manner. Every object in JavaScript is built up from keys and values. These keys and values are always paired together, meaning that each key corresponds to exactly one value, and each value is associated with exactly one key. Each pair must be separated with a comma. Adding a comma after the last pair is optional.
 
-<Img src={banana} />
+- <b>Keys</b>: A key is a unique identifier for a property within an object. It is used to access or modify the value associated with that key. By default, keys are always stored as strings, even if you define them without quotes. For example, writing `{name: "John"}` is equivalent to `{"name": "John"}` because JavaScript automatically converts unquoted identifiers into string keys. But keys can also be represented as numbers or Symbols. It is important to note that keys should be unique within an object; you cannot have two properties with the same key, except in cases where the keys exist in different nested objects.
+- <b>Values</b>: A value is the data or information associated with a key in an object. Values can be of any data type, including numbers, strings, arrays, other objects, or functions.
 
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
+For example, let's consider how we might represent a cat in a program. A cat has various attributes, such as a name and age. They are called <b>properties</b>. We can utilize an object to group all this information together in one place.
+
+```javascript
+const cat = {
+  name: 'Whiskers',
+  age: 2,
+}
+```
+
+Moreover, cats are able to perform some actions, like meowing. In context of objects they are called <b>methods</b>
+
+```javascript
+const cat = {
+  name: 'Whiskers',
+  age: 2,
+  meow: function() {
+    console.log('Meow!')
+  }
+}
+```
+
+Now our cat has two properties which are <code>name</code> and <code>age</code>. There is also one method: <code>meow()</code>. <code>name</code>, <code>age</code> and <code>meow()</code> are the keys and <code>'Whiskers'</code>, <code>2</code>, and an anonymous function are the values. Collectively, properties and methods are referred to as <b>members</b>, though they are often simply called "properties", regardless of whether they represent data or behavior.
+
+## Accessing object's properties
+
+We can access an object's properties in two ways: by using a dot or square brackets.
+
+```javascript
+const cat = {
+  name: 'Whiskers',
+  age: 2,
+  meow: function() {
+    console.log('Meow!')
+  },
+}
+
+console.log(cat.name, cat.age) // 'Whiskers' 2
+cat.meow() // 'Meow!'
+
+console.log(cat['name'], cat['age']) // 'Whiskers' 2
+cat['meow']() // 'Meow!'
+
+// By the way - console.log() is calling 'log()' method of the 'console' object
+```
+
+In most situations you should apply the dot notation because of its simplicity. Bracket notation is helpful when keys are numbers or are dynamic or contain forbidden characters discussed in the lesson about variables and their names. This syntax is very similar to accessing elements of an array, because arrays are, in fact, objects with numbers as keys.
+
+```javascript
+const obj1 = { 0: 'value' }
+
+console.log(obj1.0) // Error
+console.log(obj1[0]) // 'value'
+console.log(obj1['0']) // 'value'
+
+const dynamicKey = 'key_name'
+
+const obj2 = {
+  ['key-with-dashes']: 'value',
+  'key with spaces' : 'another value',
+  [dynamicKey]: 'yet another value'
+}
+
+console.log(obj2['key-with-dashes']) // 'value'
+console.log(obj2['key with spaces']) // 'another value'
+console.log(obj2.key_name) // 'yet another value'
+console.log(obj2.dynamicKey) // undefined
+```
+
+## Modifying objects
+
+We don't have to add methods and properties at the time of creating an object. We can do it later.
+
+```javascript
+const cat = {
+  name: 'Whiskers',
+  age: 2,
+  meow: function() {
+    console.log('Meow!')
+  },
+}
+
+cat.hobbies = ['sleeping', 'hunting', 'climbing trees']
+console.log(cat.hobbies) // ['sleeping','hunting','climbing trees']
+```
+
+We can even change or delete methods and properties. And this is regardless of whether we used the const keyword to define the object. If you don't know why, visit the introduction lesson of Data structures chapter.
+
+```javascript
+const cat = {
+  name: 'Whiskers',
+  age: 2,
+  meow: function () {
+    console.log('Meow!')
+  },
+}
+
+cat.age = 3
+console.log(cat.age) // 3
+
+delete cat.meow
+cat.meow() // Uncaught TypeError: cat.meow is not a function
+```
+
+## Shortened syntax
+
+You can adopt shorthand syntax to simplify object definitions. Here are a few ways to shorten the notation for defining objects. If the property name is the same as the variable name, you can omit the value and just write the property name.
+
+```javascript
+// Before:
+const name = 'Whiskers'
+const age = 2
+
+const cat = {
+  name: name,
+  age: age
+}
+```
+
+```javascript
+// After:
+const name = 'Whiskers'
+const age = 2
+
+const cat = {
+  name, // shorthand for name: name
+  age, // shorthand for age: age
+}
+```
+
+For defining methods within an object, you can omit the <code>function</code> keyword.
+
+```javascript
+// Before:
+const cat = {
+  name: 'Whiskers',
+  age: 2,
+  meow: function () {
+    console.log('Meow!')
+  },
+
+```
+
+```javascript
+// After:
+const cat = {
+  name: 'Whiskers',
+  age: 2,
+  meow() {
+    console.log('Meow!')
+  },
+}
+```
+
+<Aside type="note">
+
+As you explore this app you might be confused about of what the term "object" actually means. The most accurate definition is that an object is a data type composed of key-value pairs. 
+
+In this lesson you've discovered the most basic kind of object simply called an object. But in reality, every complex data type in JS is an object, meaning they consist of pairs of keys and values, even if they don't appear to do so at first glance.
+
 </Aside>
 
-### trzy
-#### cztery
-##### 5
-
-Reference pages are <Hint>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a story or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
-
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
-
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
-
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
-
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
-
-<YT id={'dQw4w9WgXcQ'}/>
-
-<hr/>
-
-
-<hr/>
-
-
-<hr/>
-
-
-```js
-console.log('This coulCMS!');
-```

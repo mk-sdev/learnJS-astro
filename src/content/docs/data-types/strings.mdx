@@ -1,57 +1,203 @@
 ---
-title: 'Comments'
+title: 'Strings'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import banana from '../../../assets/banana.png';
-import YT from '../../../components/YT.astro'
-import Img from '../../../components/Img.astro'
-import Hint from '../../../components/Hint.astro'
+## Template strings
 
-# Raz
-## Further reading
+There are three ways to define a string literal. One of them requires "double quotes", the second one requires 'single quotes' and the third one requires `backticks`. The first two work exactly the same but the last which is called <b>template strings</b> or <b>template literals</b> offers three more features.
 
+<b>Multi-line Strings:</b> Strings defined with backticks can span multiple
+lines without needing special line continuation characters.{' '}
 
-<Img src={banana} />
+```javascript
+const multiLineString = `This is a string
+that spans multiple
+lines.`
+console.log(multiLineString)
+/*
+    This is a string
+    that spans multiple
+    lines.
+*/
+```
 
-<Aside className="custom-aside" type="tip">
-  To jest przykład użycia komponentu Aside, który możesz dodać do swojego markdown.
-</Aside>
+<b>String Interpolation</b>: Backticks allow for embedded expressions, using `${expression}`
+, which lets you include variables and expressions within the string.
 
-### trzy
-#### cztery
-##### 5
+```javascript
+const name = 'Alice'
+const age = 25
+const greeting = `Hello, my name is ${name} and I am ${age} years old.`
+console.log(greeting) //Hello, my name is Alice and I am 25 years old.
+```
 
-Reference pages are <Hint>sss</Hint> for outlining how things work in terse and clear terms.
-Less concerned with telling a story or addressing a specific use case, they should give a comprehensive outline of what you're documenting.
+<b>Tag functions</b>: in JavaScript they are a special type of function used in
+conjunction with template literals. They allow for custom processing of template
+literal strings before they're ultimately formatted. This feature can be used
+for advanced string manipulations, such as formatting or filtering,{' '}
 
-- Read [about reference](https://diataxis.fr/reference/) in the Diátaxis framework
+```javascript
+function tag(strings, ...values) {
+  console.log(strings) // ["Hello, ",". You are "," years old."]
+  console.log(values) // ["Alice",30]
+  return (
+    'Processed template: ' +
+    strings[0] +
+    values[0] +
+    strings[1] +
+    values[1] +
+    strings[2]
+  )
+}
 
-Now that you know how to run code, it’s time to learn how to comment it. <br />Comments are essential for making your code more understandable and for leaving notes for yourself or other developers. In JavaScript, there are two ways to add comments:
+const name = 'Alice'
+const age = 30
 
-**1. Single-line comments**: Use <code>//</code> to `add` comments on a single line.
+const result = tag`Hello, ${name}. You are ${age} years old.`
+console.log(result) // "Processed template: Hello, Alice. You are 30 years old."
+```
 
-1. Pierwszy element
-2. Drugi element
-   - Podpunkt drugi.1
-   - Podpunkt drugi.2
-3. Trzeci element
-   1. Podpunkt trzeci.1
-   2. Podpunkt trzeci.2
+## Methods
 
-<YT id={'dQw4w9WgXcQ'}/>
+Strings in JavaScript offer a variety of methods and properties to manipulate and analyze textual data. Here are some of the key methods you can use:
 
-<hr/>
+<b>length</b>: returns the length of the string.
 
+```javascript
+const text = 'Hello'
+console.log(text.length) // 5
+```
 
-<hr/>
+<b>charAt()</b>: returns the character at the specified index. Alternatively,
+you can adopt square bracket notation (<code>[]</code>) to achieve the same
+result.
 
+```javascript
+const text = 'Hello'
+console.log(text.charAt(1)) // 'e'
+console.log(text[1]) // 'e'
+```
 
-<hr/>
+If the specified index is invalid (e.g., negative or out of range), <b>charAt()</b> returns an empty string (<code>''</code>).
 
+```javascript
+console.log(text.charAt(-1)) // ''
+console.log(text.charAt(10)) // ''
+```
 
-```js
-console.log('This coulCMS!');
+<b>toUpperCase()</b>: returns the string converted to uppercase.
+
+```javascript
+const text = "not Penny's boat"
+console.log(text.toUpperCase()) // "NOT PENNY'S BOAT"
+```
+
+<b>toLowerCase()</b>: returns the string converted to lowercase.
+
+```javascript
+const text = 'Hello'
+console.log(text.toLowerCase()) // 'hello'
+```
+
+<b>indexOf()</b>: returns the index of the first occurrence of the specified
+substring, or -1 if not found.
+
+```javascript
+const text = 'Hello world'
+console.log(text.indexOf('world')) // 6
+```
+
+<b>lastIndexOf()</b>: returns the index of the last occurrence of the specified
+substring, or -1 if not found.
+
+```javascript
+const text = 'Hello world, world'
+console.log(text.lastIndexOf('world')) // 13
+```
+
+<b>split()</b>: splits the string into an array of substrings based on the
+specified delimiter.
+
+```javascript
+const text = 'Hello world'
+console.log(text.split(' ')) // ['Hello', 'world']
+```
+
+<b>startsWith()</b>: checks if the string starts with the specified substring.
+
+```javascript
+const text = 'Hello world'
+console.log(text.startsWith('Hello')) // true
+```
+
+<b>endsWith()</b>: checks if the string ends with the specified substring.
+
+```javascript
+const text = 'Hello world'
+console.log(text.endsWith('world')) // true
+```
+
+<b>replace()</b>: returns a new string with some or all matches of a pattern
+replaced by a replacement.
+
+```javascript
+const text = 'Hello world'
+console.log(text.replace('world', 'JavaScript')) // 'Hello JavaScript'
+```
+
+<b>repeat()</b>: returns a new string with a specified number of copies of the
+original string.
+
+```javascript
+const text = 'Hello'
+console.log(text.repeat(3)) // 'HelloHelloHello'
+```
+
+<b>trim()</b>: removes whitespace from both ends of the string.
+
+```javascript
+const text = '  Hello world  '
+console.log(text.trim()) // 'Hello world'
+```
+
+<b>includes()</b>: checks if the string contains the specified substring.
+
+```javascript
+const text = 'Hello world'
+console.log(text.includes('world')) // true
+```
+
+<b>substring()</b>: returns a subset of the string between the start and end
+indices (end index not included). If start is greater than end, the method swaps
+the two arguments.
+
+```javascript
+const text = 'Hello world'
+console.log(text.substring(0, 5)) // 'Hello'
+console.log(text.substring(6)) // 'world'
+console.log(text.substring(5, 0)) // 'Hello'
+```
+
+<b>slice()</b>: returns a section of the string, extracted from start to end
+indices (end index not included). It supports negative indices, which count from
+the end of the string.
+
+```javascript
+const text = 'Hello world'
+console.log(text.slice(0, 5)) // 'Hello'
+console.log(text.slice(-5)) // 'world'
+console.log(text.slice(2, -1)) // 'llo worl'
+```
+
+These are the most often used string methods but this list is not complete. Keep in mind none of these methods modify the original string.
+
+```javascript
+let text = 'HELLO WORLD'
+
+let modifiedText = text.toLowerCase()
+
+console.log(text) // 'HELLO WORLD'
+console.log(modifiedText) // 'hello world'
 ```
