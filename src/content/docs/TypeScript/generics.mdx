@@ -3,3 +3,95 @@ title: 'Generics'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
+
+Generics allow you to create reusable components that can work with a variety of types, while still ensuring type safety. They provide a way to create code that can handle different types without losing the advantages of static typing. 
+
+## Generics in action
+
+You can create functions that work with any type by using generics. The generic type is specified using angle brackets `(&lt;T&gt;)`, where `T` is a placeholder for the actual type that will be passed in when the function is called.
+
+```typescript
+function identity<T>(arg: T): T {
+  return arg
+}
+
+const num = identity<number>(5) // T is inferred as number
+const str = identity<string>('hello') // T is inferred as string
+```
+
+<b>Interfaces</b> and <b>type aliases</b> can also be made generic by allowing them to operate with different types. This is useful for defining collections or structures that can hold values of various types.
+
+```typescript
+interface Box<T> {
+  value: T
+}
+
+const numberBox: Box<number> = { value: 10 }
+const stringBox: Box<string> = { value: 'TypeScript' }
+
+type Response<T> = {
+  status: number
+  data: T
+}
+
+const stringResponse: Response<string> = {
+  status: 200,
+  data: 'Success',
+}
+
+const numberResponse: Response<number> = {
+  status: 200,
+  data: 42,
+}
+```
+
+You can also use generics with classes. This allows you to create classes that can work with different types of data while maintaining type safety.
+
+```typescript
+class Container<T> {
+  constructor(public value: T) {}
+
+  getValue(): T {
+    return this.value
+  }
+}
+
+const numContainer = new Container<number>(123)
+const strContainer = new Container<string>('Generic Class')
+```
+
+Do you remember how to set the type of an array in TypeScript? One way to do this is by using generics. You define an array type and specify the type of its elements using generics.
+
+```typescript
+const arr: Array<number> = [1, 2, 3]
+```
+
+You can have more than one generic in function, interface, class etc.:
+
+```typescript
+function combine<T, U>(value1: T, value2: U): [T, U] {
+  return [value1, value2];
+}
+
+const result1 = combine<number, string>(1, "hello"); // [number, string]
+console.log(result1); // [1, "hello"]
+
+const result2 = combine(true, 42); // [boolean, number]
+console.log(result2); // [true, 42]
+```
+
+### Generic constraints
+
+Sometimes, you want to limit the types that can be used as arguments for generics. You can achieve this using constraints, like requiring that a type extends another type (i.e., it must have certain properties).
+
+```typescript
+function getLength<T extends { length: number }>(arg: T): number {
+  return arg.length
+}
+
+// Works because string has a length property
+console.log(getLength('Hello')) // 5
+
+// Error: number doesn't have a length property
+console.log(getLength(123))
+```

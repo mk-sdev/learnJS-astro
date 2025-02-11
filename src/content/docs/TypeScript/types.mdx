@@ -3,3 +3,123 @@ title: 'Types'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
+
+import unknown from "../../../assets/unknown.png"
+import Img from "../../../components/Img.astro"
+import { Aside } from "@astrojs/starlight/components"
+import YT from "../../../components/YT.astro"
+
+In TypeScript, types define the shape and structure of data. They specify what kind of values a variable can hold, what types of arguments functions accept, and what types of values functions return. Types help ensure that the code behaves as expected by catching type-related errors at compile time.
+
+### any
+
+The `any` type is a catch-all type that allows a variable to be any type. It disables type checking for that variable, so it should be used sparingly. If you don't specify a type, it is `any` by default.
+
+```typescript
+let value: any = "This can be anything"
+```
+
+### unknown
+
+The `unknown` type works similarly to `any` but is safer because it requires type checking before performing operations. It represents any value but requires that you perform some form of type assertion or type checking before using it. It is helpful when you start writing your code and don't know yet what a variable should be like.
+
+Look how `unknown` warns us about incrementing a string and `any` doesn't (red underline):
+
+<Img src={unknown} />
+
+### never
+
+The `never` type represents values that should never occur. It is typically used for functions that throw errors or have infinite loops.
+
+```typescript
+function error(message: string): never {
+  throw new Error(message)
+}
+```
+
+### Primitive types
+
+```typescript
+let name: string = "Alice"
+let age: number = 30
+let isActive: boolean = true
+let value: null = null
+let result: undefined
+let sym: symbol = Symbol("unique")
+```
+
+### Array types
+
+Arrays in TypeScript can be defined with specific types to ensure that all elements are of the same type. You can specify an array type in two ways.
+
+```typescript
+let numbers: number[] = [1, 2, 3]
+let strings: Array<string> = ["hello", "world"]
+```
+
+### Tuples
+
+Tuples allow you to create arrays with a fixed number of elements, where each element can be of a different type. So you can execute any array method on them except those that modify the length of the tuple, such as `push()`, `pop()`, or `shift()`. These methods could lead to type inconsistencies, as tuples are intended to have a specific structure and fixed length. 
+
+Unlike regular arrays, they cannot be defined with angle brackets.
+
+```typescript
+let person: [string, number] = ["Alice", 30]
+let cat: [string, number] = [1, "Whiskers"] // wrong - The order of the types provided in a tuple matters.
+```
+
+### Objects
+
+Object types define the structure of objects by specifying the properties and their types.
+
+```typescript
+let user: { name: string; age: number } = { name: "Bob", age: 25 }
+```
+
+### Function types
+
+Object types define the structure of objects by specifying the properties and their types.
+
+```typescript
+//A function that takes a string and returns nothing (is a void)
+function print(a: string): void {
+  console.log(a)
+}
+
+//A function expression that takes two numbers and returns a number
+let add: (x: number, y: number) => number = (x, y) => x + y 
+```
+
+### Enums
+
+Enums allow you to define a set of named constants. They can be numeric or string-based.
+
+```typescript
+enum Color {
+  Red = 1,
+  Green,
+  Blue,
+}
+
+enum Direction {
+  Up = 'UP',
+  Down = 'DOWN',
+  Left = 'LEFT',
+  Right = 'RIGHT',
+}
+```
+
+Enums differ from other TypeScript types in that they don't disappear after compilation. This means they are available both as types at compile-time and as actual values at runtime, allowing you to use them for both type-checking and as constants in your code.
+
+<Aside type="caution">
+
+In TypeScript dev community enums are often considered a bad choice. Here's why:
+
+<YT id={"jjMbPt_H3RQ"} />
+
+However some people defend them:
+
+<YT id={"VhzId8v3gYA"} />
+
+</Aside>
+
