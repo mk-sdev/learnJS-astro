@@ -3,3 +3,162 @@ title: 'Destructuring'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
+
+Destructuring is a feature in JavaScript, introduced in ES6, that allows you to extract values from arrays or properties from objects and assign them to variables in a concise and readable way. Destructuring makes working with complex data structures more convenient by reducing the amount of code needed to extract values.
+
+## Array destructuring
+
+With array destructuring, you can unpack values from an array and assign them to variables in a single statement.
+
+```javascript
+const array = [1, 2, 3];
+
+// Destructuring the array
+const [a, b, c] = array;
+
+console.log(a); // 1
+console.log(b); // 2
+console.log(c); // 3
+```
+
+Here, `a`, `b`, and `c` get the values 1, 2, and 3 from the array. This eliminates the need for multiple lines of code like `a = array[0]`, `b = array[1]`, etc.
+
+### Default values
+
+You can also set default values for variables in case the corresponding value in the array is `undefined`.
+
+```javascript
+const array = [1, 2]
+
+const [a, b, c = 5] = array
+
+console.log(c) // 5 (default value is used because the array doesn't have a third element)
+```
+
+### Skipping elements
+
+You can skip elements in an array by leaving a space between commas.
+
+```javascript
+const array = [1, 2, 3]
+
+const [a, , c] = array // Skips the second element
+
+console.log(a) // 1
+console.log(c) // 3
+```
+
+### Destructuring assignment
+
+Thanks to destructuring you can swap the values of two variables. This is a concise and readable way to exchange values without needing a temporary variable.
+
+```javascript
+let a = 5;
+let b = 10;
+
+[a, b] = [b, a];
+
+console.log(a); // 10
+console.log(b); // 5
+```
+
+## Object destructuring
+
+Object destructuring allows you to extract properties from an object and assign them to variables. The variable names must match the property names in the object.
+
+```javascript
+const person = { name: 'John', age: 30 }
+
+// Destructuring the object
+const { name, age } = person
+
+console.log(name) // "John"
+console.log(age) // 30
+```
+
+### Default values
+
+Just like with arrays, if an object's property doesn’t exist, you can assign a default value to the variable.
+
+```javascript
+const person = { name: 'John' }
+
+const { name, age = 25 } = person
+
+console.log(age) // 25 (default value is used because age is undefined in the object)
+```
+
+### Renaming variables
+
+You can rename variables during destructuring by using the colon `(:)`.
+
+```javascript
+const person = { name: 'John', age: 30 }
+
+const { name: fullName, age: yearsOld } = person
+
+console.log(fullName) // "John"
+console.log(yearsOld) // 30
+```
+
+The `name` property is assigned to the `fullName` variable, and `age` is assigned to `yearsOld`.
+
+## Nested destructuring
+
+You can also destructure nested objects and arrays.
+
+```javascript
+const array = [1, [2, 3]]
+
+const [a, [b, c]] = array
+
+console.log(b) // 2
+console.log(c) // 3
+```
+
+```javascript
+const person = {
+  name: 'John',
+  address: {
+    city: 'New York',
+    country: 'USA',
+  },
+}
+
+const {
+  name,
+  address: { city, country },
+} = person
+
+console.log(city) // "New York"
+console.log(country) // "USA"
+```
+
+## Function parameters destructuring
+
+You can use destructuring in function parameters to easily extract values from arguments passed to the function.
+
+```javascript
+function printUser({ name, age }) {
+  console.log(`Name: ${name}, Age: ${age}`)
+}
+
+const user = { name: 'Alice', age: 28 }
+
+printUser(user) // Name: Alice, Age: 28
+```
+
+Moreover, when you destructure parameters, you don't have to worry about the order of object's keys:
+
+```javascript
+function printUser({ age, name }) {
+  console.log(`Name: ${name}, Age: ${age}`)
+}
+
+const user = { name: 'Alice', age: 28 }
+
+printUser(user) // Name: Alice, Age: 28
+```
+
+Here I switched `name` and `age` and the output is still the same.
+

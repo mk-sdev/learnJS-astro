@@ -3,3 +3,122 @@ title: 'Strict mode'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
+
+Strict mode is a feature in JavaScript that helps you write cleaner, more secure, and less error-prone code by enforcing stricter parsing and error handling rules. It can be applied to entire scripts or individual functions. Most importantly, it eliminates so called 'silent errors' which means it changes previously accepted "bad syntax" into real errors.
+
+## Applying strict mode
+
+To take advantage of its benefits simply put a string `'use strict'` where you want it to be applied. It doesn't matter if you use 'single quotes', "double quotes" or `backticks`.
+
+```javascript
+//code above isn't in strict mode
+'use strict'
+//applied globally
+```
+
+```javascript
+function fun() {
+  `use strict`
+  //applied in function scope
+}
+```
+
+But what exactly does it give us?
+
+## Strict mode restrictions
+
+### `this` binding
+
+Strict mode changes the context in standalone functions.
+
+```javascript
+function example(){
+  console.log(this) // window/global
+}
+
+example()
+```
+
+```javascript
+"use strict"
+function example(){
+  console.log(this) // undefined
+}
+
+example()
+```
+
+### Declaration keywords
+
+Strict mode enforces the use of `let`, `const` or `var` when declaring a variable.
+
+```javascript
+x = 5
+console.log(x) //5
+```
+
+```javascript
+"use strict"
+x = 5
+console.log(x) // Uncaught ReferenceError: x is not defined 
+```
+
+### Keyword variable names
+
+```javascript
+'use strict'
+// Keywords cannot be used as variable names
+// This will throw an error:
+let class = 'example'; // SyntaxError: Unexpected strict mode reserved word
+```
+
+### Usage of `eval`
+
+When using strict mode, the code inside eval creates its own scope.
+
+```javascript
+eval("var x = 20; console.log(x);") //20
+console.log(x + 1) //Uncaught ReferenceError: x is not defined 
+```
+
+```javascript
+"use strict"
+eval("var x = 20; console.log(x);") //20
+console.log(x + 1) //21
+```
+
+### Duplicate parameter names
+
+Strict mode disallows us from duplicating parameter names.
+
+```javascript
+function example(a, a){
+  console.log(a) //2
+}
+
+example(1, 2)
+```
+
+```javascript
+"use strict"
+function example(a, a){
+  console.log(a) // Uncaught SyntaxError: Duplicate parameter name not allowed in this context
+}
+
+example(1, 2)
+```
+
+### Octal literals
+
+Octal literals are not allowed in strict mode.
+
+```javascript
+let num = 075 // ok
+```
+
+```javascript
+"use strict"
+let num = 075
+// Uncaught SyntaxError: Octal literals are not allowed in strict mode.
+```
+

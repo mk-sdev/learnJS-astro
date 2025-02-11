@@ -3,3 +3,170 @@ title: 'Copying objects'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
+
+## The problem
+
+Copying objects might seem like an easy task, but that's just an illusion, which is why this lesson was created.
+
+```javascript
+const obj1 = { a: 1, b: 2 }
+const obj2 = obj1
+obj2.b = 42
+console.log(obj1.b) // 42
+```
+
+We modified only `obj2`, but this change applied also to `obj1`. If you studied the introduction lesson of data types chapter carefully, you probably know what happened here. If not - this is because, when you assign one object to another (like `obj2 = obj1`), you're copying the reference to the object, not creating a new independent copy of it. Both `obj1` and `obj2` now point to the same reference in memory. As a result, any changes made to `obj2` are reflected in `obj1`, and vice versa. 
+
+There are a few ways to overcome this issue, each with its own pros and cons. Most of them have already been presented in this app, but they were scattered across different lessons. Here, they are all gathered in one place.
+
+## Spread syntax
+
+One simple way to create a copy of an object is by using the spread operator `...`. This creates a new object with the same top-level properties as the original.
+
+```javascript
+const obj1 = { a: 1, b: 2 }
+
+const obj2 = { ...obj1 }
+obj1.a = 10
+
+console.log(obj2) // { "a": 1, "b": 2 }
+```
+
+While this technique works well for shallow properties, it does not deep copy nested ones. As a result, changes to nested properties in the copied object will still affect the original.
+
+```javascript
+const obj1 = { a: 1, b: { c: 2 } }
+const obj2 = { ...obj1 }
+obj2.a = 42
+console.log(obj1.a) // Output: 1 (unchanged)
+obj2.b.c = 99
+console.log(obj1.b.c) // Output: 99 (shared reference)
+```
+
+If you want to deep copy this way, you need to replicate the structure of the object, which can be tedious for deeply nested structures.
+
+```javascript
+const obj1 = { a: 1, b: { c: 2 } }
+const obj2 = { ...obj1, b: { ...obj1.b } }
+obj2.a = 42
+console.log(obj1.a) // Output: 1 (unchanged)
+obj2.b.c = 99
+console.log(obj1.b.c) // Output: 2 (unchanged)
+```
+
+## Object.assign()
+
+Another method to create a shallow copy is `Object.assign()`. It copies all enumerable properties from one or more source objects to a target object.
+
+```javascript
+const obj1 = { a: 1, b: 2 }
+
+const obj2 = Object.assign({}, obj1)
+obj1.a = 10
+
+console.log(obj2) // { "a": 1, "b": 2 }
+```
+
+In context of copying, `Object.assign()` works pretty much the same as spread syntax. A shallow copy is created, so nested properties remain shared between the original and copied objects.
+
+```javascript
+const obj1 = { a: 1, b: { c: 2 } }
+const obj2 = Object.assign({}, obj1)
+obj2.a = 42
+console.log(obj1.a) // Output: 1 (unchanged)
+obj2.b.c = 99
+console.log(obj1.b.c) // Output: 99 (shared reference)
+```
+
+## JSON serialization
+
+A common way to create a deep copy of an object is to turn it into a string with `JSON.stringify()` and then parse it back using `JSON.parse()`. This creates a completely new object with no shared references.
+
+```javascript
+const obj1 = { a: 1, b: { c: 2 } }
+const obj2 = JSON.parse(JSON.stringify(obj1))
+obj2.b.c = 42
+console.log(obj1.b.c) // Output: 2 (unchanged)
+```
+
+This method works well for simple objects but has some limitations. It does not copy methods and `undefined` properties.
+
+```javascript
+const obj1 = {
+  name: 'John',
+  age: undefined,
+  greet() {
+    console.log('hello')
+  },
+}
+
+const stringifiedObj1 = JSON.stringify(obj1)
+const obj2 = JSON.parse(stringifiedObj1)
+
+console.log(obj2) // { "name": "John" }
+```
+
+If a property has its value set to `Infinity` or `NaN`, it becomes `null` after serialization.
+
+```javascript
+const obj1 = {
+  name: 'John',
+  inf: Infinity,
+  nan: NaN,
+}
+
+const stringifiedObj1 = JSON.stringify(obj1)
+const obj2 = JSON.parse(stringifiedObj1)
+
+console.log(obj2) // { "name": "John",  "inf": null,  "nan": null }
+```
+
+If you attempt to stringify an object with a circular reference, you'll see an error.
+
+```javascript
+const obj1 = {
+  name: 'John',
+  self: null,
+}
+
+// circular reference
+obj1.self = obj1
+
+const stringifiedObj1 = JSON.stringify(obj1) // Error
+```
+
+## structuredClone
+
+The `structuredClone()` method is a modern, built-in JavaScript API designed for deep cloning objects. It effectively handles many edge cases, including circular references and cloning `undefined` properties. However, there are still some limitations: `Infinity` and `NaN` properties are converted to `null` during cloning, and attempts to convert methods within objects may result in errors. Additionally it might not be supported in older browsers.
+
+```javascript
+const obj1 = {
+  a: undefined,
+  b: NaN,
+  c: Infinity,
+  nested: {
+    key: 'value',
+  },
+}
+
+const obj2 = structuredClone(obj1)
+console.log(obj2)
+// Output:
+// {
+//   "a": undefined,
+//   "b": null,
+//   "c": null,
+//   "nested": {
+//     "key": "value"
+//   }
+// }
+
+const circularObj = {}
+circularObj.self = circularObj
+
+const clonedCircular = structuredClone(circularObj)
+console.log(clonedCircular.self === clonedCircular) // true
+```
+
+These were four most common techniques of copying objects in JavaScript. Each of them have strong and weak sides. But wat they have in common is that the cloned object doesn't preserve the prototype chain, meaning it loses any custom prototype methods or properties. If you don't know what a prototype is, visit the chapter "Object Oriented JS".
+

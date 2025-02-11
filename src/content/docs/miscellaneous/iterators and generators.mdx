@@ -3,3 +3,139 @@ title: 'Iterators and generators'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
+
+import iteratorsGenerators from "../../../assets/iterators-generators.png"
+import Img from "../../../components/Img.astro"
+
+Iterators and generators are closely related concepts used for controlling how data is iterated over, particularly when working with sequences of values or data structures that don't necessarily store all elements in memory at once. 
+
+## Iterators
+
+An iterator is an object that provides a way to traverse through a sequence of values, one at a time. It follows a specific protocol called the Iterator Protocol, which defines how to access elements sequentially in a collection. It implements a method, which is typically named `next()` according to general convention, although it could be called something else. This method returns an object containing two parameters:
+
+- <u>value</u>: the next value in the sequence.
+- <u>done</u>: a boolean that indicates whether the iteration is complete (true if there are no more values).
+
+Once `done` is `true`, the iterator signals that the sequence is over. Several JavaScript objects (like arrays, strings, maps, and sets) have built-in iterators that you can use with a `for-of` loop. For example:
+
+```javascript
+const array = [10, 20, 30]
+const iterator = array[Symbol.iterator]() // Built-in iterator
+
+console.log(iterator.next()) // { value: 10, done: false }
+console.log(iterator.next()) // { value: 20, done: false }
+console.log(iterator.next()) // { value: 30, done: false }
+console.log(iterator.next()) // { value: undefined, done: true }
+```
+
+You can create your own iterator by manually defining an object with a `next` method:
+
+```javascript
+function createIterator(array) {
+  let index = 0
+  return {
+    next: function () {
+      if (index < array.length) {
+        return { value: array[index++], done: false }
+      } else {
+        return { value: undefined, done: true }
+      }
+    },
+  }
+}
+
+const iterator = createIterator([10, 20, 30])
+
+console.log(iterator.next()) // { value: 10, done: false }
+console.log(iterator.next()) // { value: 20, done: false }
+console.log(iterator.next()) // { value: 30, done: false }
+console.log(iterator.next()) // { value: undefined, done: true }
+```
+
+Additional methods you can implement in your iterator include:
+
+- <u>reset()</u>: Resets the iterator, effectively skipping to the end of the sequence. This method allows you to stop the iteration immediately and indicates that there are no more values to process.
+- <u>skip(n)</u>: Advances the iterator by a specified number of steps, skipping the next `n` values. It returns the last skipped value if available.
+
+## Generators
+
+A generator is a special type of function that returns an iterator. It can be paused and resumed, allowing you to generate a sequence of values over time rather than computing them all at once.
+
+### Key characteristics of generators:
+
+- Defined using the `function*` (note the asterisk `*`) syntax.
+- Can `yield` multiple values, which allows the function to pause its execution and return a value.
+- Once a value is yielded, the function pauses until the next value is requested using the `next()` method.
+
+### Example
+
+```javascript
+function* numberGenerator() {
+  yield 1
+  yield 2
+  yield 3
+}
+
+const gen = numberGenerator()
+
+console.log(gen.next()) // { value: 1, done: false }
+console.log(gen.next()) // { value: 2, done: false }
+console.log(gen.next()) // { value: 3, done: false }
+console.log(gen.next()) // { value: undefined, done: true }
+```
+
+The `yield` keyword pauses the execution of the generator function, and `next()` resumes it from where it was last paused.
+
+Generators can also contain loops and can yield an infinite sequence of values.
+
+```javascript
+function* infiniteGenerator() {
+  let i = 0
+  while (true) {
+    yield i++
+  }
+}
+
+const gen = infiniteGenerator()
+
+console.log(gen.next().value) // 0
+console.log(gen.next().value) // 1
+console.log(gen.next().value) // 2
+// And so on...
+```
+
+Generators are particularly useful with the `for-of` loop, as they automatically stop iterating when `done` is `true`.
+
+```javascript
+function* fruits() {
+  yield 'apple'
+  yield 'banana'
+  yield 'orange'
+}
+
+for (let fruit of fruits()) {
+  console.log(fruit)
+}
+// Output: apple, banana, orange
+```
+
+## Differences and use cases
+
+While you could generally utilize iterators and generators interchangeably, tailoring your choice to the specific use case can significantly simplify implementation and enhance code clarity.
+
+### When to use iterators:
+
+- When you need more control over the iteration process, such as the ability to customize the order of elements or handle state explicitly.
+- When you are working with complex data structures like trees, graphs, or linked lists that require custom traversal logic.
+- When you want to encapsulate the iteration logic within a reusable object or class with additional methods like `reset()` or `skip()`.
+
+### When to use generators:
+
+- When you need a simple, memory-efficient way to handle large or infinite sequences of data without loading everything into memory at once.
+- When you want to pause and resume execution of a function, especially useful in asynchronous programming (e.g., using `yield` to wait for a promise).
+- When you want to create lazy sequences, where values are generated on-the-fly as they are needed rather than computing everything upfront.
+
+### Differences
+
+<Img src={iteratorsGenerators} description="Key differences between iterators and generators"/>
+

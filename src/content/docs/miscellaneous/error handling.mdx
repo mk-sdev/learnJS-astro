@@ -3,3 +3,107 @@ title: 'Error handling'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
+
+Error handling in programming involves managing errors or exceptions that occur during the execution of a program, ensuring that they are dealt with gracefully without crashing the application. In JavaScript, error handling is primarily managed using `try-catch` blocks, custom error objects, and the `throw` statement. It allows developers to anticipate errors and handle them appropriately, preventing the program from crashing unexpectedly.
+
+### Error objects
+
+The Error object is a built-in object that represents runtime errors and exceptions that occur in a script. It provides a standardized way to create and handle errors, allowing developers to identify and troubleshoot issues in their code more effectively. JavaScript has several built-in error types that inherit from the Error object. These include:
+
+- <u>Error</u>: A generic error object
+- <u>SyntaxError</u>: Represents errors in the syntax of JavaScript code
+- <u>ReferenceError</u>: Indicates that an invalid reference has been made, such as when trying to access a variable that hasn’t been declared
+- <u>TypeError</u>: Represents an error when a value is not of the expected type, like attempting to call a non-function or accessing a property on `null` or `undefined`
+- <u>RangeError</u>: Indicates that a number is outside of its valid range, such as when using `Array.prototype.slice` with a start index that exceeds the array length
+- <u>EvalError</u>: Represents an error regarding the eval() function, though it's rarely thrown in practice
+- <u>URIError</u>: Indicates an error when encoding or decoding a URI, often when the `encodeURI()` or `decodeURI()` functions are used incorrectly
+- <u>AggregateError</u>: A new error type introduced in ECMAScript 2021, representing multiple errors that occur during a single operation, often used with `Promise.all()`
+
+The Error object has several properties that provide information about the error:
+
+- <u>name</u>: A string that indicates the name of the error (e.g., 'Error', 'TypeError')
+- <u>message</u>: A string that provides a description of the error
+- <u>stack</u>: A string that contains the stack trace at the point where the error was created, helping to identify where the error occurred in the code
+- <u>cause</u>: A property that can provide more detailed information about the cause of the error, often used for wrapping or chaining errors. This helps to trace the origin of complex errors by including context or a previous error that led to the current one.
+
+### Throwing errors
+
+The `throw` statement allows you to create a custom error and interrupt the normal flow of the program. You can throw any type of data, but it's best practice to throw `Error` objects.
+
+```javascript
+function riskyOperation() {
+  if (somethingGoesWrong) {
+    throw new Error('A problem occurred')
+  }
+  return 'Success'
+}
+```
+
+### try-catch Statement
+
+The `try-catch` statement allows you to test a block of code for errors and handle them. If an error occurs within the `try` block, control is immediately passed to the `catch` block.
+
+```javascript
+try {
+  // Code that may throw an error
+  let result = riskyOperation();
+  console.log(result);
+} catch (error) {
+  // Handle the error
+  console.error('An error occurred:', error.message);
+}
+```
+
+### Finally block
+
+The `finally` block can be used after `try-catch` to execute code regardless of whether an error was thrown or not. It's useful for cleanup operations.
+
+```javascript
+try {
+  let result = riskyOperation();
+  console.log(result);
+} catch (error) {
+  console.error('An error occurred:', error.message);
+} finally {
+  console.log('Cleanup code runs here, regardless of an error.');
+}
+```
+
+### Asynchronous error handling
+
+Handling errors in asynchronous code (such as promises) requires different approaches. Use `.catch()` for promises and try to always handle rejection.
+
+```javascript
+fetchData()
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('An error occurred:', error));
+```
+
+### Custom Errors
+
+In JavaScript, you can create custom error types by extending the `Error` class. This is useful for defining specific errors related to your application domain.
+
+```javascript
+class CustomError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'CustomError';
+  }
+}
+
+try {
+  throw new CustomError('Something went wrong!');
+} catch (error) {
+  console.error(error.name); // 'CustomError'
+  console.error(error.message); // 'Something went wrong!'
+}
+```
+
+### Common Best Practices
+
+- <b>Graceful Degradation</b>: Ensure that when an error occurs, the application can still function in some capacity.
+- <b>Logging Errors</b>: Keep a record of errors, especially in production environments, for debugging and monitoring.
+- <b>User-Friendly Messages</b>: Display meaningful error messages to users without exposing sensitive information.
+- <b>Validation</b>: Validate input data to catch errors early and prevent invalid data from causing issues.
+

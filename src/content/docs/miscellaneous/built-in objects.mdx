@@ -3,3 +3,194 @@ title: 'Built-in objects'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
+
+import console2 from "../../../assets/console-2.png"
+import Img from "../../../components/Img.astro"
+import YT from "../../../components/YT.astro"
+import { Aside } from "@astrojs/starlight/components"
+
+JavaScript offers a variety of built-in objects. You are already familiar with some of them. There are objects representing data, such as `Number`, `String`, `Array`, or `Object`. Some objects are platform-specific; for example, in browsers, we have the `window` object, and in Node.js, there is `Global`. There are so many of them that they wouldn't fit in this lesson, so I'll describe only the most important ones.
+
+## console
+
+The `console` object is used for interacting with the debugging console. It provides methods to log, format, and inspect various types of data, which is useful for development, debugging, and testing purposes.
+
+- `console.log()` - Logs general information, values, or messages.
+- `console.dir()` - Displays the structure of objects in a more detailed way than `console.log()`.
+- `console.warn()` - Logs warning messages, typically shown with a yellow warning icon.
+- `console.error()` - Logs error messages, usually with a red error icon.
+- `console.info()` - Logs informational messages, typically with an info icon.
+- `console.table()` - Logs data in a tabular format, useful for inspecting arrays and objects.
+- `console.assert()` - Logs an error if the condition is false.
+- `console.group()` - Starts a new group of logs, making the output easier to organize.
+- `console.groupEnd()` - Ends a previously started log group.
+- `console.time()` - Starts a timer to measure execution time.
+- `console.timeEnd()` - Stops the timer and logs the elapsed time.
+- `console.count()` - Logs the number of times a specific label has been logged.
+
+<Img src={console2} description="Demonstration of some methods of the console object"/>
+
+## JSON
+
+The `JSON` object provides functionality to work with JSON (JavaScript Object Notation), a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate. JSON is widely used for data exchange between a server and a web application, often in APIs and configuration files.
+
+<YT id={"iiADhChRriM"} />
+
+The `JSON` object provides two primary methods for parsing and stringifying JSON data:
+
+- `JSON.parse()` - converts a JSON string into a JavaScript object. If the input string is not valid JSON, it will throw an error.
+- `JSON.stringify()` - converts a JavaScript object or value to a JSON string.
+
+```javascript
+const jsonObject = {
+  name: 'Michael',
+  age: 12,
+  isChild: true,
+}
+
+const stringifiedObject = JSON.stringify(jsonObject)
+console.log(stringifiedObject) // "{'name':'Michael','age':12,'isChild':true}"
+
+const parsedObject = JSON.parse(stringifiedObject)
+console.log(parsedObject.name) // "Michael"
+console.log(parsedObject.age) // 12
+console.log(parsedObject.isChild) // true
+```
+
+<Aside type="caution">
+
+The `JSON` object has some limitations. You cannot stringify functions, undefined, or object methods.
+
+</Aside>
+
+## Date
+
+The `Date` object is used to work with dates and times. It allows you to create, manipulate, and format dates. You can get the current date and time, work with specific dates, perform date calculations, and format dates for output.
+
+There are several ways to create an object representing a date:
+
+```javascript
+// Current date and time
+let currentDate = new Date()
+// Example output: Thu Sep 26 2024 12:45:30 GMT+0000 (Coordinated Universal Time)
+
+// Passing a date string or specifying year, month, and day
+let specificDate1 = new Date('2024-09-26')
+// Example output: Thu Sep 26 2024 00:00:00 GMT+0000
+let specificDate2 = new Date(2024, 8, 26) // Month is zero-indexed (0 = January, 8 = September)
+// Example output: Thu Sep 26 2024 00:00:00 GMT+0000
+
+// Using milliseconds since January 1, 1970 (Unix Epoch)
+let dateFromMilliseconds = new Date(0); // January 1, 1970
+
+// Using timestamps (milliseconds since January 1, 1970)
+let timestampDate = new Date(1695811200000); // Thu Sep 26 2024
+```
+
+### Getting date information
+
+```javascript
+let currentDate = new Date()
+
+let year = currentDate.getFullYear() // 2024
+let month = currentDate.getMonth() // 8 (September, zero-indexed)
+let day = currentDate.getDate() // 26
+let dayOfWeek = currentDate.getDay() // 4 (Thursday, Sunday is 0)
+let hours = currentDate.getHours() // 14 (for example, 2 PM)
+let minutes = currentDate.getMinutes() // 30
+let seconds = currentDate.getSeconds() // 45
+let milliseconds = currentDate.getMilliseconds() // 123
+let timestamp = currentDate.getTime() // 1695728530123 // milliseconds since January 1, 1970
+```
+
+These are the most important `Date` object methods.
+
+## Math
+
+The `Math` object in JavaScript is a built-in object that provides basic mathematical operations and constants. It includes methods for performing various complex mathematical tasks, such as rounding numbers, generating random values, and calculating trigonometric, logarithmic, and exponential values. The `Math` object is not a constructor, so you don’t need to create an instance of it. All its properties and methods are static, meaning you can access them directly from `Math`.
+
+### Math constants
+
+```javascript
+Math.PI // 3.141592653589793 - The ratio of the circumference of a circle to its diameter
+Math.E // 2.718281828459045 - Euler's number, the base of natural logarithms
+Math.LN2 // 0.6931471805599453 - The natural logarithm of 2
+ Math.LN10 // 2.302585092994046 - The natural logarithm of 10
+ Math.LOG2E // 1.4426950408889634 - The base-2 logarithm of Euler's number
+ Math.LOG10E // 0.4342944819032518 - The base-10 logarithm of Euler's number
+ Math.SQRT2 // 1.4142135623730951 - The square root of 2
+ Math.SQRT1_2 // 0.7071067811865476 - The square root of 1/2 (or 0.5)
+```
+
+### Math methods
+
+```javascript
+Math.round(x) // Returns the value of x rounded to the nearest integer
+ Math.floor(x) // Returns the largest integer less than or equal to x
+ Math.ceil(x) // Returns the smallest integer greater than or equal to x
+ Math.trunc(x) // Returns the integer part of x by removing any fractional digits
+ Math.abs(x) // Returns the absolute value of x
+ Math.max(...values) // Returns the largest of the given values
+ Math.min(...values) // Returns the smallest of the given values
+ Math.pow(base, exponent) // Returns base raised to the power of exponent (base^exponent)
+ Math.sqrt(x) // Returns the square root of x
+ Math.cbrt(x) // Returns the cube root of x
+ Math.hypot(...values) // Returns the square root of the sum of the squares of the given numbers
+ Math.sin(x) // Returns the sine of x (x is in radians)
+ Math.cos(x) // Returns the cosine of x (x is in radians)
+ Math.tan(x) // Returns the tangent of x (x is in radians)
+ Math.asin(x) // Returns the arcsine (inverse sine) of x (result is in radians)
+ Math.acos(x) // Returns the arccosine (inverse cosine) of x (result is in radians)
+ Math.atan(x) // Returns the arctangent (inverse tangent) of x (result is in radians)
+ Math.atan2(y, x) // Returns the arctangent of the quotient of its arguments, accounting for the quadrant
+ Math.exp(x) // Returns Euler's number (e) raised to the power of x
+ Math.log(x) // Returns the natural logarithm (base e) of x
+ Math.log10(x) // Returns the base-10 logarithm of x
+ Math.log2(x) // Returns the base-2 logarithm of x
+ Math.expm1(x) // Returns exp(x) - 1
+ Math.log1p(x) // Returns the natural logarithm of 1 + x
+ Math.sign(x) // Returns the sign of x (-1, 0, or 1)
+ Math.clz32(x) // Returns the number of leading zero bits in the 32-bit binary representation of x
+ Math.imul(a, b) // Returns the result of a 32-bit integer multiplication of a and b
+```
+
+### Random numbers
+
+To generate a pseudo-random floating-point number in the range of 0 (inclusive) and 1 (exclusive), use the `Math.random()` method. This means that the result will always be greater than or equal to 0 but less than 1. It’s commonly used when you need a random value in various scenarios, such as generating random numbers within a range, creating random colors, or simulating probabilities.
+
+### Usage
+
+```javascript
+let randomNumber = Math.random()
+// Example output: 0.345678912345
+```
+
+Since `Math.random()` generates values in the range [0, 1), you often want to scale this output to other ranges, like between 1 and 10, or to get an integer.
+
+```javascript
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min
+}
+
+// Example: random integer between 1 and 10
+getRandomInt(1, 10) // Example output: 5
+```
+
+You can even adopt `Math.random()` to simulate random true/false values:
+
+```javascript
+function getRandomBoolean() {
+  return Math.random() >= 0.5
+}
+
+getRandomBoolean()
+```
+
+<Aside type="danger">
+
+`Math.random()` produces pseudo-random numbers, which means that while they appear random, they are generated by an algorithm and are not truly random. For most purposes, this is sufficient, but it shouldn't be used for cryptographic purposes or where high-quality randomness is required. 
+
+For cryptographic purposes, you would utilize functions like `window.crypto.getRandomValues()` (in a browser environment), which provide more secure random values.
+
+</Aside>
+
