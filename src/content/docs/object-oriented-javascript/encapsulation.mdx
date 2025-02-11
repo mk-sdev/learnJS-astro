@@ -4,25 +4,241 @@ description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-JS is a highly popular programming language with a vast ecosystem and thriving community. It is easy to learn and provides a high-level structure that ensures a pleasant developer experience. Many GitHub repositories with the highest number of stars are associated with JS. 
+import { Aside } from "@astrojs/starlight/components"
 
-In 2007, a co-founder of StackOverflow, Jeff Atwood uttered a statement now known as Atwood's Law: <blockquote>Any application that can be written in JavaScript, will eventually be written in JavaScript.</blockquote> <br></br>This statement holds a lot of truth. Initially created for building frontend web applications, JS has evolved to become versatile, used for developing backend servers, mobile, desktop or even TV applications on all major platforms. JavaScript is everywhere, and this won't change for a long time, whether we like it or not. This is why it is worth mastering this language. Before you explore the syntax learn these key features of JavaScript:
+## What is encapsulation and why is it important?
 
-#### dynamically typed
+Many everyday objects have a casing that protects their internal mechanisms and components. This is done not only for aesthetic reasons but also for practical purposes. The casing shields these objects from irresponsible use. After all, we don’t want to allow someone to accidentally damage delicate parts or risk harm by unknowingly tampering with the device’s inner workings. The same applies to objects in programming. In order to protect them, we use encapsulation to hide their internal data and functions, allowing controlled access through specific methods. This prevents unintended modifications and keeps the object’s internal state secure, ensuring it’s used only in intended ways.
 
-It is a dynamically typed language, meaning variables do not have fixed types and can change type at runtime. Weak typing allows implicit type conversions, so operations between different types (like numbers and strings) can occur without explicit conversion. While this flexibility enhances adaptability, it may pose challenges related to type control in larger projects. Fortunately, as you'll soon discover, TypeScript can easily help address this issue.
+For example, consider a class <code>BankAccount</code> that stores the account balance. By default, <code>balance</code> is public, meaning anyone can change it freely, potentially leading to incorrect or unsafe values.
 
-#### interpreted
+```javascript
+class BankAccount {
+  balance // public field
 
-This language is interpreted, meaning that the source code is executed directly by the interpreter, facilitating development and testing of applications.  However, modern JavaScript engines use Just-In-Time (JIT) compilation, which compiles code during runtime to improve performance, making it faster than pure interpretation.
+  constructor(balance) {
+    this.balance = balance // lack of encapsulation, public field
+  }
+}
 
-#### multi-paradigm
+const account = new BankAccount(1000)
+console.log(account.balance) // 1000
 
-It is a multi-paradigm language, which means you can write imperative, object-oriented, or functional code. The latter became especially popular thanks to the React library.
+// Anyone can change the balance directly
+account.balance = -500 // Setting an invalid value
+console.log(account.balance) // -500
+```
 
-#### single-threaded
+## # symbol
 
-JavaScript is a single-threaded language, meaning that it does not inherently support multithreading directly. However, thanks to the mechanism of asynchronous programming, JavaScript can efficiently handle multiple operations simultaneously without the need for utilizing multiple threads.
+To mark a property as private (accessible only within the scope of the class itself), we can simply add the <code>#</code> symbol at the beginning of its name.
 
+```javascript
+class Example {
+  #privateField = 10
+  #privateMethod() {
+    console.log('secret')
+  }
+}
 
+const example = new Example()
+// console.log(example.#privateField); // Uncaught SyntaxError: Private field '#privateField' must be declared in an enclosing class
+example.#privateMethod() // Uncaught SyntaxError: Private field '#privateMethod' must be declared in an enclosing class
+```
+
+<Aside type="note">
+
+In the past, to mark a class member as private, a leading underscore (<code>_</code>) was often used in its name. However, this was purely informational and did not affect functionality, unlike the <code>#</code> syntax, which enforces actual privacy.
+
+</Aside>
+
+## Access modifiers
+
+The <code>private</code> modifier works similarly to the <code>#</code> symbol mentioned earlier. It restricts access to a class member so it can only be accessed within the class itself. The <code>protected</code> modifier allows access within the class and its subclasses but not outside of them.
+
+```typescript
+class Example {
+    private privateField = 10
+    private privateMethod() {
+      console.log('secret')
+
+  }
+}
+const example = new Example()
+console.log(example.privateField); // Property 'privateField' is private and only accessible within class 'Example'
+example.privateMethod() // Property 'privateMethod' is private and only accessible within class 'Example'
+```
+
+While private members can only be called within the class that defines them; protected members allow a subclass to inherit and use those members in its own methods. This makes protected helpful for creating a base class with shared functionality for its derived classes. If you attempt to access <code>protected</code> members outside of their intended scope, TypeScript will throw a compile-time error just as with <code>private</code> members. This ensures better data hiding and security for sensitive or implementation-specific details of a class.
+
+```typescript
+class Example {
+  protected protectedField = 10
+  protected protectedMethod() {
+    console.log('secret')
+  }
+}
+
+class SubClassExample extends Example {
+  getProtectedData(){
+    console.log(this.protectedField) // accessible in the subclass
+    this.protectedMethod() // accessible in the subclass
+  }
+}
+
+const example = new Example()
+console.log(example.protectedField) // Error
+example.protectedMethod() // Error
+```
+
+<Aside type="note">
+
+In TypeScript there is also the <code>public</code> modifier. It ensures that class properties and methods are accessible from anywhere—inside the class, its instances, and outside the class—which is the default behavior in TypeScript and JavaScript.
+
+</Aside>
+
+## Setters and getters
+
+While the <code>#</code> symbol is effective at preventing direct access to a method or property, what if we want them to remain accessible but in a more controlled and structured manner? For this purpose we create special methods that handle these tasks.
+
+```javascript
+class Person {
+  #age // private field
+
+  constructor(age) {
+    this.#age = age > 0 ? age : 0 // set initial age, or 0 if invalid
+  }
+
+  // Getter for age
+  getAge() {
+    return this.#age
+  }
+
+  // Setter for age with validation
+  setAge(value) {
+    if (value > 0) {
+      this.#age = value
+    } else {
+      console.error('Age must be a positive number.')
+    }
+  }
+}
+
+const person = new Person(25)
+console.log(person.getAge()) // 25 - calls the getAge method
+
+person.setAge(30) // Calls the setAge method
+console.log(person.getAge()) // 30
+
+person.setAge(-5) // Attempt to set an invalid value, triggers an error
+console.log(person.getAge()) // 30 - value remains unchanged
+```
+
+### set and get
+
+Thanks to <code>get</code> and <code>set</code>, we can access an object's properties as if they were regular fields, while still maintaining control over how they are accessed and modified.
+
+```javascript
+class Person {
+  #age // private field
+
+  constructor(age) {
+    this.#age = age > 0 ? age : 0 // set age to 0 if the given value is invalid
+  }
+
+  // Getter for age
+  get age() {
+    return this.#age
+  }
+
+  // Setter for age with validation
+  set age(value) {
+    if (value > 0) {
+      this.#age = value
+    } else {
+      console.error('Age must be a positive number.')
+    }
+  }
+}
+
+const person = new Person(25)
+console.log(person.age) // 25 - invokes the getter
+
+person.age = 30 // Invokes the setter
+console.log(person.age) // 30
+
+person.age = -5 // Attempt to set an invalid value, triggers an error
+console.log(person.age) // 30 - value remains unchanged
+```
+
+## Module-based encapsulation
+
+Module-based encapsulation refers to the practice of organizing code into independent, reusable modules that expose a controlled interface, while hiding the internal details and logic from the outside. This approach helps to prevent direct access to an object's internal state, ensuring that only specific functionality is exposed to other parts of the application. 
+
+In JavaScript, module-based encapsulation is often achieved through various patterns and techniques, including ES6 Modules, Immediately Invoked Function Expressions, and CommonJS Modules (Node.js). Here I'll focus on an example of ES6 Modules. 
+
+Consider a file <code>counter.js</code> which is a standalone module:
+
+```javascript
+// file: counter.js (Module)
+let count = 0 // private variable
+
+// Expose only the functions that are needed
+export function increment() {
+  count++
+}
+
+export function getCount() {
+  return count
+}
+
+// Internal function, not exposed
+function reset() {
+  count = 0
+}
+```
+
+Now we import it in another file:
+
+```javascript
+// file: app.js
+import { getCount, increment } from './counter.js'
+
+increment()
+console.log(getCount()) // 1
+```
+
+<code>count</code> is encapsulated within the <code>counter.js</code> module and cannot be accessed directly from <code>app.js</code>. Only the <code>increment()</code> and <code>getCount()</code> functions are exposed for interaction.
+
+## Nested scopes
+
+Encapsulation through nested scopes involves creating inner scopes that are enclosed within outer scopes. This allows certain variables and functions to be hidden from the global scope or other parts of the code, ensuring that they can only be accessed or modified in specific contexts. This allows you to create private variables and internal functions that are not directly accessible from the outside, thereby protecting the internal state and reducing the risk of unintended modifications.
+
+```javascript
+function createCounter(initialValue) {
+  let count = initialValue // private variable
+
+  // Method to increment the count
+  function increment() {
+    count++
+    console.log(`Current count: ${count}`)
+  }
+
+  // Return an object with a property (getCount) and method (increment)
+  return {
+    getCount: function () {
+      return count
+    },
+    increment,
+  }
+}
+
+const counter = createCounter(5)
+console.log(counter.getCount()) // 5 - Access the private variable via getter
+counter.increment() // Current count: 6 - Increment the count
+console.log(counter.getCount()) // 6 - Access the updated count
+console.log(count) // Uncaught ReferenceError: count is not defined
+```
+
+It works similarly to the concept of closures introduced in one of the previous chapters.
 

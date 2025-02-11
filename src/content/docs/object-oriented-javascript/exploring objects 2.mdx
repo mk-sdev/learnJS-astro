@@ -4,25 +4,168 @@ description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-JS is a highly popular programming language with a vast ecosystem and thriving community. It is easy to learn and provides a high-level structure that ensures a pleasant developer experience. Many GitHub repositories with the highest number of stars are associated with JS. 
+It's time to dive deeper into objects. In this lesson you'll discover many handy methods that objects offer us to simplify the code development process.
 
-In 2007, a co-founder of StackOverflow, Jeff Atwood uttered a statement now known as Atwood's Law: <blockquote>Any application that can be written in JavaScript, will eventually be written in JavaScript.</blockquote> <br></br>This statement holds a lot of truth. Initially created for building frontend web applications, JS has evolved to become versatile, used for developing backend servers, mobile, desktop or even TV applications on all major platforms. JavaScript is everywhere, and this won't change for a long time, whether we like it or not. This is why it is worth mastering this language. Before you explore the syntax learn these key features of JavaScript:
+## Non-static methods
 
-#### dynamically typed
+### isPrototypeOf()
 
-It is a dynamically typed language, meaning variables do not have fixed types and can change type at runtime. Weak typing allows implicit type conversions, so operations between different types (like numbers and strings) can occur without explicit conversion. While this flexibility enhances adaptability, it may pose challenges related to type control in larger projects. Fortunately, as you'll soon discover, TypeScript can easily help address this issue.
+The <code>isPrototypeOf()</code> method checks if an object exists in another object's prototype chain. It is often used to verify if an object is an instance of a given constructor or if it inherits from another object. The method returns <code>true</code> if the object is part of the prototype chain, and <code>false</code> otherwise.
 
-#### interpreted
+```javascript
+function Parent() {}
+function Child() {}
 
-This language is interpreted, meaning that the source code is executed directly by the interpreter, facilitating development and testing of applications.  However, modern JavaScript engines use Just-In-Time (JIT) compilation, which compiles code during runtime to improve performance, making it faster than pure interpretation.
+Child.prototype = new Parent();
 
-#### multi-paradigm
+const childInstance = new Child();
+console.log(Parent.prototype.isPrototypeOf(childInstance)); // true - Parent is in the prototype chain of childInstance
+console.log(Child.prototype.isPrototypeOf(childInstance));  // true - Child is directly in the prototype chain
+console.log(Object.prototype.isPrototypeOf(childInstance));  // true - Object is the root of the prototype chain
+```
 
-It is a multi-paradigm language, which means you can write imperative, object-oriented, or functional code. The latter became especially popular thanks to the React library.
+### propertyIsEnumerable()
 
-#### single-threaded
+Checks if a property is an object's enumerable own property (i.e., the property is directly defined on the object, not inherited from its prototype)
 
-JavaScript is a single-threaded language, meaning that it does not inherently support multithreading directly. However, thanks to the mechanism of asynchronous programming, JavaScript can efficiently handle multiple operations simultaneously without the need for utilizing multiple threads.
+```javascript
+const obj = { name: 'John', age: 30 };
+console.log(obj.propertyIsEnumerable('name')); // true
+console.log(obj.propertyIsEnumerable('toString')); // false (inherited property)
+```
 
+### toString()
 
+Returns a string representation of the object.
+
+```javascript
+const obj = { name: 'John', age: 30, toString: function() { return `Name: ${this.name}, Age: ${this.age}`; }};
+console.log(obj.toString()); // 'Name: John, Age: 30'
+```
+
+### valueOf()
+
+Returns the primitive value of the specified object.
+
+```javascript
+const numObject = { value: 42, valueOf: function() { return this.value; }};
+console.log(numObject.valueOf()); // 42
+console.log(numObject + 10); // 52 (uses valueOf to convert to primitive)
+```
+
+### toLocaleString()
+
+Returns a string representing the object, formatted according to the locale settings.
+
+```javascript
+const date = new Date('2023-09-25T12:00:00');
+console.log(date.toLocaleString('en-US')); // e.g., '9/25/2023, 12:00:00 PM'
+console.log(date.toLocaleString('fr-FR')); // e.g., '25/09/2023 à 12:00:00'
+```
+
+## Static methods
+
+You already know <code>Object.create()</code>, <code>Object.defineProperty()</code> and <code>Object.getOwnPropertyDescriptor()</code> from the previous lesson, so these methods won't be described here.
+
+### Object.keys()
+
+Returns an array of a given object's own (not inherited) enumerable property names.
+
+```javascript
+const obj = { a: 1, b: 2, c: 3 };
+const keys = Object.keys(obj);
+console.log(keys); // ['a', 'b', 'c']
+```
+
+### Object.values()
+
+Returns an array of a given object's own (not inherited) enumerable property values.
+
+```javascript
+const obj = { a: 1, b: 2, c: 3 };
+const values = Object.values(obj);
+console.log(values); // [1, 2, 3]
+```
+
+### Object.entries()
+
+Returns an array of a given object's own (not inherited) enumerable string-keyed properties as [key, value] pairs.
+
+```javascript
+const obj = { a: 1, b: 2, c: 3 };
+const entries = Object.entries(obj);
+console.log(entries); // [['a', 1], ['b', 2], ['c', 3]]
+```
+
+### Object.is()
+
+<code>Object.is()</code> compares two values and returns <code>true</code> if they are the same, and <code>false</code> otherwise. It is similar to the strict equality operator (<code>===</code>), but with some differences, such as distinguishing between <code>+0</code> and <code>-0</code>, and treating <code>NaN</code> as equal to <code>NaN</code>.
+
+```javascript
+console.log(Object.is(42, 42)); // true
+console.log(Object.is('hello', 'hello')); // true
+console.log(Object.is(+0, -0)); // false
+console.log(Object.is(NaN, NaN)); // true
+```
+
+### Object.freeze() and Object.isFrozen()
+
+<code>Object.freeze()</code> shallow freezes an object, preventing new properties from being added or deleted, and marking all existing properties as non-writable. <code>Object.isFrozen()</code> checks if an object is frozen.
+
+```javascript
+const obj = { a: 1 }
+Object.freeze(obj);
+obj.a = 2 // This will not change the value
+console.log(obj.a) // 1
+console.log(Object.isFrozen(obj)) // true
+```
+
+### Object.seal() and Object.isSealed()
+
+<code>Object.seal()</code> seals an object, preventing new properties from being added or deleted, but allowing existing properties to be modified. <code>Object.isSealed()</code> checks if an object is sealed.
+
+```javascript
+const obj = { a: 1 };
+Object.seal(obj);
+obj.a = 2; // This will change the value
+console.log(obj.a); // 2
+obj.b = 3; // This will not work
+console.log(obj.b); // undefined
+console.log(Object.isSealed(obj)); // true
+```
+
+### Object.preventExtensions() and Object.isExtensible()
+
+<code>Object.preventExtensions()</code> prevents new properties from being added to an object, but allows existing properties to be modified and deleted. <code>Object.isExtensible()</code> checks if a property can be added to an object.
+
+```javascript
+const obj = { a: 1 };
+Object.preventExtensions(obj);
+obj.b = 2; // This will not work
+console.log(obj.b); // undefined
+obj.a = 2; // This will work
+console.log(obj.a); // 2
+console.log(Object.isExtensible(obj)) // false
+```
+
+### Object.fromEntries()
+
+Transforms a list of key-value pairs into an object.
+
+```javascript
+const entries = [['a', 1], ['b', 2], ['c', 3]];
+const obj = Object.fromEntries(entries);
+console.log(obj); // { a: 1, b: 2, c: 3 }
+```
+
+### Object.assign()
+
+Copies the values of all enumerable own (not inherited) properties from one or more source objects to a target object. Can be used to <u>shallow</u> copy objects.
+
+```javascript
+const target = { a: 1 };
+const source = { b: 2, c: 3 };
+const result = Object.assign(target, source);
+console.log(result); // { a: 1, b: 2, c: 3 }
+```
 

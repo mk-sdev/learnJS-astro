@@ -4,25 +4,247 @@ description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-JS is a highly popular programming language with a vast ecosystem and thriving community. It is easy to learn and provides a high-level structure that ensures a pleasant developer experience. Many GitHub repositories with the highest number of stars are associated with JS. 
+import { Aside } from "@astrojs/starlight/components"
 
-In 2007, a co-founder of StackOverflow, Jeff Atwood uttered a statement now known as Atwood's Law: <blockquote>Any application that can be written in JavaScript, will eventually be written in JavaScript.</blockquote> <br></br>This statement holds a lot of truth. Initially created for building frontend web applications, JS has evolved to become versatile, used for developing backend servers, mobile, desktop or even TV applications on all major platforms. JavaScript is everywhere, and this won't change for a long time, whether we like it or not. This is why it is worth mastering this language. Before you explore the syntax learn these key features of JavaScript:
+## Constructors
 
-#### dynamically typed
+You already know some basic JS data types that are provided by JavaScript. But we can create our own types as well. One of the ways involves using constructors. A constructor is basically a function that is called while creating an object. In JavaScript, a constructor typically starts with an uppercase letter to distinguish it from regular functions.
 
-It is a dynamically typed language, meaning variables do not have fixed types and can change type at runtime. Weak typing allows implicit type conversions, so operations between different types (like numbers and strings) can occur without explicit conversion. While this flexibility enhances adaptability, it may pose challenges related to type control in larger projects. Fortunately, as you'll soon discover, TypeScript can easily help address this issue.
+```javascript
+function Person(name, age) {
+  this.name = name // Assigning name property
+  this.age = age // Assigning age property
+}
 
-#### interpreted
+// Creating an instance of Person
+const person1 = new Person('Alice', 30)
+console.log(person1.name) // Alice
+console.log(person1.age) // 30
+```
 
-This language is interpreted, meaning that the source code is executed directly by the interpreter, facilitating development and testing of applications.  However, modern JavaScript engines use Just-In-Time (JIT) compilation, which compiles code during runtime to improve performance, making it faster than pure interpretation.
+The <code>this</code> keyword is used to assign values to the properties of the <code>Person</code> object being created. Without <code>this</code>, the assignment would only affect local variables within the constructor and would not set the properties of the object itself.
 
-#### multi-paradigm
+Constructor functions are hoisted, meaning the declaration of the function is moved to the top of its scope.
 
-It is a multi-paradigm language, which means you can write imperative, object-oriented, or functional code. The latter became especially popular thanks to the React library.
+```javascript
+const person = new Person('Alice', 25)
 
-#### single-threaded
+function Person(name, age) {
+  this.name = name
+  this.age = age
+}
 
-JavaScript is a single-threaded language, meaning that it does not inherently support multithreading directly. However, thanks to the mechanism of asynchronous programming, JavaScript can efficiently handle multiple operations simultaneously without the need for utilizing multiple threads.
+console.log(person.name) // Alice
+console.log(person.age) // 25
+```
 
+When you call a constructor function with the <code>new</code> keyword, several steps occur:
 
+- A new object is created (e.g., <code>{}</code>).
+- The type of the new object is set to the constructor's prototype.
+- The constructor function is called with the new object as its context (see the "Execution context" lesson from the "Miscellaneous" chapter).
+- If the constructor returns a non-primitive value (an object), that value is returned; otherwise, the new object is returned.
+
+Now, run <code>console.dir(Person)</code>. This provides insights into constructor's structure and available methods. There are a few interesting properties there:
+
+- <u>name: "Person"</u> - it's simply the name of the function.
+- <u>length: 2</u> - this property indicates the number of parameters that the function expects, which in this case is 2 (for <code>name</code> and <code>age</code>).
+- <u>caller: null</u> - this property points to the function that invoked the current function. It is <code>null</code> here because the <code>Person</code> function has not been called by another function in this context, and typically in strict mode, the caller property is not accessible.
+- <u>arguments: null</u> - this property refers to the <code>arguments</code> object that is available inside functions, containing the values of the arguments passed to the function. In this case, it is <code>null</code> because <code>arguments</code> is not a property of the function itself but rather of the function's execution context. Since you're inspecting the function definition, this property will show up as <code>null</code>.
+
+In addition to that, there is also <code>prototype</code> property (usually referred to as <code>[[Prototype]]</code>). It shows the prototype object of the <code>Person</code> constructor. For more information visit the "Inheritance" lesson.
+
+```javascript
+function Person(name, age) {
+  this.name = name
+  this.age = age
+}
+
+const person1 = new Person('Alice', 30)
+
+Person.prototype.introduce = function () {
+  console.log(`Hi, I'm ${this.name} and I'm ${this.age} years old.`)
+}
+
+person1.introduce()
+```
+
+## Classes
+
+A newer way of creating custom types is by using classes. They provide a cleaner and more intuitive way to create objects and implement inheritance. Classes make it easier to write and manage object-oriented code, especially for developers familiar with class-based languages like Java or C#. Unlike constructors, classes may contain methods. They are also hoisted, but unlike constructors, they must be defined before they are instantiated, meaning you cannot reference them before the declaration.
+
+```javascript
+const obj = new MyClass() // ReferenceError
+class MyClass {
+  constructor() {
+    console.log('Class is defined')
+  }
+}
+```
+
+A class is declared using the <code>class</code> keyword followed by a name. It can include a constructor method; if no constructor is defined, a default one is provided by JavaScript.
+
+```javascript
+class Person {
+  constructor(name, age) {
+    this.name = name
+    this.age = age
+  }
+
+  introduce() {
+    console.log(`Hi, I'm ${this.name} and I'm ${this.age} years old.`)
+  }
+}
+```
+
+Just like functions, classes can be defined as expressions.
+
+```javascript
+const Person = class {
+  constructor(name) {
+    this.name = name
+  }
+
+  introduce() {
+    console.log(`Hi, I'm ${this.name}`)
+  }
+}
+
+const person = new Person('Alice')
+person.introduce() // Hi, I'm Alice
+```
+
+You can create instances of a class using the <code>new</code> keyword, just like with constructor functions.
+
+```javascript
+const person = new Person('Alice', 30)
+person.introduce()  // Hi, I'm Alice and I'm 30 years old.
+```
+
+Not all properties need to be passed to the constructor.
+
+```javascript
+class Dog {
+  paws = 4
+  constructor(name) {
+    this.name = name
+  }
+
+  info() {
+    console.log('My name is ' + this.name + ' and I have ' + this.paws + ' paws.')
+  }
+}
+
+const dog = new Dog('Vincent')
+dog.info() // "My name is Vincent and I have 4 paws."
+```
+
+Unlike constructor functions, class properties can be static. Static properties are properties that belong to the class itself, not instances of the class. You can call them directly on the class without needing an instance. An example of a static method is <code>isArray()</code> from <code>Array</code> object or <code>create()</code> from <code>Object</code>. To create a static property you must simply add the <code>static</code> keyword before the property's definition.
+
+```javascript
+class Person {
+  // Static field
+  static species = 'Homo sapiens'
+
+  constructor(name, age) {
+    this.name = name
+    this.age = age
+  }
+
+  introduce() {
+    console.log(`Hi, I'm ${this.name}, I'm ${this.age} years old.`)
+  }
+
+  // Static method
+  static speciesInfo() {
+    console.log(`All humans belong to the species: ${Person.species}`)
+  }
+}
+
+// Accessing static field directly on the class
+console.log(Person.species) // "Homo sapiens"
+
+// Accessing static method
+Person.speciesInfo() // "All humans belong to the species: Homo sapiens"
+
+// Instance of the class
+const person1 = new Person('Alice', 30)
+person1.introduce() // "Hi, I'm Alice, I'm 30 years old."
+
+// Static fields are not accessible on instances
+console.log(person1.species) // undefined
+```
+
+Local, instance, and static variables can share the same name - they exist in different scopes, so they do not interfere with each other. The scope determines which one is accessed depending on where the code is executed.
+
+```javascript
+class Example {
+  static variable = 0 // Static variable
+
+  constructor() {
+    let variable = 10 // Local variable
+    this.variable = 5 // Instance variable
+
+    console.log(variable) // Local variable
+    console.log(this.variable) // Instance variable
+    console.log(Example.variable) // Static variable
+  }
+}
+
+const obj = new Example()
+// Local variable: 10, Instance variable: 5, Static variable: 0
+```
+
+<Aside type="note">
+
+Code inside class bodies runs in strict mode by default. 
+
+</Aside>
+
+### Nested classes
+
+You can nest one class inside another. Nested classes can be static or non-static.
+
+Static nested classes can be accessed directly through the outer class, without the need to instantiate the outer class. This makes them more suitable for utility classes or helper classes related to the outer class.
+
+```javascript
+class Outer {
+  static Inner = class {
+    constructor() {
+      this.name = 'Inner class';
+    }
+    sayHello() {
+      console.log('Hello from ' + this.name);
+    }
+  }
+}
+
+const innerInstance = new Outer.Inner();
+innerInstance.sayHello(); // "Hello from Inner class"
+```
+
+In the example above, the <code>Inner</code> class is static, meaning it is treated as a static property of the <code>Outer</code> class. You can instantiate it directly using <code>Outer.Inner</code>. This is useful when you want to define a related class that does not require direct access to an instance of the outer class.
+
+Non-static nested classes are defined as instance properties within an outer class. To access a non-static nested class, you need to first instantiate the outer class, and then create an instance of the inner class through that outer instance.
+
+```javascript
+class Outer {
+  constructor() {
+    this.Inner = class {
+      constructor() {
+        this.name = 'Inner class';
+      }
+      sayHello() {
+        console.log('Hello from ' + this.name);
+      }
+    };
+  }
+}
+
+const outerInstance = new Outer();
+const innerInstance = new outerInstance.Inner();
+innerInstance.sayHello(); // "Hello from Inner class"
+```
+
+<code>Inner</code> is a non-static nested class. It is an instance property of the <code>Outer</code> class, and you can only create an instance of <code>Inner</code> after creating an instance of <code>Outer</code>. This is useful when the inner class depends on the context or state of the outer class.
 

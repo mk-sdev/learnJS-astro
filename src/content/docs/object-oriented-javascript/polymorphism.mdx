@@ -4,25 +4,119 @@ description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-JS is a highly popular programming language with a vast ecosystem and thriving community. It is easy to learn and provides a high-level structure that ensures a pleasant developer experience. Many GitHub repositories with the highest number of stars are associated with JS. 
+## What is polymorphism
 
-In 2007, a co-founder of StackOverflow, Jeff Atwood uttered a statement now known as Atwood's Law: <blockquote>Any application that can be written in JavaScript, will eventually be written in JavaScript.</blockquote> <br></br>This statement holds a lot of truth. Initially created for building frontend web applications, JS has evolved to become versatile, used for developing backend servers, mobile, desktop or even TV applications on all major platforms. JavaScript is everywhere, and this won't change for a long time, whether we like it or not. This is why it is worth mastering this language. Before you explore the syntax learn these key features of JavaScript:
+Polymorphism is a fundamental concept in object-oriented programming that refers to the ability of a single entity, such as a function, variable, or operator, to behave differently depending on the context in which it is used. The word "polymorphism" itself means "many shapes" in Greek, and in programming, it refers to the ability to call the same method on different objects, each responding in its own way.
 
-#### dynamically typed
+Due to the dynamic nature of JavaScript, it handles polymorphism differently than in other languages. Thankfully, TypeScript comes in handy when it needs to be applied more elegantly.
 
-It is a dynamically typed language, meaning variables do not have fixed types and can change type at runtime. Weak typing allows implicit type conversions, so operations between different types (like numbers and strings) can occur without explicit conversion. While this flexibility enhances adaptability, it may pose challenges related to type control in larger projects. Fortunately, as you'll soon discover, TypeScript can easily help address this issue.
+## Subtype polymorphism
 
-#### interpreted
+Subtype polymorphism, also known as inclusion polymorphism, is a type of polymorphism where a method or function can operate on objects of different types, provided those types are related through inheritance. Since you have already covered lessons on inheritance and method overriding, these concepts will not be elaborated on here.
 
-This language is interpreted, meaning that the source code is executed directly by the interpreter, facilitating development and testing of applications.  However, modern JavaScript engines use Just-In-Time (JIT) compilation, which compiles code during runtime to improve performance, making it faster than pure interpretation.
+The interesting thing about subtyping is that a subclass object can be treated as an instance of its superclass, allowing methods defined in the superclass to be invoked on the object, often enabling dynamic method resolution at runtime. It is possible thanks to two closely related concepts: upcasting and late binding.
 
-#### multi-paradigm
+```typescript
+class Animal {
+  speak(): void {
+    console.log("Animal makes a sound");
+  }
+}
 
-It is a multi-paradigm language, which means you can write imperative, object-oriented, or functional code. The latter became especially popular thanks to the React library.
+class Dog extends Animal {
+  speak(): void {
+    console.log("Dog barks");
+  }
+}
 
-#### single-threaded
+// Note how we use Animal class as a type for animal object
+let animal: Animal = new Dog(); // Upcasting
+animal.speak(); // Output: "Dog barks" (Late Binding)
+```
 
-JavaScript is a single-threaded language, meaning that it does not inherently support multithreading directly. However, thanks to the mechanism of asynchronous programming, JavaScript can efficiently handle multiple operations simultaneously without the need for utilizing multiple threads.
+In This example, demonstrates how upcasting and late binding work in practice.
 
+- <u>Upcasting</u>: A <code>Dog</code> instance is assigned to a variable of type <code>Animal</code>. This is an example of treating a subclass (<code>Dog</code>) as its superclass (<code>Animal</code>). This allows polymorphic behavior, where the variable <code>animal</code> can refer to any subclass of <code>Animal</code> without needing to know its specific type.
+- <u>Late Binding</u>: When the <code>speak()</code> method is called on the <code>animal</code> variable, TypeScript resolves the method dynamically at runtime based on the actual object type (<code>Dog</code>). This results in the <code>speak()</code> method of the <code>Dog</code> class being executed, even though the variable is typed as <code>Animal</code>.
 
+JavaScript does not enforce strict type hierarchies or annotations, as it is a dynamically typed language. While you can simulate this type of polymorphism using prototypes and inheritance, there is no explicit mechanism for upcasting. Methods are resolved dynamically at runtime based on the object's prototype chain, but without the compile-time safety provided by TypeScript.
+
+## Parametric polymorphism
+
+Parametric polymorphism allows a function or a class to operate on data of different types while remaining type-safe. This is typically achieved by using generic types, where the specific type is provided at runtime or compile-time, but the logic remains the same. JavaScript doesn't support generics at all but TypeScript does.
+
+### Generics in TypeScript
+
+In TypeScript, parametric polymorphism is implemented using generics. Generics allow you to write functions, classes, or interfaces that can work with any data type without losing type safety. The type is specified when the function or class is used, enabling it to handle different types of data while keeping the logic flexible.
+
+Consider a function that accepts an array of any type. The type of the elements in the array is specified when the function is called, but the function’s logic remains the same for any type of array.
+
+```typescript
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+console.log(identity(5))    // Output: 5
+console.log(identity('hello')) // Output: 'hello'
+```
+
+The example above demonstrates a generic function named identity that accepts a parameter arg of any type <code>T</code> and returns a value of the same type <code>T</code>. The type <code>T</code> is a placeholder that will be replaced with an actual type when the function is called. If you don't understand it, I encourage you to visit the lesson about generics from the "TypeScript" chapter.
+
+## Ad hoc polymorphism
+
+Ad hoc polymorphism allows a function or an operator to behave differently based on its arguments or context. It is achieved through function overloading or operator overloading.
+
+### function overloading
+
+Function overloading is a concept where multiple functions with the same name can exist, but with different parameters (number or type). The correct version of the function is called based on the arguments provided during the function call.
+
+In TypeScript, function overloading allows you to define multiple function signatures with the same name but different parameter types, orders, or numbers of parameters. The function implementation is written once, and TypeScript will determine which signature to use based on the provided arguments when the function is called. Overloading in TypeScript doesn't actually create multiple implementations; instead, the compiler uses the function signatures to enforce type safety, ensuring that the correct parameters are passed.
+
+```typescript
+// TS code
+function greet(name: string): string; // Overload signature for string argument
+function greet(name: number): string; // Overload signature for number argument
+
+function greet(name: string | number): string {
+  if (typeof name === 'string') {
+    return `Hello, ${name}!`;
+  } else {
+    return `Hello, person with ID ${name}!`; 
+  }
+}
+
+console.log(greet('Alice'))  // Output: Hello, Alice!
+console.log(greet(123))  // Output: Hello, person with ID 123!
+```
+
+In JavaScript, function overloading is not supported in the same way as in other languages like Java or TypeScript. However, you can simulate function overloading by checking the types or number of arguments inside the function. 
+
+```javascript
+// JS code
+function add(a, b) {
+  if (typeof b === 'undefined') {
+    // If only one argument is provided, return it doubled (like a unary function)
+    return a + a
+  } else {
+    // If two arguments are provided, return their sum
+    return a + b
+  }
+}
+
+console.log(add(5))        // Output: 10 (single argument, doubled)
+console.log(add(5, 3))     // Output: 8  (two arguments, added)
+```
+
+### operator overloading
+
+Operator overloading is a concept that certain functions can be "upgraded" to operators, allowing their calls with the corresponding operator symbol. Operator overloading is not natively supported in JavaScript or TypeScript.
+
+### coercion
+
+Sometimes implicit type conversion is referred to as a form of polymorphism called "coercion polymorphism". See the type conversion lesson from data types chapter.
+
+```javascript
+let result = 4 + '5'
+console.log(result) // "45"
+```
 

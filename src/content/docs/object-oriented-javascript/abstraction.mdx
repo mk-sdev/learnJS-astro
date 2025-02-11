@@ -4,25 +4,135 @@ description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-JS is a highly popular programming language with a vast ecosystem and thriving community. It is easy to learn and provides a high-level structure that ensures a pleasant developer experience. Many GitHub repositories with the highest number of stars are associated with JS. 
+import { Aside } from "@astrojs/starlight/components"
 
-In 2007, a co-founder of StackOverflow, Jeff Atwood uttered a statement now known as Atwood's Law: <blockquote>Any application that can be written in JavaScript, will eventually be written in JavaScript.</blockquote> <br></br>This statement holds a lot of truth. Initially created for building frontend web applications, JS has evolved to become versatile, used for developing backend servers, mobile, desktop or even TV applications on all major platforms. JavaScript is everywhere, and this won't change for a long time, whether we like it or not. This is why it is worth mastering this language. Before you explore the syntax learn these key features of JavaScript:
+## What are abstract classes?
 
-#### dynamically typed
+Abstract classes are a special type of class that cannot be instantiated directly. Their primary purpose is to serve as a base or blueprint for other classes to inherit from. Abstract classes may contain both abstract and non-abstract methods.
 
-It is a dynamically typed language, meaning variables do not have fixed types and can change type at runtime. Weak typing allows implicit type conversions, so operations between different types (like numbers and strings) can occur without explicit conversion. While this flexibility enhances adaptability, it may pose challenges related to type control in larger projects. Fortunately, as you'll soon discover, TypeScript can easily help address this issue.
+- Abstract methods are methods that can only be declared in abstract classes and do not have an implementation (i.e., a body). They serve as placeholders for methods that must be implemented in the closest non-abstract subclasses. This enforces a structure on the child classes, ensuring they implement certain functionality.
+- Non-abstract methods in an abstract class are fully implemented methods that can be inherited by child classes. These methods can be overridden, but they do not need to be.
 
-#### interpreted
+## Abstract classes in JavaScript
 
-This language is interpreted, meaning that the source code is executed directly by the interpreter, facilitating development and testing of applications.  However, modern JavaScript engines use Just-In-Time (JIT) compilation, which compiles code during runtime to improve performance, making it faster than pure interpretation.
+JavaScript does not have built-in abstract classes support like other languages such as Java or C#. However, you can simulate them by throwing errors in methods that should be implemented by subclasses.
 
-#### multi-paradigm
+In the example below, the class <code>Animal</code> is treated like an abstract class. It contains an unimplemented method <code>speak</code>, and attempts to instantiate the <code>Animal</code> class directly will result in an error. The <code>Dog</code> and <code>Cat</code> classes are derived from <code>Animal</code> and each provides its own implementation of the <code>speak</code> method.
 
-It is a multi-paradigm language, which means you can write imperative, object-oriented, or functional code. The latter became especially popular thanks to the React library.
+```javascript
+class Animal {
+  constructor(name) {
+    if (new.target === Animal) {
+      throw new Error('Cannot instantiate abstract class')
+    }
+    this.name = name
+  }
 
-#### single-threaded
+  speak() {
+    throw new Error('Method "speak" must be implemented')
+  }
+}
 
-JavaScript is a single-threaded language, meaning that it does not inherently support multithreading directly. However, thanks to the mechanism of asynchronous programming, JavaScript can efficiently handle multiple operations simultaneously without the need for utilizing multiple threads.
+class Dog extends Animal {
+  speak() {
+    console.log(`${this.name} barks`)
+  }
+}
+
+class Cat extends Animal {
+  speak() {
+    console.log(`${this.name} meows`)
+  }
+}
+
+const dog = new Dog('Rex')
+dog.speak() // Rex barks
+const cat = new Cat('Whiskers')
+cat.speak() // Whiskers meows
+
+```
+
+This pattern enforces that any subclass of <code>Animal</code> must implement the <code>speak</code> method, otherwise an error will be thrown. This behavior mimics the concept of abstract classes, ensuring that child classes adhere to a particular structure.
+
+### new.target
+
+The <code>new.target</code> is used to detect whether a constructor is called directly or via inheritance. In the example above, <code>new.target === Animal</code> ensures that the <code>Animal</code> class cannot be instantiated directly. If <code>Animal</code> is the target of the <code>new</code> operator (i.e., if it is called directly), an error is thrown, simulating an abstract class.
+
+<Aside type="caution">
+
+<code>new.target</code> doesn't work with arrow functions
+
+</Aside>
+
+## Abstract classes in TypeScript
+
+While JavaScript doesn't directly provide abstraction, TypeScript does. We can achieve this by placing the <code>abstract</code> keyword before the class declaration.
+
+```typescript
+abstract class Shape {
+  abstract getArea(): number
+  abstract getPerimeter(): number
+  printDetails(): void {
+    console.log(
+      `Area: ${this.getArea()}, Perimeter: ${this.getPerimeter()}`,
+    )
+  }
+}
+
+class Circle extends Shape {
+  radius: number
+  constructor(radius: number) {
+    super()
+    this.radius = radius
+  }
+  getArea(): number {
+    return Math.PI * Math.pow(this.radius, 2)
+  }
+  getPerimeter(): number {
+    return 2 * Math.PI * this.radius
+  }
+}
+
+const circle = new Circle(5)
+circle.printDetails() 
+// "Area: 78.53981633974483, Perimeter: 31.41592653589793"
+```
+
+In this example, the abstract class <code>Shape</code> cannot be instantiated directly. It contains abstract methods <code>getArea()</code> and <code>getPerimeter(),</code> which must be implemented in the derived class <code>Circle</code>. The subclass provides concrete implementation of the <code>getArea()</code> and <code>getPerimeter()</code> methods.
+
+The <code>Shape</code> class also has a non-abstract method <code>printDetails(),</code> which is shared by subclasses. This shows how abstract classes can combine both abstract and non-abstract methods, allowing common functionality to be reused while enforcing certain methods to be overridden in subclasses. 
 
 
+
+<hr/>
+
+While abstract classes are meant to be inherited, they can also inherit from other classes, both abstract and non-abstract.
+
+```typescript
+class BaseClass {
+  sayHello(): void {
+    console.log('Hello from BaseClass!')
+  }
+}
+
+abstract class AbstractClass1 extends BaseClass {
+  abstract doSomething(): void
+}
+
+abstract class AbstractClass2 extends AbstractClass1 {
+  abstract anotherAbstractMethod(): void
+}
+
+class FinalClass extends AbstractClass2 {
+  // must implement all abstract methods from its superclasses
+
+  doSomething(): void {
+    console.log('Doing something in FinalClass!')
+  }
+
+  anotherAbstractMethod(): void {
+    console.log('Doing another thing in FinalClass!')
+  }
+}
+```
 

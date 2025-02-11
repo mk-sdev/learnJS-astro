@@ -4,25 +4,193 @@ description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-JS is a highly popular programming language with a vast ecosystem and thriving community. It is easy to learn and provides a high-level structure that ensures a pleasant developer experience. Many GitHub repositories with the highest number of stars are associated with JS. 
+import console from '../../../assets/console.png'
+import Img from '../../../components/Img.astro'
+import YT from '../../../components/YT.astro'
+import { Aside } from '@astrojs/starlight/components'
 
-In 2007, a co-founder of StackOverflow, Jeff Atwood uttered a statement now known as Atwood's Law: <blockquote>Any application that can be written in JavaScript, will eventually be written in JavaScript.</blockquote> <br></br>This statement holds a lot of truth. Initially created for building frontend web applications, JS has evolved to become versatile, used for developing backend servers, mobile, desktop or even TV applications on all major platforms. JavaScript is everywhere, and this won't change for a long time, whether we like it or not. This is why it is worth mastering this language. Before you explore the syntax learn these key features of JavaScript:
+## Prototypal inheritance
 
-#### dynamically typed
+You can compare inheritance in programming to inheritance in real life. Children inherit certain characteristics from their parents. In JavaScript, this concept is implemented using prototypal inheritance, where objects can inherit properties and methods from other objects.
 
-It is a dynamically typed language, meaning variables do not have fixed types and can change type at runtime. Weak typing allows implicit type conversions, so operations between different types (like numbers and strings) can occur without explicit conversion. While this flexibility enhances adaptability, it may pose challenges related to type control in larger projects. Fortunately, as you'll soon discover, TypeScript can easily help address this issue.
+When you create an object (e.g., an array) and then log it to the console, you'll see something strange. In addition to the properties you created there will be a property called <code>[[Prototype]]</code> (in some browsers it is called `__proto__`). This is basically an object that your object inherits from. In our case, the prototype object is the built-in <code>Array</code>.
 
-#### interpreted
+<Img src={console} />
 
-This language is interpreted, meaning that the source code is executed directly by the interpreter, facilitating development and testing of applications.  However, modern JavaScript engines use Just-In-Time (JIT) compilation, which compiles code during runtime to improve performance, making it faster than pure interpretation.
+Every JavaScript object has a prototype, from which it can inherit properties and methods. When you access a property or method on an object, JavaScript first checks if the property exists on the object itself. If not, it looks up the <b>prototype chain</b> to see if it’s defined in the object's prototype, and continues searching up the chain until it reaches the root, which is usually <code>Object.prototype</code>.
 
-#### multi-paradigm
+<hr />
 
-It is a multi-paradigm language, which means you can write imperative, object-oriented, or functional code. The latter became especially popular thanks to the React library.
+To get an object's prototype, we can use <code>Object.getPrototypeOf()</code> method.
 
-#### single-threaded
+Every class in JavaScript has also a special <code>prototype</code> property. This property is not directly accessible from the instances of the class. In fact, the <code>prototype</code> property of a class is used as the prototype for its instances. When an instance is created, its internal prototype (accessible via <code>Object.getPrototypeOf(instance)</code>) points to the <code>prototype</code> property of the class that created it.
 
-JavaScript is a single-threaded language, meaning that it does not inherently support multithreading directly. However, thanks to the mechanism of asynchronous programming, JavaScript can efficiently handle multiple operations simultaneously without the need for utilizing multiple threads.
+```javascript
+class Animal {
+  speak() {
+    console.log('The animal makes a sound')
+  }
+}
 
+class Dog extends Animal {
+  speak() {
+    console.log('The dog barks')
+  }
+}
 
+// Create an instance of the subclass
+const myDog = new Dog()
 
+// Use Object.getPrototypeOf() to get the prototype of the object
+const prototype = Object.getPrototypeOf(myDog)
+
+console.log('Prototype of myDog:', prototype)
+
+// Check if the prototype is Dog.prototype
+console.log(prototype === Dog.prototype) // true
+
+// Call a method from the prototype
+prototype.speak() // Output: The dog barks
+```
+
+If you are still struggling to understand the topic, I hope this video clarifies it a bit:
+
+<YT id={'1UTqFAjYx1k'} />
+
+## Class inheritance
+
+Class inheritance allows one class (called the subclass) to inherit properties and methods from another class (called the superclass). In JavaScript, class inheritance is built on top of prototypal inheritance, meaning classes are essentially syntactic sugar over the prototype-based model. This means that even when using classes, objects ultimately inherit from other objects via the prototype chain.
+
+To create a subclass that inherits from a superclass, we apply the <code>extends</code> keyword. The subclass automatically inherits non-private properties and methods of the superclass (see the encapsulation lesson).
+
+```javascript
+class Animal {
+  age = 10
+  constructor(name) {
+    this.name = name
+  }
+  speak() {
+    console.log(`${this.name} makes a noise`)
+  }
+}
+
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name) // Calls the constructor of the superclass (Animal)
+    this.breed = breed
+  }
+  speak() {
+    console.log(`${this.name} barks`)
+  }
+}
+
+const animal = new Animal('Luna')
+animal.speak() // Luna makes a noise
+const dog = new Dog('Vincent', 'Labrador')
+dog.speak() // Vincent barks
+console.log(dog.age) // 10 // Dog automatically inherited this property from Animal.
+```
+
+### super
+
+Two things may have caught your attention in the above code.
+
+The first thing is the word <code>super</code>. It is used to call methods or the constructor of the parent class in a subclass. This allows the subclass to inherit behavior from its parent class and modify or extend it as needed.
+
+### overriding
+
+The second thing is that the <code>Dog</code> class has a method with the same name as in its superclass, but it behaves differently. This is called method <b>overriding</b>, where a subclass provides its own implementation of a method already defined in the parent class.
+
+If we want to override a method while keeping its original logic, there is nothing stopping us from using <code>super</code> in the method of the subclass.
+
+```javascript
+class Animal {
+  speak() {
+    console.log('Animal speaks')
+  }
+}
+
+class Dog extends Animal {
+  speak() {
+    super.speak() // Calls the speak method from Animal
+    console.log('Dog barks')
+  }
+}
+
+const dog = new Dog()
+dog.speak() // Animal speaks; Dog barks
+```
+
+In JavaScript, a subclass can also be a superclass of another class. This means a class can inherit from another and still be inherited by others, forming a chain of inheritance. However, JavaScript supports single inheritance, meaning a class can inherit from only one class at a time. This avoids the complexities associated with multiple inheritance.
+
+```javascript
+class Animal {
+  constructor(name) {
+    this.name = name
+  }
+  speak() {
+    console.log(`${this.name} makes a sound.`)
+  }
+}
+
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name)
+    this.breed = breed
+  }
+  speak() {
+    console.log(`${this.name} barks.`)
+  }
+}
+
+class Puppy extends Dog {
+  constructor(name, breed, age) {
+    super(name, breed)
+    this.age = age
+  }
+  speak() {
+    console.log(`${this.name} is a puppy and barks.`)
+  }
+}
+```
+
+<Aside type="tip">
+
+If you are using TypeScript, you can explicitly indicate that a method in a subclass overrides a method from the superclass by using the <code>override</code> keyword.
+
+```typescript
+class Animal {
+  speak(): void {
+    console.log('Animal makes a sound')
+  }
+}
+
+class Dog extends Animal {
+  override speak(): void {
+    // Explicitly overriding the 'speak' method from Animal
+    console.log('Dog barks')
+  }
+}
+
+const dog = new Dog()
+dog.speak() // Output: Dog barks
+```
+
+The benefits of using the <code>override</code> keyword include:
+
+- <u>Error prevention</u>: TypeScript will throw an error if the method in the
+  subclass does not correctly override the method in the superclass (e.g, you
+  misspelled its name), helping to catch potential mistakes at compile time.
+- <u>Clarity of intent</u>: The use of <code>override</code> makes it clear that
+  the method is intended to replace the superclass method, improving code
+  readability and maintainability.
+
+</Aside>
+
+<Aside type="caution">
+
+Inheritance is not always the best option. Consider using composition instead.
+
+<YT id={'nnwD5Lwwqdo'} />
+
+</Aside>

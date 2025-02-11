@@ -4,25 +4,246 @@ description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-JS is a highly popular programming language with a vast ecosystem and thriving community. It is easy to learn and provides a high-level structure that ensures a pleasant developer experience. Many GitHub repositories with the highest number of stars are associated with JS. 
+In the previous chapter, you learned one way to create an object: by using a literal. In this chapter, you'll learn a few more ways to do so. The first is <code>Object.create()</code>. This method takes two arguments. The first is the <b>prototype</b>, which is the base object. If you want your object to have no prototype, you can pass either <code>{}</code> or <code>null</code>. The second parameter is an object literal that extends the prototype. It is optional.
 
-In 2007, a co-founder of StackOverflow, Jeff Atwood uttered a statement now known as Atwood's Law: <blockquote>Any application that can be written in JavaScript, will eventually be written in JavaScript.</blockquote> <br></br>This statement holds a lot of truth. Initially created for building frontend web applications, JS has evolved to become versatile, used for developing backend servers, mobile, desktop or even TV applications on all major platforms. JavaScript is everywhere, and this won't change for a long time, whether we like it or not. This is why it is worth mastering this language. Before you explore the syntax learn these key features of JavaScript:
+```javascript
+// Prototype object
+const animal = {
+  breed: 'Golden Retriever',
+}
 
-#### dynamically typed
+// Create a new object `dog` with `animal` as its prototype
+const dog = Object.create(animal, {
+  name: {
+    value: 'Vincent',
+  },
+  speak: {
+    value: function () {
+      console.log(`${this.name} makes a noise`)
+    },
+  },
+})
 
-It is a dynamically typed language, meaning variables do not have fixed types and can change type at runtime. Weak typing allows implicit type conversions, so operations between different types (like numbers and strings) can occur without explicit conversion. While this flexibility enhances adaptability, it may pose challenges related to type control in larger projects. Fortunately, as you'll soon discover, TypeScript can easily help address this issue.
+dog.speak() // 'Vincent makes a noise'
+console.log(dog.name) // 'Vincent'
+```
 
-#### interpreted
+## Property descriptors
 
-This language is interpreted, meaning that the source code is executed directly by the interpreter, facilitating development and testing of applications.  However, modern JavaScript engines use Just-In-Time (JIT) compilation, which compiles code during runtime to improve performance, making it faster than pure interpretation.
+Did you notice the <code>value</code> keys? This is one of the so-called property descriptors. They allow us to define the behavior and characteristics of properties within objects. Here's a breakdown of each of them:
 
-#### multi-paradigm
+### value
 
-It is a multi-paradigm language, which means you can write imperative, object-oriented, or functional code. The latter became especially popular thanks to the React library.
+It is obviously used to define the value of a property.
 
-#### single-threaded
+```javascript
+const person = Object.create(
+  {}, // prototype
+  {
+    name: {
+      value: 'John',
+    },
+  },
+)
 
-JavaScript is a single-threaded language, meaning that it does not inherently support multithreading directly. However, thanks to the mechanism of asynchronous programming, JavaScript can efficiently handle multiple operations simultaneously without the need for utilizing multiple threads.
+console.log(person.name) // 'John'
+```
+
+### writable
+
+Determines if the property value can be changed after it has been set. By default, it is set to <code>false</code>.
+
+```javascript
+const person = Object.create(
+  {},
+  {
+    name: {
+      value: 'John',
+    },
+    age: {
+      value: 28,
+      writable: true,
+    },
+  },
+)
+
+person.name = 'Jack'
+console.log(person.name) // 'John'
+
+person.age = 30
+console.log(person.age) //30
+```
+
+### enumerable
+
+Decides if the property will be included in loops that enumerate properties (like <code>for-in</code>). For example, <code>length</code> property of an array is not enumerable and it is invisible in loops. By default, it is set to <code>false</code>.
+
+```javascript
+const person = Object.create({}, {
+  name: {
+    value: 'John'
+  },
+  age: {
+    value: 28,
+    enumerable: true
+  }
+})
+
+for(const key in person)
+  console.log(key) // 'age'
+```
+
+### configurable
+
+This attribute specifies whether the property can be deleted from the object and whether its attributes (except for <code>value</code> and <code>writable</code>) can be modified.
+
+```javascript
+const person = Object.create({},
+  {
+    name: {
+      value: 'John',
+    },
+    age: {
+      value: 28,
+      configurable: true, // This property can be deleted or its attributes can be modified
+    },
+  },
+)
+
+// Attempting to delete properties
+delete person.name // This will fail because `configurable: false`
+delete person.age // This will succeed because `configurable: true`
+
+// Checking the results of deletion
+console.log(person.name) // 'John'
+console.log(person.age) // undefined
+```
+
+### get() and set()
+
+<code>get()</code> defines a function that will be called when accessing the property.
+
+<code>set()</code> defines a setter function that will be called when assigning a value to the property.
+
+```javascript
+const person = Object.create({},
+  {
+    firstName: {
+      value: 'John',
+      writable: true,
+    },
+    lastName: {
+      value: 'Doe',
+      writable: true,
+    },
+    fullName: {
+      // Getter for fullName
+      get() {
+        return `${this.firstName} ${this.lastName}`
+      },
+      // Setter for fullName
+      set(value) {
+        const parts = value.split(' ')
+        this.firstName = parts[0] || ''
+        this.lastName = parts[1] || ''
+      },
+      configurable: true,
+      enumerable: true,
+    },
+  },
+)
+
+// Using the getter
+console.log(person.fullName) // 'John Doe'
+
+// Using the setter
+person.fullName = 'Jane Smith'
+console.log(person.firstName) // 'Jane'
+console.log(person.lastName) // 'Smith'
+```
+
+## Modifying properties
+
+<code>Object.defineProperty()</code> (or <code>Object.defineProperties()</code>) is a JavaScript method that allows you to define or modify properties of an object with greater control over their behavior. Unlike creating properties directly (e.g., <code>obj.prop = value</code>), this method lets you specify property descriptors, which control attributes like whether the property is writable, enumerable, or configurable. You can also use it to define getter and setter functions.
+
+### Syntax
+
+```javascript
+Object.defineProperty(obj, prop, descriptor) // accepts only one descriptor
+Object.defineProperties(obj, prop, descriptor1, descriptor2, descriptor3) // any number of descriptors passed as arguments is valid
+```
+
+- <u>obj</u>: The object on which to define the property.
+- <u>prop</u>: The name of the property to be defined or modified.
+- <u>descriptor</u>: An object that describes the behavior of the property (e.g., value, writable, configurable, enumerable, get, set).
+
+### Example:
+
+```javascript
+const person = {}
+
+Object.defineProperty(person, 'name', {
+  value: 'John',
+  writable: false,
+  enumerable: true,
+  configurable: false
+})
+
+// Access the property
+console.log(person.name) // 'John'
+
+// Attempt to modify the property (will fail as writable is false)
+person.name = 'Jane'
+console.log(person.name) // 'John'
+
+// Attempt to delete the property (will fail as configurable is false)
+delete person.name
+console.log(person.name) // 'John'
+```
+
+### Getting descriptors
+
+<code>Object.getOwnPropertyDescriptor()</code> and <code>Object.getOwnPropertyDescriptors()</code> return the property descriptor(s) for an object's own property/ies.
+
+```javascript
+const person = {
+  name: 'John',
+  age: 30,
+}
+
+// Modify the 'name' property with an additional descriptor
+Object.defineProperty(person, 'name', {
+  writable: false, // Property is read-only
+  enumerable: true, // Property is enumerable
+  configurable: false, // Property cannot be deleted
+})
+
+// Get the descriptor of the 'name' property
+const descriptor = Object.getOwnPropertyDescriptor(person, 'name')
+
+console.log(descriptor)
+```
+
+Output:
+
+```json
+{
+  "value": "John",
+  "writable": false,
+  "enumerable": true,
+  "configurable": false
+}
+```
+
+### Differences between create() and defineProperty()
+
+<code>Object.create()</code> and <code>Object.defineProperty()</code> both allow you to control property attributes, but they serve different purposes:
+
+- <code>Object.create()</code> is used to create a new object with a specified prototype and allows you to define properties during the object's creation. It can also define multiple properties at once.
+- <code>Object.defineProperty()</code> is used to define or modify properties on an existing object. It gives precise control over that property's behavior.
+- Unlike <code>defineProperty()</code>, <code>create()</code> allows you to set the object's prototype when it's created, making it more suited for inheritance.
+
+
 
 
 
