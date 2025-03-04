@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config'
 import starlight from '@astrojs/starlight'
 
-import tunnel from 'astro-tunnel'
+import netlify from '@astrojs/netlify'
 
 export const items = [
   {
@@ -147,6 +147,9 @@ export default defineConfig({
       },
       sidebar: items,
     }),
-    tunnel(),
+    // tunnel(),
   ],
+
+  output: 'server',
+  adapter: netlify(),
 })
