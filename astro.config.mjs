@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config'
 import starlight from '@astrojs/starlight'
 
+
 export const items = [
   {
     label: 'About JavaScript',
@@ -147,5 +148,5 @@ export default defineConfig({
     }),
   ],
 
-  output: 'server',
+  output: 'static',
 })
