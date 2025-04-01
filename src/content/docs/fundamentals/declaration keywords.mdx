@@ -1,12 +1,12 @@
 ---
-title: 'Comments'
+title: 'Declaratoin keywords'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import varletconst from '../../../assets/varletconst.png';
-import Img from '../../../components/Img.astro'
+import { Aside } from "@astrojs/starlight/components"
+import varletconst from "../../../assets/varletconst.png"
+import Img from "../../../components/Img.astro"
 
 ## let, const and var
 
@@ -19,18 +19,19 @@ console.log(name) //some name
 
 This code would work; however, it is highly advisable to precede the variable name with a keyword. In JS there are 3 of them:
 
-- **var** is the oldest of these keywords and can be found in older JavaScript sources. However, since ES6 was introduced in 2015, it is not advisable to use it anymore. The reasons for this recommendation will be explained later.
-- **let** is a newer keyword introduced in ES6 and is generally preferred over <code>var</code>. It offers more predictable scoping behavior and is considered an improvement in terms of variable declaration.
-- **const** was also introduced in ES6. It is an abbreviation for "constant", signifying that variables declared with this keyword cannot be reassigned after their initial assignment in the code. This helps enforce immutability and is particularly helpful when you want to ensure that a variable remacode constant throughout the program. Aside from this, <code>const</code> behaves similarly to <code>let</code>.
+- <b>var</b> is the oldest of these keywords and can be found in older JavaScript sources. However, since ES6 was introduced in 2015, it is not advisable to use it anymore. The reasons for this recommendation will be explained later.
+- <b>let</b> is a newer keyword introduced in ES6 and is generally preferred over `var`. It offers more predictable scoping behavior and is considered an improvement in terms of variable declaration.
+- <b>const</b> was also introduced in ES6. It is an abbreviation for "constant", signifying that variables declared with this keyword cannot be reassigned after their initial assignment in the code. This helps enforce immutability and is particularly helpful when you want to ensure that a variable remains constant throughout the program. Aside from this, `const` behaves similarly to `let`.
 
 <Aside type="note">
-  Note the difference between definition, declaration, and assignment. 
-  
-  A **declaration** is a statement that introduces a variable, function, or other identifier into a program. It tells the compiler or interpreter that a variable or function exists.
-  
-  An **assignment** is the act of giving a value to a variable. This can be done either at the time of declaration or separately. The first assignment is called **initialization**.
-  
-  A **definition** provides the actual implementation or value for a variable, function, or other identifier. In JavaScript, a variable declaration with an assignment can be considered a definition.
+
+Note the difference between definition, declaration, and assignment. 
+
+A <b>declaration</b> is a statement that introduces a variable, function, or other identifier into a program. It tells the compiler or interpreter that a variable or function exists.
+
+An <b>assignment</b> is the act of giving a value to a variable. This can be done either at the time of declaration or separately. The first assignment is called <b>initialization</b>.
+
+A <b>definition</b> provides the actual implementation or value for a variable, function, or other identifier. In JavaScript, a variable declaration with an assignment can be considered a definition.
 
 ```javascript
 let myVariable // declaration
@@ -39,15 +40,12 @@ myVariable = 10 // assignment
 
 let anotherVariable = 5 // definition (declaration + assignment)
 ```
+
 </Aside>
 
+## Reassigment
 
-
-## Differences
-
-### Reassignment
-
-Variables preceded with <code>var</code> and <code>let</code> can be reassigned, while those preceded with <code>const</code> cannot.
+Variables preceded with `var` and `let` can be reassigned, while those preceded with `const` cannot.
 
 ```javascript
 var a = 1
@@ -56,12 +54,12 @@ const c = 3
 
 a = 11 // ok
 b = 12 // ok
-c = 13 // Uncaught TypeError: Assignment to constant variable
+c = 13 //Uncaught TypeError: Assignment to constant variable
 ```
 
-### Scope
+## Scope
 
-Scope refers to the visibility and accessibility of variables within a specific part of the code. In the context of <code>var</code> vs <code>let</code> vs <code>const</code>, we distinguish two types of scope: functional and block. Functional scope is applicable to variables declared with <code>var</code>, meaning they are accessible within the entire function body where they are defined, regardless of block boundaries within that function. Block scope, on the other hand, applies to variables declared with <code>let</code> and <code>const</code>. These variables are only accessible within the specific block (delimited by <code>{}</code>) where they are declared, such as within loops, conditionals, or other block statements. This means <code>let</code> and <code>const</code> variables cannot be accessed outside the block in which they were defined, providing better control over variable visibility and reducing potential errors.
+Scope refers to the visibility and accessibility of variables within a specific part of the code. In the context of `var` vs `let` vs `const`, we distinguish two types of scope: functional and block. Functional scope is applicable to variables declared with `var`, meaning they are accessible within the entire function body where they are defined, regardless of block boundaries within that function. Block scope, on the other hand, applies to variables declared with `let` and `const`. These variables are only accessible within the specific block (delimited by `{}`) where they are declared, such as within loops, conditionals, or other block statements. This means `let` and `const` variables cannot be accessed outside the block in which they were defined, providing better control over variable visibility and reducing potential errors.
 
 ```javascript
 var a = 1
@@ -83,66 +81,67 @@ console.log(b)   //2
 console.log(c)   //3
 ```
 
-```js
+```javascript
 function example() {
-   {
-      var x = 5;
-      let y = 10
-      const z = 20;
-   }
-   console.log(x); // 5
-   console.log(y) // Error: y is not defined
-   console.log(z); // Error: z is not defined
+			{
+						var x = 5;
+						let y = 10
+						const z = 20;
+			}
+			console.log(x); // 5
+			console.log(y) // Error: y is not defined
+			console.log(z); // Error: z is not defined
 }
 
 console.log(x) // Error: x is not defined
 ```
 
-Using <code>var</code> in for loops can lead to unexpected behavior due to its function-scoped nature. Specifically, <code>var</code> does not create a new scope for each iteration of the loop. Instead, it retains the same scope throughout the entire function or global context in which it is declared. This can lead to unintentional overwriting of other variables.
+Using `var` in for loops can lead to unexpected behavior due to its function-scoped nature. Specifically, `var` does not create a new scope for each iteration of the loop. Instead, it retains the same scope throughout the entire function or global context in which it is declared. This can lead to unintentional overwriting of other variables.
 
-```js
+```javascript
 for(var i = 0; i < 5; i++){
-   console.log(i) // 0, 1, 2, 3, 4
+	    console.log(i) // 0, 1, 2, 3, 4, 
 }
 console.log(i) //5
-   
+
 for(let j = 0; j < 5; j++){
-   console.log(j) // 0, 1, 2, 3, 4
+	    console.log(j) // 0, 1, 2, 3, 4
 }
 console.log(j) // Cannot find name 'j'
 ```
 
-### Hoisting
+## Hoisting
 
-Hoisting is a JavaScript mechanism where variables and function declarations are moved to the top of their containing scope during the compilation phase, before the code is executed. It is said <code>var</code> is subject to hoisting whereas <code>let</code> and <code>const</code> are not. That's not entirely true. All of them are hoisted but in different way.
+Hoisting is a JavaScript mechanism where variables and function declarations are moved to the top of their containing scope during the compilation phase, before the code is executed. It is said `var` is subject to hoisting whereas `let` and `const` are not. That's not entirely true. All of them are hoisted but in different way. 
 
-For <code>var</code>, the declaration is hoisted to the top of its functional scope and initialized with <code>undefined</code>. This means that a <code>var</code> variable can be accessed before its declaration without causing an error, but it will return <code>undefined</code> until the assignment is made.
+For `var`, the declaration is hoisted to the top of its functional scope and initialized with `undefined`. This means that a `var` variable can be accessed before its declaration without causing an error, but it will return `undefined` until the assignment is made. 
 
-In the case of <code>let</code> and <code>const</code>, the variables are also hoisted to the top of their block scope, but they are not initialized. They reside in a <b>temporal dead zone</b> from the start of the block until the declaration is encountered. Attempting to access these variables before their declaration results in a <code>ReferenceError</code>. This difference enforces a stricter variable initialization and usage pattern, helping to prevent bugs related to uninitialized variables.
+ In the case of `let` and `const`, the variables are also hoisted to the top of their block scope, but they are not initialized. They reside in a <b>temporal dead zone</b> from the start of the block until the declaration is encountered. Attempting to access these variables before their declaration results in a `ReferenceError`. This difference enforces a stricter variable initialization and usage pattern, helping to prevent bugs related to uninitialized variables.
 
 ```javascript
 console.log(a); // undefined
 var a = 5;
 console.log(b); // Uncaught ReferenceError: Cannot access 'b' before initialization 
 let b = 10
-console.log(c) // Uncaught ReferenceError: c is not defined 
+console.log(c) //Uncaught ReferenceError: c is not defined 
 ```
-### Redeclaration
 
-Using <code>var</code> allows for multiple declarations of the same variable within the same scope, with each new declaration overwriting the previous one. This can lead to accidental changes to a variable that we did not intend to modify. <code>let</code> and <code>const</code> do not allow multiple declarations within the same scope. An error will occur if you try to redeclare a variable.
+## Redeclaration
 
-```js
+Using `var` allows for multiple declarations of the same variable within the same scope, with each new declaration overwriting the previous one. This can lead to accidental changes to a variable that we did not intend to modify. `let` and `const` do not allow multiple declarations within the same scope. An error will occur if you try to redeclare a variable.
+
+```javascript
 var x = 5
 var x = 10; // OK
 let y = 5;
 let y = 10; // Error: Identifier 'y' has already been declared
 ```
 
-### The global object
+## The global object
 
-This difference isn't crucial in everyday code but it's worthy to mention in out of a chronicler's duty.
+This difference isn't crucial in everyday code but it's worthy to mention in out of a chronicler's duty. 
 
-In JavaScript, when <code>var</code> is utilized to declare a variable in the <u>global scope</u> (i.e., outside of any function or block), it creates a property on the global object. In browsers, the global object is <code>window</code>, and in Node.js, it is <code>global</code>.
+In JavaScript, when `var` is utilized to declare a variable in the <u>global scope</u> (i.e., outside of any function or block), it creates a property on the global object. In browsers, the global object is `window`, and in Node.js, it is `global`.
 
 ```javascript
 var a = 10
@@ -151,12 +150,25 @@ console.log(window.a) // 10
 console.log(window.b) // undefined
 ```
 
-<hr/>
+Thus, using `var` can accidentally overwrite a property of the global object, which is something you definitely don't want to do.
 
-Don't worry if you don't understand some concepts mentioned here, such as functions, context, or strict mode. Later on you'll learn about them and everything will start to make more sense.  At the end, take a look at this graphic that summarizes all the differences between <code>var</code>, <code>let</code>, and <code>const</code> in one place:
+<Aside type="tip">
 
-<Img src={varletconst} description={"source: https://rixong.medium.com/var-let-and-const-28ab64ac2460"} />
+You can declare and define multiple variables in the same line:
+
+```javascript
+let x, y
+let a = 10, b = 15
+```
+
+</Aside>
+
+Don't worry if you don't understand some concepts mentioned here, such as functions, context, or strict mode. Later on you'll learn about them and everything will start to make more sense. At the end, take a look at this graphic that summarizes all the differences between `var`, `let`, and `const` in one place:
+
+<Img src={varletconst} description="https://rixong.medium.com/var-let-and-const-28ab64ac2460"/>
 
 <Aside type="note">
-  Unless you use strict mode, you can also create a variable without using any of these three keywords. Such a variable would work similarly to one created with <code>var</code>, except it wouldn't be hoisted at all and would be added as a property of the global object, regardless of the scope in which it was created.
+
+Unless you use strict mode, you can also create a variable without using any of these three keywords. Such a variable would work similarly to one created with `var`, except it wouldn't be hoisted at all and would be added as a property of the global object, regardless of the scope in which it was created.
+
 </Aside>
