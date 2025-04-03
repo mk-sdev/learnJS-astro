@@ -3,3 +3,173 @@ title: 'Timeouts and intervals'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
+
+import { Aside } from "@astrojs/starlight/components"
+import callbackHell from "../../../assets/callback-hell.png"
+import Img from "../../../components/Img.astro"
+
+## setTimeout
+
+Let's assume we want some piece of code to be executed after some time. For this purpose, we use `setTimeout()`. It takes at least two arguments. The first is the callback function we want to execute, and the second is the time in milliseconds that specifies how long (approximately) we have to wait for the callback to be called.
+
+```javascript
+setTimeout(() => {
+  console.log('This message is logged after 2 seconds')
+}, 2000)
+```
+
+If the callback needs some arguments we can pass them as the next arguments to `setTimeout()`.
+
+```javascript
+setTimeout(
+  (name, age) => {
+    console.log('My name is ' + name + ' and I am ' + age + ' years old.')
+  },
+  2000,
+  'Monica',
+  20
+)
+```
+
+Of course we can define a callback function somewhere else.
+
+```javascript
+function callback(name, age) {
+  console.log('My name is ' + name + ' and I am ' + age + ' years old.')
+}
+
+setTimeout(callback, 2000, 'Monica', 20)
+```
+
+If you assign a setTimeout to variable (function expression) you can clear it before the callback is executed.
+
+```javascript
+const timeoutId = setTimeout(() => {
+  console.log('Hello, World!')
+}, 3000)
+
+// Clear the timeout before it executes
+clearTimeout(timeoutId)
+
+console.log(timeoutId) // 1
+
+```
+
+As you can see, setTimeout (as well as setInterval) returns a number (or an object in Node) which is their identifier.
+
+## setInterval
+
+While setTimeout executes the callback function once after a specified delay, setInterval repeatedly executes the callback at consistent intervals. All the rules described above regarding timeouts also apply to intervals.
+
+```javascript
+const intervalId = setInterval(
+  name => {
+    console.log('Hello, ', name)
+  },
+  3000,
+  'Mike'
+)
+```
+
+We can clear interval from its body.
+
+```javascript
+let count = 5
+
+const intervalId = setInterval(() => {
+  console.log(count)
+
+  if (count === 1) clearInterval(intervalId) // we defused the bomb one second before it exploded
+
+  if (count === 0) {
+    console.log('Kaboom!')
+  }
+
+  count--
+}, 1000)
+```
+
+<Aside type="caution">
+
+Keep in mind, `setTimeout` and `setInterval` do not always execute exactly after the specified time; their execution depends on factors such as the current workload of the JavaScript event loop, browser performance, and system resources. If the event loop is busy processing other tasks, the timer's callback function may be delayed, causing it to run later than expected.
+
+</Aside>
+
+## Order of execution
+
+Take a look at the following code and think what would be its output:
+
+```javascript
+setTimeout(() => {
+  console.log('1')
+}, 100)
+
+setTimeout(() => {
+  console.log('2')
+}, 0)
+
+console.log('3')
+```
+
+Intuitively someone would say the output is '1','2','3' but it is not. In fact '3','2','1' is the right answer. It's because setTimeout's callback always executes after all synchronous code is done, even if the second parameter is set to 0 milliseconds. You'll find out more about it the 'Event loop' lesson. 
+
+The same goes with setInterval:
+
+```javascript
+console.log('Start')
+
+const id = setInterval(() => {
+  console.log('Interval function')
+}, 1000)
+
+console.log('End')
+
+// 'Start'
+// 'End'
+// 'Interval function'
+// 'Interval function'
+// ...
+```
+
+### Callbacks
+
+What if for some reason you want to execute asynchronous code before synchronous one? One of the solutions is using callback functions. If you have studied previous chapters (especially 'functions' lessons) carefully, they are not new to you.
+
+```javascript
+function asyncOperation(callback) {
+  console.log('Start async operation...')
+
+  // Simulate an asynchronous operation, e.g., fetching data from a server
+  setTimeout(() => {
+    console.log('Async operation completed')
+    callback() // Invoke the callback when the async operation is finished
+  }, 2000)
+}
+
+function syncOperation() {
+  console.log('Sync operation')
+}
+
+// Call the function with a callback
+asyncOperation(() => {
+  // The code inside the callback runs after the async operation is complete
+  console.log('Executing callback after async operation')
+
+  // Now we can execute the synchronous code
+  syncOperation()
+})
+
+console.log('This will run before async operation completes')
+
+// Output:
+// Start async operation...
+// This will run before async operation completes
+// Async operation completed
+// Executing callback after async operation
+// Sync operation
+```
+
+Even though this solution works fine, it becomes unreadable for more complex code. Many nested callbacks lead to something called <b>callback hell</b>.
+
+<Img src={callbackHell} description="https://manavgoyal011102.hashnode.dev/mastering-asynchronous-javascript-a-comprehensive-guide"/>
+

@@ -3,3 +3,109 @@ title: 'Async and await'
 description: ''
 layout: ../../../components/_Layout.astro
 ---
+
+Async/await is a feature in JavaScript that allows you to write asynchronous code in a synchronous style. It is built on top of promises and makes it easier to handle asynchronous operations.
+
+## Async functions
+
+An async function can be created by placing `async` keyword before `function` keyword. They always return a promise.
+
+```javascript
+async function fetchData(){
+  return 'some data'
+}
+
+async function voidFunction(){
+  console.log("This function doesn't have any return statement")
+}
+
+const fetchDataResult = fetchData()
+const voidFunctionResult = voidFunction()
+
+console.log(fetchDataResult instanceof Promise) // true
+console.log(voidFunctionResult instanceof Promise) // true
+```
+
+Async functions are a good alternative to Promises because of their syntax which resembles synchronous code.
+
+```javascript
+function myFunction() {
+    return Promise.resolve('success');
+}
+
+myFunction()
+    .then(result => {
+        console.log(result);
+    })
+
+// the same as:
+
+async function myFunction() {
+    return 'success';
+}
+
+myFunction()
+    .then(result => {
+        console.log(result); // 'success'
+    });
+```
+
+## Await keyword
+
+The `await` keyword is used inside `async` functions to pause the execution of the function until the promise that goes after it is resolved or rejected. Technically, it could also be followed by something that is not a Promise, but this would be useless and would work as if `await` wasn't there.
+
+```javascript
+async function example() {
+  const num = await Promise.resolve(42)
+  console.log(num); // 42
+}
+```
+
+In the example above, the line with `await` keyword screams to the code below it: <i>"Hey, guys, (a)wait for me to resolve!"</i> Without it an unresolved Promise would be logged to the console.
+
+Recently, `await` can also be used outside of functions preceded by the word `async`.
+
+```javascript
+//global scope
+const prom = await Promise.resolve('I'm a promise')
+console.log(prom) // 'I'm a promise'
+```
+
+## Using Async/Await with Promises
+
+Remember async functions always return a promise so you can use them alongside with other promises or chain multiple async functions together.
+
+For example, to perform multiple asynchronous operations in parallel and wait for all of them to complete, use `Promise.all()` inside an `async` function.
+
+```javascript
+async function fetchData1() {
+  return 'Data 1';
+}
+
+async function fetchData2() {
+  return 'Data 2';
+}
+
+async function getAllData() {
+  let [data1, data2] = await Promise.all([fetchData1(), fetchData2()]);
+  console.log(data1, data2); // 'Data 1','Data 2'
+}
+
+getAllData();
+```
+
+In the code below each `async` function will wait for the previous one to complete before proceeding.
+
+```javascript
+async function fetchData() {
+  return 'Data';
+}
+
+async function processData() {
+  let data = await fetchData();
+  console.log('Processing:', data);
+}
+
+processData();
+```
+
