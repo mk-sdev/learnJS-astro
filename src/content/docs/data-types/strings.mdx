@@ -169,26 +169,25 @@ const text = 'Hello world'
 console.log(text.includes('world')) // true
 ```
 
-<b>substring()</b>: returns a subset of the string between the start and end
-indices (end index not included). If start is greater than end, the method swaps
-the two arguments.
+<b>substring()</b>: returns a subset of the string between the start and end indices (end index not included). If start is greater than end, the method swaps the two arguments. It does not support negative indices; if given, they are treated as 0.
 
 ```javascript
 const text = 'Hello world'
 console.log(text.substring(0, 5)) // 'Hello'
 console.log(text.substring(6)) // 'world'
-console.log(text.substring(5, 0)) // 'Hello'
+console.log(text.substring(5, 0)) // 'Hello' // Swaps arguments
+console.log(text.substring(-3, 5)) // 'Hello' // Negative index treated as 0
 ```
 
-<b>slice()</b>: returns a section of the string, extracted from start to end
-indices (end index not included). It supports negative indices, which count from
-the end of the string.
+<b>slice()</b>: returns a section of the string, extracted from start to end indices (end index not included). It supports negative indices, which count from the end of the string. If start is greater than end, it returns an empty string instead of swapping arguments.
 
 ```javascript
 const text = 'Hello world'
 console.log(text.slice(0, 5)) // 'Hello'
 console.log(text.slice(-5)) // 'world'
 console.log(text.slice(2, -1)) // 'llo worl'
+console.log(text.slice(5, 2)) // '' // Returns empty string
+console.log(text.slice(-3, -1)) // 'rl'
 ```
 
 These are the most often used string methods but this list is not complete. Keep in mind none of these methods modify the original string.
